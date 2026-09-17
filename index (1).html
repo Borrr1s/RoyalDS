@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ROYAL DS — Scrutineering & Steward Portal (v1.1)</title>
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ROYAL%20DS%20Scrutineering%22%2C%22short_name%22%3A%22RDS%20TI%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%7D">
+    
+    <style>
+        :root {
+            --bg-color: #0c0c0c;
+            --card-bg: #151515;
+            --card-border: #262626;
+            --gold-primary: #d4af37;
+            --gold-bright: #ffd700;
+            --gold-dark: #997a15;
+            --gold-gradient: linear-gradient(135deg, #f3cc65 0%, #d4af37 50%, #997a15 100%);
+            --accent-green: #22c55e;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --text-main: #f8fafc;
+            --text-sub: #9ca3af;
+            --input-bg: #101010;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 50% 0%, #1c1c1c 0%, #0c0c0c 100%),
+                linear-gradient(45deg, #141414 25%, transparent 25%), 
+                linear-gradient(-45deg, #141414 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #141414 75%), 
+                linear-gradient(-45deg, transparent 75%, #141414 75%);
+            background-size: 100% 100%, 8px 8px, 8px 8px, 8px 8px, 8px 8px;
+            color: var(--text-main);
+            padding: 12px;
+            padding-bottom: 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid var(--gold-dark);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.15);
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-crown {
+            background: var(--gold-gradient);
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
+        }
+
+        h1 {
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #ffffff;
+            text-transform: uppercase;
+        }
+
+        h1 span {
+            color: var(--gold-bright);
+        }
+
+        .subtitle {
+            font-size: 11px;
+            color: var(--text-sub);
+            letter-spacing: 0.3px;
+        }
+
+        .lang-switch-group {
+            display: flex;
+            gap: 4px;
+            background: #111;
+            padding: 3px;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: var(--text-sub);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn.active {
+            background: var(--gold-gradient);
+            color: #000;
+        }
+
+        .view-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .nav-tab {
+            padding: 12px;
+            text-align: center;
+            background: #151515;
+            border: 1px solid #262626;
+            border-radius: 12px;
+            color: var(--text-sub);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #242424 0%, #151515 100%);
+            color: var(--gold-bright);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+        }
+
+        .sync-badge {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #1a1a1a;
+            color: #9ca3af;
+            border: 1px solid #333333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .queue-badge {
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 14px;
+            background: #78350f;
+            color: #fef08a;
+            border: 1px solid var(--gold-primary);
+            display: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222222;
+            padding-bottom: 8px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .form-group.full {
+            grid-column: span 2;
+        }
+
+        label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #d1d5db;
+        }
+
+        .label-hint {
+            font-size: 10px;
+            color: var(--gold-bright);
+            font-weight: normal;
+            margin-left: 4px;
+        }
+
+        input, select {
+            background: var(--input-bg);
+            border: 1px solid var(--card-border);
+            color: var(--text-main);
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            width: 100%;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+        }
+
+        .autocomplete-wrapper {
+            position: relative;
+        }
+
+        .suggestions-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #181818;
+            border: 1px solid var(--gold-primary);
+            border-radius: 10px;
+            max-height: 240px;
+            overflow-y: auto;
+            z-index: 100;
+            margin-top: 4px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 12px 14px;
+            border-bottom: 1px solid #262626;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .group-tag {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-transform: uppercase;
+            background: #222222;
+            color: var(--gold-bright);
+            border: 1px solid var(--gold-dark);
+        }
+
+        .chips-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 4px;
+        }
+
+        .group-chip {
+            background: #111111;
+            border: 1px solid #2d2d2d;
+            color: var(--text-sub);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .group-chip.active {
+            background: linear-gradient(135deg, #262626 0%, #171717 100%);
+            color: var(--gold-bright);
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+        }
+
+        .btn-checklist-toggle {
+            background: #111111;
+            border: 1px solid var(--gold-dark);
+            color: var(--gold-primary);
+            margin-top: 10px;
+        }
+
+        .btn-checklist-submit {
+            background: linear-gradient(135deg, #16a34a, #15803d);
+            color: white;
+            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
+            margin-top: 14px;
+        }
+
+        .btn-share {
+            background: #1a1a1a;
+            border: 1px solid var(--card-border);
+            color: #ffffff;
+        }
+
+        .btn-pdf {
+            background: #1a1a1a;
+            border: 1px solid var(--gold-dark);
+            color: var(--gold-bright);
+        }
+
+        /* Checklist Panel - 22 Detailed Items */
+        .checklist-panel {
+            background: #0d0d0d;
+            border: 1px solid var(--gold-dark);
+            border-radius: 14px;
+            padding: 14px;
+            margin-top: 14px;
+            display: none;
+            max-height: 550px;
+            overflow-y: auto;
+        }
+
+        .checklist-panel.open {
+            display: block;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .checklist-item {
+            background: #171717;
+            border: 1px solid #262626;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .checklist-item-info {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .chk-btn {
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #333333;
+            background: #0f0f0f;
+            color: var(--text-sub);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .chk-btn.active-ok { background: #15803d; border-color: #22c55e; color: #ffffff; }
+        .chk-btn.active-warn { background: #b45309; border-color: #f59e0b; color: #ffffff; }
+        .chk-btn.active-fail { background: #b91c1c; border-color: #ef4444; color: #ffffff; }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .log-table th {
+            text-align: left;
+            padding: 10px 8px;
+            color: var(--gold-primary);
+            border-bottom: 1px solid #262626;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .log-table td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #1f1f1f;
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .status-ok { background-color: var(--accent-green); box-shadow: 0 0 6px rgba(34,197,94,0.6); }
+        .status-warn { background-color: #eab308; box-shadow: 0 0 6px rgba(234,179,8,0.6); }
+        .status-fail { background-color: var(--accent-red); box-shadow: 0 0 6px rgba(239,68,68,0.6); }
+
+        .badge-count {
+            background: var(--gold-primary);
+            color: #000000;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* --- STEWARD COMMISSIONER DASHBOARD STYLES --- */
+        .steward-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .steward-filter-btn {
+            background: #171717;
+            border: 1px solid #333;
+            color: #ccc;
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .steward-filter-btn.active {
+            background: var(--gold-primary);
+            color: #000;
+            border-color: var(--gold-bright);
+        }
+
+        .participant-card-item {
+            background: #161616;
+            border: 1px solid #262626;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .participant-card-item:hover, .participant-card-item.selected {
+            border-color: var(--gold-primary);
+            background: #1c1c1c;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        .steward-inspector-view {
+            background: #121212;
+            border: 1px solid var(--gold-primary);
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 14px;
+            display: none;
+        }
+
+        .steward-driver-banner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .driver-num-huge {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--gold-bright);
+            background: #222;
+            padding: 4px 14px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            display: inline-block;
+        }
+
+        .defect-badge-clickable {
+            display: inline-flex;
+            align-items: center;
+            background: #331500;
+            color: #fbbf24;
+            border: 1px solid #b45309;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-right: 6px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .defect-badge-clickable:hover {
+            transform: scale(1.02);
+            border-color: var(--gold-bright);
+        }
+
+        .rule-citation-box {
+            background: #090909;
+            border: 1px solid var(--gold-primary);
+            border-left: 4px solid var(--gold-bright);
+            padding: 16px;
+            border-radius: 10px;
+            margin-top: 16px;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
+        }
+
+        .rule-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--gold-bright);
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .rule-text {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e2e8f0;
+            margin-bottom: 10px;
+        }
+
+        .rule-action-needed {
+            background: #271406;
+            border: 1px dashed #f59e0b;
+            color: #fef08a;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .draft-banner {
+            background: #451a03;
+            color: #fef08a;
+            border: 1px solid var(--gold-dark);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            margin-bottom: 10px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cage-code {
+            font-family: monospace;
+            letter-spacing: 2px;
+            font-weight: bold;
+            color: var(--gold-bright);
+        }
+
+        @media print {
+            body {
+                background-color: #ffffff !important;
+                background-image: none !important;
+                color: #000000 !important;
+                padding: 0 !important;
+                max-width: 100% !important;
+                font-size: 9pt !important;
+            }
+
+            header, 
+            .card-title, 
+            .btn, 
+            .autocomplete-wrapper, 
+            .group-banner, 
+            .form-grid, 
+            .action-buttons-row, 
+            #syncStatus, 
+            .filter-container, 
+            .chips-container, 
+            .stats-bar,
+            .checklist-panel,
+            .draft-banner,
+            .view-nav,
+            #viewScrutineer > .card:nth-of-type(1),
+            #viewScrutineer > .card:nth-of-type(2) {
+                display: none !important;
+            }
+
+            .card {
+                background: #ffffff !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .print-header {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 8px;
+                border-bottom: 1px solid #000;
+                padding-bottom: 4px;
+            }
+
+            .print-header h2 {
+                font-size: 13pt !important;
+                margin-bottom: 2px !important;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+
+            .log-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                border: 1px solid #000 !important;
+                font-size: 8.5pt !important;
+            }
+
+            .log-table th, .log-table td {
+                border: 1px solid #000 !important;
+                color: #000 !important;
+                padding: 4px 6px !important;
+                line-height: 1.15 !important;
+            }
+
+            .log-table th {
+                background-color: #f1f5f9 !important;
+                font-weight: bold !important;
+            }
+
+            .action-col {
+                display: none !important;
+            }
+        }
+
+        .print-header {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="print-header">
+        <h2>ROYAL DRIFT SERIES — ПРОТОКОЛ ТЕХНИЧЕСКОЙ ИНСПЕКЦИИ</h2>
+        <p id="printHeaderMeta">Этап: Stage 1 (Шанхай) | Дата: 2026-06-06</p>
+    </div>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-crown">👑</div>
+            <div>
+                <h1>ROYAL <span>DS</span></h1>
+                <div class="subtitle" id="headerSubtitle">China Championship • Scrutineering v1.1</div>
+            </div>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <!-- Language Switcher -->
+            <div class="lang-switch-group">
+                <button class="lang-btn active" id="btn_lang_ru" onclick="setAppLanguage('ru')">RU</button>
+                <button class="lang-btn" id="btn_lang_en" onclick="setAppLanguage('en')">EN</button>
+                <button class="lang-btn" id="btn_lang_cn" onclick="setAppLanguage('cn')">中文</button>
+            </div>
+
+            <div id="syncStatus" class="sync-badge" onclick="resetPinAndConnect()">
+                <span id="syncIcon">●</span> <span id="syncText">Связь</span>
+            </div>
+            <div id="queueStatus" class="queue-badge" onclick="processSyncQueue(true)">
+                ⏳ <span id="queueCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Navigation Tabs (Mobile Inspector vs Laptop Steward Dashboard) -->
+    <div class="view-nav">
+        <div class="nav-tab active" id="tabScrutineer" onclick="switchMainView('scrutineer')">
+            <span>📋</span> <span id="tabScrutineerLabel">Входной контроль ТИ</span>
+        </div>
+        <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">
+            <span>💻</span> <span id="tabStewardLabel">Кабинет Комиссара</span>
+        </div>
+    </div>
+
+    <!-- ================= VIEW 1: MOBILE INSPECTOR ================= -->
+    <div id="viewScrutineer">
+        <!-- Stage & Championship Selection -->
+        <div class="card">
+            <div class="card-title">
+                <span id="lblEventInfo">Этап Royal Drift Series (Stage)</span>
+                <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group full">
+                    <label id="lblStageSelect">Выберите этап чемпионата / 比赛分站:</label>
+                    <select id="stageSelect" onchange="onStageChanged()">
+                        <option value="Stage 1" data-city="Шанхай (Shanghai / 上海)" data-track="Tianma Circuit" data-date="2026-06-06" selected>Stage 1 — Шанхай (Shanghai / 上海) • 06–07.06 (Tianma)</option>
+                        <option value="Stage 2" data-city="Тяньцзинь (Tianjin / 天津)" data-track="V1 Auto World" data-date="2026-07-04">Stage 2 — Тяньцзинь (Tianjin / 天津) • 04–05.07 (V1 Circuit)</option>
+                        <option value="Stage 3" data-city="Нинбо (Ningbo / 宁波)" data-track="Ningbo International Speedway" data-date="2026-09-05">Stage 3 — Нинбо (Ningbo / 宁波) • 05–06.09 (Ningbo)</option>
+                        <option value="Stage 4" data-city="Чжэнчжоу (Zhengzhou / 郑州)" data-track="Zhengzhou Autodrome" data-date="2026-10-08">Stage 4 — Чжэнчжоу (Zhengzhou / 郑州) • 08–11.10 (Zhengzhou)</option>
+                        <option value="Stage 5" data-city="Финал (Final / 决赛)" data-track="Season Finale" data-date="2026-11-07">Stage 5 — Финал (Final / 决赛) • 07–08.11 (Grand Final)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="card" id="entryFormCard">
+            <div class="card-title">
+                <span id="lblFormTitle">📋 Прохождение ТИ (Входной контроль)</span>
+                <span id="editModeIndicator" style="display: none;" class="edit-badge-editing">✏️ Редактирование</span>
+            </div>
+
+            <div id="draftBanner" class="draft-banner">
+                <span>💾 Восстановлен несохраненный черновик (Crash-Save)</span>
+                <button onclick="discardDraft()" style="background:none; border:none; color:#ffd700; cursor:pointer; text-decoration:underline;">Сбросить</button>
+            </div>
+
+            <div class="form-group full autocomplete-wrapper">
+                <label id="lblCarModel">Марка / модель автомобиля <span class="label-hint">(RU, EN, транслит: Supra, Чайзер, S15...)</span>:</label>
+                <input type="text" id="carInput" placeholder="Напр: Nissan Silvia, Toyota Chaser, Supra, BMW E92..." autocomplete="off">
+                <div id="suggestions" class="suggestions-list"></div>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label id="lblDriver">Пилот (Фамилия Имя / Driver):</label>
+                    <input type="text" id="driverInput" placeholder="Иванов И. / Zhang W.">
+                </div>
+                <div class="form-group" style="position: relative;">
+                    <label id="lblRaceNumber">Стартовый № (СТ№ / Car #):</label>
+                    <input type="text" id="numberInput" placeholder="66" autocomplete="off">
+                    <div id="yesterdaySuggestions" class="suggestions-list"></div>
+                </div>
+
+                <!-- Roll Cage: STRICT 6 DIGITS FORMAT -->
+                <div class="form-group">
+                    <label id="lblCageNumber">№ Каркаса <span class="label-hint">(ровно 6 цифр / 6 digits)</span>:</label>
+                    <input type="text" id="cageInput" placeholder="123456" maxlength="6" inputmode="numeric" oninput="this.value = this.value.replace(/\D/g, '').slice(0, 6)" style="font-family:monospace; letter-spacing:2px; font-weight:bold;">
+                </div>
+                <div class="form-group">
+                    <label id="lblCarColor">Цвет авто / Color:</label>
+                    <input type="text" id="colorInput" placeholder="Черный / Золотой">
+                </div>
+
+                <div class="form-group">
+                    <label id="lblPitBox">№ Бокса (Pit Box):</label>
+                    <input type="text" id="boxInput" placeholder="15 бокс">
+                </div>
+                
+                <div class="form-group">
+                    <label id="lblSelectedGroups">Группа (Class):</label>
+                    <div id="groupChipsContainer" class="chips-container"></div>
+                </div>
+
+                <div class="form-group full">
+                    <label id="lblRemarks">Замечания ТИ (Remarks):</label>
+                    <input type="text" id="notesInput" placeholder="Замечания ТИ (каркас, СПТ, ремни, наклейки)">
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <button id="quickSubmitBtn" class="btn btn-gold" onclick="addCarToLog('unverified')" style="flex: 1;">
+                    ⚡ Выдать ТИ (быстро)
+                </button>
+                <button id="cancelEditBtn" class="btn" style="display: none; width: auto; background: #333; color:#fff;" onclick="cancelEditing()">
+                    Отмена
+                </button>
+            </div>
+
+            <button type="button" class="btn btn-checklist-toggle" onclick="toggleChecklistPanel()">
+                📑 Чеклист ТИ: <span id="checklistTypeLabel" style="font-weight: bold; margin-left: 4px;">Royal Drift Series (22 пункта)</span>
+            </button>
+
+            <!-- 22 Checklist Items -->
+            <div id="checklistPanel" class="checklist-panel">
+                <div style="font-size: 13px; font-weight: 700; color: var(--gold-bright); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; position:sticky; top:0; background:#0d0d0d; padding:6px 0; z-index:10;">
+                    <span>Пункты инспекции (22 пункта КиТТ/FIA):</span>
+                    <span style="font-size: 12px; cursor: pointer; color: var(--gold-primary);" onclick="setAllChecklistOk()">✅ Отметить все [ОК]</span>
+                </div>
+                <div id="checklistItemsContainer"></div>
+                <button id="checklistSubmitBtn" class="btn btn-checklist-submit" onclick="submitChecklistAndLog()">
+                    ✅ Завершить ТИ по чеклисту
+                </button>
+            </div>
+        </div>
+
+        <!-- Table Card -->
+        <div class="card">
+            <div class="card-title">
+                <span id="lblDailyLogTitle">📊 Список участников ТИ</span>
+                <span class="badge-count" id="totalCarsCount">0</span>
+            </div>
+
+            <div class="action-buttons-row" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+                <button class="btn btn-share" onclick="shareParticipantList()">
+                    📲 Поделиться
+                </button>
+                <button class="btn btn-pdf" onclick="exportToPDF()">
+                    📄 PDF / Печать
+                </button>
+            </div>
+
+            <div style="overflow-x: auto;">
+                <table class="log-table">
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Авто / Пилот</th>
+                            <th>СТ№</th>
+                            <th>№ Каркаса</th>
+                            <th>Группа</th>
+                            <th class="action-col">Действие</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logTableBody">
+                        <tr><td colspan="6" style="text-align: center; color: var(--text-sub); padding: 20px;">Загрузка...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= VIEW 2: STEWARD COMMISSIONER DASHBOARD ================= -->
+    <div id="viewSteward" style="display: none;">
+        <div class="card">
+            <div class="card-title">
+                <span id="lblStewardTitle">Кабинет Главного Комиссара / Управление замечаниями</span>
+                <span style="font-size: 11px; color: var(--gold-bright);" id="stewardStageMeta">Stage 1 (Шанхай)</span>
+            </div>
+
+            <!-- Filter Controls -->
+            <div class="steward-controls">
+                <button class="steward-filter-btn active" id="filter_all" onclick="setStewardFilter('all')">Все авто (<span id="cntStewardAll">0</span>)</button>
+                <button class="steward-filter-btn" id="filter_remarks" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntStewardRemarks">0</span>)</button>
+                <button class="steward-filter-btn" id="filter_ok" onclick="setStewardFilter('ok')">✅ Без замечаний (<span id="cntStewardOk">0</span>)</button>
+                
+                <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск (№, пилот, авто, каркас)..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:8px 12px; font-size:12px;">
+            </div>
+
+            <!-- Single Selected Participant Display (The requested Commissioner View) -->
+            <div id="stewardInspectorView" class="steward-inspector-view">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                    <span style="color: var(--gold-primary); font-size: 11px; font-weight: bold; text-transform: uppercase;">Фокус на участнике • Participant Detail</span>
+                    <button onclick="closeStewardDetail()" style="background:#222; border:1px solid #444; color:#fff; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px;">✕ Показать всех</button>
+                </div>
+
+                <div class="steward-driver-banner">
+                    <div style="display:flex; align-items:center; gap:14px;">
+                        <div class="driver-num-huge" id="dtlNumber">№--</div>
+                        <div>
+                            <h2 style="font-size: 20px; color:#fff;" id="dtlDriver">Пилот</h2>
+                            <div style="color:var(--text-sub); font-size:13px;" id="dtlCar">Марка Модель</div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="dtlStatusBadge" style="padding:4px 10px; border-radius:8px; font-weight:bold; font-size:12px; display:inline-block;">Статус</div>
+                        <div style="font-size:11px; color:#9ca3af; margin-top:4px;">Бокс: <strong id="dtlBox">—</strong> | Каркас: <strong id="dtlCage" class="cage-code">—</strong></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 12px;">
+                    <label style="display:block; margin-bottom:6px; color:var(--gold-primary); font-weight:bold;" id="lblClickDefectNotice">Нажмите на замечание, чтобы показать официальный пункт регламента участнику:</label>
+                    <div id="dtlDefectsContainer"></div>
+                </div>
+
+                <!-- Regulation Clause Display Box -->
+                <div id="ruleCitationBox" class="rule-citation-box">
+                    <div class="rule-title">
+                        <span id="ruleCitationHeading">Статья Регламента RDS</span>
+                        <a id="ruleOfficialDocLink" href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Официальные документы RDS ↗</a>
+                    </div>
+                    <div class="rule-text" id="ruleCitationText">...</div>
+                    <div class="rule-action-needed" id="ruleActionNeeded">...</div>
+                </div>
+            </div>
+
+            <!-- List of all participants (Clickable) -->
+            <div id="stewardListContainer" style="margin-top: 14px;"></div>
+        </div>
+    </div>
+
+    <script>
+        const EMBEDDED_GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
+        const SPREADSHEET_ID = "1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY";
+
+        /* --- FULL CAR CATALOG & TRANSLITERATION --- */
+        let LIVE_CAR_CATALOG = [
+          {"brand": "Nissan Silvia S15", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Nissan Silvia S14", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Nissan Silvia S13", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Nissan 180SX", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Nissan Skyline R34", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Nissan Skyline R33", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Nissan Skyline R32", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Supra A90", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Supra A80", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota GR86 Drift", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota GT86", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Toyota Chaser JZX100", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Mark II JZX100", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Mark II JZX90", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Cresta JZX100", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Toyota Altezza / IS200", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Toyota Soarer JZZ30", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "BMW E92 Eurofighter", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "BMW E46 Drift", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "BMW E36 Drift", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "BMW M2 Drift", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "BMW M4 Drift", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Mazda RX-7 FD", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Mazda RX-8", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Ford Mustang RTR", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Chevrolet Corvette C6", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Subaru BRZ", "track_group": "SEMI-PRO", "comp_group": "SEMI-PRO"},
+          {"brand": "Short Cut", "track_group": "DC1", "comp_group": "DC1"},
+          {"brand": "GT4 AMG", "track_group": "PRO", "comp_group": "PRO"},
+          {"brand": "Porsche 911 GT3", "track_group": "PRO", "comp_group": "PRO"}
+        ];
+
+        const TRANSLIT_MAP = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh',
+            'з': 'z', 'и': 'i', 'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+            'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'ts',
+            'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ы': 'y', 'э': 'e', 'ю': 'yu', 'я': 'ya',
+            'порш': 'porsche', 'порше': 'porsche', 'бмв': 'bmw', 'ауди': 'audi', 'тойота': 'toyota',
+            'мерседес': 'mercedes', 'мерс': 'mercedes', 'хонда': 'honda', 'ниссан': 'nissan',
+            'супра': 'supra', 'сильвия': 'silvia', 'чайзер': 'chaser', 'марк': 'mark',
+            'креста': 'cresta', 'альтезза': 'altezza', 'мазда': 'mazda', 'скайлайн': 'skyline',
+            'мустанг': 'mustang', 'шорткат': 'short cut', 'шорт кат': 'short cut'
+        };
+
+        /* --- 22 DETAILED CHECKLIST ITEMS WITH TECHNICAL REGULATIONS (RU, EN, CN) --- */
+        const CHECKLIST_22_ITEMS = [
+            {
+                id: 'light',
+                title: { ru: '1. Свет / Дублер стоп-сигнала', en: '1. Lighting & Windshield Brake Strip', cn: '1. 灯光与前挡高位刹车灯' },
+                desc: { ru: 'Стоп-сигнал, дублер на лобовом стекле (≥50 см), ходовые огни', en: 'Brake lights, secondary LED strip on windshield (≥50cm), headlights', cn: '主刹车灯、前挡风内侧高位刹车灯带（≥50cm）、行车灯' },
+                article: { ru: 'Статья 7. Освещение и световая сигнализация', en: 'Article 7. Lighting System & Dual Brake Lights', cn: '第7条 赛车灯光与辅助高位刹车灯系统' },
+                rule: {
+                    ru: 'Обязательны исправные передние фары/ходовые огни, задние габариты и дополнительный светодиодный стоп-сигнал (длиной не менее 50 см), установленный внутри салона в верхней части лобового стекла и срабатывающий строго синхронно с задними стоп-сигналами.',
+                    en: 'Functional headlights/running lights, tail lights, and a mandatory secondary LED brake light strip (min 50cm length mounted internally along top of front windshield) operating synchronously with rear brake lights for drift tandem judging.',
+                    cn: '必须配备正常工作的前大灯/日间行车灯、尾灯以及安装在前挡风玻璃内侧顶部的红色高位辅助刹车灯带（长度≥50厘米），且必须与主刹车灯完全同步点亮。'
+                },
+                action: { ru: 'Устранение: Подключить и закрепить верхнюю светодиодную полосу на лобовом стекле.', en: 'Resolution: Mount and connect upper LED brake strip on windshield.', cn: '整改要求：接通并固定前挡风玻璃内侧50cm高位刹车灯带。' }
+            },
+            {
+                id: 'windshield',
+                title: { ru: '2. Лобовое стекло и дворники', en: '2. Windshield & Wipers', cn: '2. 前挡风玻璃与雨刮' },
+                desc: { ru: 'Отсутствие критических трещин в зоне пилота, исправный стеклоочиститель', en: 'No cracks in driver sightline, working windshield wiper', cn: '驾驶员视线区域无严重裂纹，雨刮工作正常' },
+                article: { ru: 'Статья 3. Остекление и обзорность', en: 'Article 3. Glazing & Visibility', cn: '第3条 车窗玻璃与驾驶员视野' },
+                rule: {
+                    ru: 'Лобовое стекло — триплекс (многослойное) или сертифицированный поликарбонат с антиабразивным покрытием (толщина не менее 5 мм). Запрещены трещины в зоне очистки водительского дворника. Минимум 1 исправный стеклоочиститель.',
+                    en: 'Laminated glass or certified hard-coated polycarbonate (min 5mm thickness). No cracks allowed across the driver wiped sweep area. At least 1 operating windshield wiper required.',
+                    cn: '前挡风必须使用夹胶安全玻璃或耐磨聚碳酸酯板（厚度≥5mm）。雨刮清扫区域严禁有贯穿性裂纹。必须配备至少1个正常运作的雨刮器。'
+                },
+                action: { ru: 'Устранение: Заменить поврежденное стекло или восстановить привод дворников.', en: 'Resolution: Replace cracked windshield or restore wiper motor.', cn: '整改要求：更换裂损前挡风玻璃或排除雨刮器机械故障。' }
+            },
+            {
+                id: 'stickers',
+                title: { ru: '3. Обязательные наклейки RDS', en: '3. Mandatory Series Decals', cn: '3. 官方指定广告与车号贴纸' },
+                desc: { ru: 'Реклама серии, стартовый номер на дверях/стеклах, Фамилия, флаг', en: 'Series sponsors, door race number plates, driver surname, flag', cn: '赛事官方广告、车门号码牌、车手姓名拼音与国旗' },
+                article: { ru: 'Статья 14 Спортивного регламента. Рекламная схема', en: 'Article 14 Sporting Regs. Decal Placement Scheme', cn: '第14条 赛事运动规则：车身广告与标识张贴规范' },
+                rule: {
+                    ru: 'Автомобиль должен строго соответствовать официальной карте оклейки RDS: полоса на лобовом стекле, наклейки титульных партнеров на передних крыльях/бамперах, стартовый номер на передних дверях и задних боковых стеклах, флаг и фамилия пилота.',
+                    en: 'Vehicle must strictly follow official RDS decal map: windshield sunstrip, title partners on fenders/bumpers, door number panels, driver surname and national flag on rear quarter windows.',
+                    cn: '赛车车身必须严格遵守RDS官方贴纸规范：前挡太阳膜、指定赞助商贴纸、车门大号码牌、车手国旗及姓名贴。'
+                },
+                action: { ru: 'Устранение: Доклеить недостающие спонсорские логотипы и стартовые номера в штабе ТИ.', en: 'Resolution: Apply missing sponsor decals and race number panels at scrutineering HQ.', cn: '整改要求：在车检处领齐并补齐缺失的赞助商标识及车号贴纸。' }
+            },
+            {
+                id: 'film',
+                title: { ru: '4. Защитная бронепленка', en: '4. Protective Window & Lamp Film', cn: '4. 灯具与车窗防爆保护膜' },
+                desc: { ru: 'Фары, зеркала, пластиковые окна (толщина поликарбоната >3 мм)', en: 'Headlights, side mirrors, polycarbonate windows (thickness >3mm)', cn: '大灯防碎膜、后视镜防爆、聚碳酸酯车窗（厚度>3mm）' },
+                article: { ru: 'Статья 3.2. Защита от осколков при контакте', en: 'Article 3.2. Shatter Protection in Tandem Contact', cn: '第3.2条 贴身追逐碰撞防碎片飞溅要求' },
+                rule: {
+                    ru: 'Стеклянные фары должны быть оклеены прозрачной защитной пленкой для предотвращения осыпания осколков на трассу при контактах. Боковые пластиковые окна должны иметь надежное крепление болтами/заклепками.',
+                    en: 'Glass headlights must be covered with clear protective film to prevent track contamination during tandem collisions. Plastic windows securely fastened.',
+                    cn: '所有玻璃灯具必须贴透明防爆膜以防碰撞碎裂掉落赛道。聚碳酸酯侧窗必须采用铆钉或螺栓牢固固定。'
+                },
+                action: { ru: 'Устранение: Оклеить стеклянные элементы бронепленкой.', en: 'Resolution: Apply transparent protective film on headlights.', cn: '整改要求：在大灯表面加贴透明防爆保护膜。' }
+            },
+            {
+                id: 'belts',
+                title: { ru: '5. Ремни безопасности', en: '5. Safety Harness (FIA 8853-2016)', cn: '5. 赛车多点式安全带' },
+                desc: { ru: '5/6-точечные, омологация FIA 8853-2016, угол 0-20°, HANS', en: '5/6-point, FIA 8853-2016 standard, 0-20° shoulder angle, FHR/HANS', cn: 'FIA 8853-2016认证，5/6点式，防伪有效，0-20°肩带角度' },
+                article: { ru: 'Статья 6. Ремни безопасности пилота', en: 'Article 6. Driver Safety Harness Standards', cn: '第6条 车手赛用安全带规定' },
+                rule: {
+                    ru: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8853-2016. Точки крепления плечевых лямок к перемычке каркаса должны обеспечивать угол наклона 0°–20° назад-вниз. Лямки не должны иметь потертостей и повреждений.',
+                    en: 'Mandatory 5- or 6-point harness with valid FIA 8853-2016 homologation. Shoulder strap angles between 0° and 20° downward onto roll cage harness crossbar. Straps free of fraying or UV damage.',
+                    cn: '必须配备符合FIA 8853-2016标准的5点或6点式安全带。防伪标签清晰且在有效期内。肩带固定在防滚架横梁上且向后倾斜0°至20°。'
+                },
+                action: { ru: 'Устранение: Заменить просроченные ремни, выставить правильный угол на поперечине каркаса.', en: 'Resolution: Replace expired harness, adjust shoulder angle on harness bar.', cn: '整改要求：更换过期安全带，调整肩带固定角度。' }
+            },
+            {
+                id: 'seat',
+                title: { ru: '6. Спортивное сидение (Ковш)', en: '6. Racing Bucket Seat', cn: '6. 赛车桶椅与刚性底座' },
+                desc: { ru: 'FIA 8855-1999/2021, кронштейны сталь ≥3мм / алюм ≥5мм, шайбы ≥40см²', en: 'FIA 8855-1999/2021, steel ≥3mm / alum ≥5mm brackets, counterplates ≥40cm²', cn: 'FIA 8855-1999/2021认证，钢架≥3mm/铝架≥5mm，底板垫片≥40cm²' },
+                article: { ru: 'Статья 5. Сидения и точки крепления', en: 'Article 5. Seats & Anchorage Reinforcements', cn: '第5条 赛车座椅安装与底板加固' },
+                rule: {
+                    ru: 'Анатомический ковш с омологацией FIA 8855-1999 или FIA 8855-2021. Крепление на стальные (толщиной ≥3 мм) или алюминиевые (≥5 мм) кронштейны болтами 8.8 M8 с усилительными шайбами кузова площадью ≥40 см². Люфт сидения запрещен.',
+                    en: 'Bucket seat homologated under FIA 8855-1999 or 8855-2021. Mounted using steel (min 3mm) or aluminum (min 5mm) brackets, grade 8.8 M8 bolts, and underbody counter-plates of min 40 cm². Zero play.',
+                    cn: '必须使用具备FIA 8855-1999或8855-2021认证的桶椅。支架使用≥3mm钢制或≥5mm铝合金专用户板，底板采用8.8级M8螺栓及≥40cm²底板加强垫片固定。'
+                },
+                action: { ru: 'Устранение: Протянуть болты 8.8, ликвидировать люфт, установить шайбы.', en: 'Resolution: Torque 8.8 bolts, eliminate play, add chassis counterplates.', cn: '整改要求：紧固8.8级螺栓，消除旷量，焊接车底加强垫片。' }
+            },
+            {
+                id: 'wiring',
+                title: { ru: '7. Магистрали и проводка в салоне', en: '7. Cabin Lines & Wiring', cn: '7. 驾驶舱管路与线束保护' },
+                desc: { ru: 'Маслобензостойкие рукава (150°C/3bar), защита жгутов, изоляция', en: 'Aviation braided fluid lines (150°C/3bar), protected wiring harness', cn: '耐油耐温阻燃航空管路（150°C/3bar），线束绝缘防护' },
+                article: { ru: 'Статья 13. Топливные, масляные магистрали и электропроводка', en: 'Article 13. Fluid Lines & Electrical Harnessing', cn: '第13条 燃油管、机油管及车身电气线束' },
+                rule: {
+                    ru: 'Все шланги подачи топлива и масла, проходящие через салон, должны быть в металлической оплетке или сертифицированных пожаробезопасных рукавах (рабочая температура до 150°C, давление не менее 3 bar). Проводка уложена в гофры.',
+                    en: 'All fuel/oil lines inside passenger cabin must feature stainless braided sleeves or certified fire-resistant hose (150°C, 3bar min). Wiring encased in protective conduits.',
+                    cn: '所有穿过驾驶舱的燃油及润滑油管路必须为不锈钢编织管或阻燃航空管（耐温≥150°C，耐压≥3bar）。全车线束必须包覆阻燃套管。'
+                },
+                action: { ru: 'Устранение: Закрыть открытые шланги термозащитой, закрепить проводку в жгуты.', en: 'Resolution: Install braided heat shielding, clamp loose wiring harness.', cn: '整改要求：加装金属编织隔热保护套，扎紧固定松散线束。' }
+            },
+            {
+                id: 'extinguisher',
+                title: { ru: '8. СПТ / Выключатель массы', en: '8. Fire Extinguisher & Master Switch', cn: '8. 车载灭火系统与总断电开关' },
+                desc: { ru: 'FIA 8865-2015, манометр в норме, форсунки мотор/салон, наклейки E и ⚡', en: 'FIA 8865-2015, pressure OK, engine/cabin nozzles, external E and ⚡', cn: 'FIA 8865-2015认证，压力表绿区，喷头机舱/驾驶舱，内外E和⚡开关' },
+                article: { ru: 'Статья 9. Система пожаротушения и электровыключатель', en: 'Article 9. Fire Suppression & Circuit Breaker', cn: '第9条 车载灭火与应急切断电路规范' },
+                rule: {
+                    ru: 'Действующая омологированная система пожаротушения FIA 8865-2015 или Technical List 16. Манометр в зеленой зоне. Внешний тросик 'E' и внешний прерыватель цепи '⚡' должны быть легкодоступны снаружи и четко обозначены наклейками.',
+                    en: 'Homologated system complying with FIA 8865-2015 or Technical List 16. Pressure in green zone. External pull cable 'E' and master cut-off '⚡' must be easily accessible and clearly marked.',
+                    cn: '必须配备符合FIA 8865-2015标准的车载灭火系统。压力在绿色工作区。车外拉索“E”及总断电开关“⚡”必须触手可及并清晰张贴标识。'
+                },
+                action: { ru: 'Устранение: Проверить давление в баллоне, наклеить знаки 'E' и '⚡' у наружных ручек.', en: 'Resolution: Verify extinguisher pressure, apply 'E' and '⚡' decals near cowl pulls.', cn: '整改要求：核实灭火气瓶压力，在车外控制柄旁张贴标准E和闪电标识。' }
+            },
+            {
+                id: 'cage',
+                title: { ru: '9. Каркас безопасности (6 цифр)', en: '9. Roll Cage (6-digit ID)', cn: '9. 防滚架安全标准（6位钢印）' },
+                desc: { ru: 'FIA ст. 253, 6-значный номер/стикер, трубы 45x2.5/50x2.0, кресты, набивка FIA 8857-2001', en: 'FIA Art. 253, 6-digit serial plate/sticker, 45x2.5/50x2.0mm CDS, X-bars, padding', cn: 'FIA附录J第253条，6位防滚架钢印编号/贴纸，45x2.5/50x2.0mm，防撞梁，阻燃棉' },
+                article: { ru: 'Статья 8. Конструкция каркаса безопасности (КиТТ / FIA ст. 253)', en: 'Article 8. Roll Cage Specifications (FIA App. J Art. 253)', cn: '第8条 赛车安全防滚架（FIA附录J第253条）' },
+                rule: {
+                    ru: 'Сертифицированный каркас (вварной или болтовой). Наличие заводской таблички со строго 6-значным серийным номером и стикера инспекции. Диаметр главной дуги не менее 45x2.5 мм или 50x2.0 мм. Боковые кресты в дверях с обеих сторон. Негорючая набивка FIA 8857-2001 в зоне контакта головы пилота.',
+                    en: 'Certified safety roll cage. Identification plate with strict 6-digit number and inspection sticker required. Main hoop min 45x2.5mm or 50x2.0mm CDS tubing. Door protection X-bars on both sides. Flameproof FIA 8857-2001 padding in head strike areas.',
+                    cn: '必须配备认证赛车防滚架。具备防滚架制造铭牌6位数字编号及有效年检贴纸。主防滚架无缝冷拔钢管规格不得低于45x2.5mm或50x2.0mm。两侧车门防撞梁，头部包覆FIA 8857-2001阻燃缓冲防撞棉。'
+                },
+                action: { ru: 'Устранение: Внести 6-значный номер в протокол, установить набивку FIA 8857-2001, ликвидировать дефекты сварки.', en: 'Resolution: Enter 6-digit ID into log, install FIA 8857-2001 padding, correct weld joints.', cn: '整改要求：录入6位钢印号，加装FIA 8857-2001阻燃缓冲垫，消除焊缝隐患。' }
+            },
+            {
+                id: 'dash',
+                title: { ru: '10. Приборная панель и тумблеры', en: '10. Dashboard & Controls', cn: '10. 仪表台与开关功能标识' },
+                desc: { ru: 'Маркировка всех тумблеров и предохранителей, отсутствие острых кромок', en: 'Clear labelling of switches/breakers, no dangerous sharp edges', cn: '所有功能开关与保险丝清晰标识，驾驶舱无锋利金属边缘' },
+                article: { ru: 'Статья 16. Органы управления в салоне', en: 'Article 16. Cockpit Controls & Dashboard Ergonomics', cn: '第16条 驾驶舱操控面板安全规范' },
+                rule: {
+                    ru: 'Все органы управления (зажигание, стартер, фары, вентиляторы, СПТ, насосы) должны иметь читаемую маркировку на панели. Торпедо и щитки не должны иметь открытых острых кромок, способных травмировать пилота.',
+                    en: 'All cockpit switches (ignition, starter, fan, fuel pump, lights) must be clearly labelled. No hazardous exposed sheet metal sharp edges.',
+                    cn: '所有操控开关（点火、启动、大灯、电子扇、油泵等）必须有清晰英文字母/图标标识。面板边缘必须倒角，严禁有割手锋利毛刺。'
+                },
+                action: { ru: 'Устранение: Нанести маркировочные наклейки на панель тумблеров, закрыть острые кромки уплотнителем.', en: 'Resolution: Apply labels on switch panel, edge-trim sharp metal corners.', cn: '整改要求：补齐各功能开关英文标签，包覆锋利钣金毛边。' }
+            },
+            {
+                id: 'steering',
+                title: { ru: '11. Блокиратор руля / Быстросъем', en: '11. Steering Lock & Quick Release', cn: '11. 方向盘转向锁与快拆机构' },
+                desc: { ru: 'Замок зажигания демонтирован, люфт отсутствует, быстросъем исправен', en: 'Ignition steering lock removed, zero play, reliable quick-release', cn: '原厂机械方向盘转向锁已彻底拆除，快拆机构无松垮旷量' },
+                article: { ru: 'Статья 17. Рулевое управление и быстросъемные муфты', en: 'Article 17. Steering Column & Quick-Release Couplings', cn: '第17条 转向柱锁死解除与快拆机构' },
+                rule: {
+                    ru: 'Штатный замок блокировки рулевого вала должен быть полностью физически удален. Быстросъем рулевого колеса должен надежно фиксироваться с характерным щелчком, люфт в шлицах запрещен.',
+                    en: 'OEM mechanical steering column anti-theft lock mechanism must be completely removed. Quick-release coupling must lock positively with zero axial/rotational play.',
+                    cn: '原厂转向柱机械防盗锁死机构必须彻底拆除。赛用方向盘快拆器必须卡合清脆锁止可靠，严禁晃动旷量。'
+                },
+                action: { ru: 'Устранение: Демонтировать язычок замка зажигания, устранить люфт быстросъема.', en: 'Resolution: Physically remove ignition locking pin, service quick-release hub.', cn: '整改要求：拆解并彻底摘除原厂锁芯卡舌，消除快拆轴承旷量。' }
+            },
+            {
+                id: 'firewall',
+                title: { ru: '12. Моторный щит / Фаервол', en: '12. Engine & Trunk Bulkhead Firewall', cn: '12. 防火墙与燃油系统隔离仓' },
+                desc: { ru: '100% герметичная изоляция салона от мотора и багажника, огнестойкие уплотнители', en: '100% liquid/fire-tight isolation from engine and rear fuel cell', cn: '驾驶舱与机舱及后备箱燃油系统100%完全金属密封隔离' },
+                article: { ru: 'Статья 4. Противопожарные перегородки кузова', en: 'Article 4. Liquid & Flame Firewalls', cn: '第4条 车体防火防烟密封舱壁标准' },
+                rule: {
+                    ru: 'Салон автомобиля должен быть герметично изолирован от моторного отсека и зоны размещения топливного бака (багажника) сплошными металлическими перегородками. Отверстия под проводку и рулевой вал закрыты негорючими гермоуплотнителями.',
+                    en: 'Driver compartment must be fully fire- and fluid-sealed from engine bay and fuel cell luggage compartment using metal bulkheads. Grommets on all harness holes.',
+                    cn: '驾驶舱与机舱以及后备箱燃油防爆箱之间必须具备100%密封隔离的金属防火墙。线束管路穿孔必须采用阻燃耐高温密封塞。'
+                },
+                action: { ru: 'Устранение: Заделать технологические отверстия в моторном щите термостойким герметиком/металлом.', en: 'Resolution: Seal all bulkhead holes with metal plates/fireproof sealant.', cn: '整改要求：使用金属盖板及阻燃密封胶封堵防火墙穿孔。' }
+            },
+            {
+                id: 'battery',
+                title: { ru: '13. Аккумуляторная батарея', en: '13. Battery Enclosure & Mounts', cn: '13. 蓄电池绝缘防护与牢固安装' },
+                desc: { ru: 'Герметичный вентилируемый короб в салоне, шпильки М8, изоляция плюса', en: 'Sealed vented box if in cabin, rigid M8 studs, positive boot', cn: '舱内配密封通风电瓶箱，M8双头螺栓锁紧，正极端子绝缘防护' },
+                article: { ru: 'Статья 10. Аккумуляторная батарея', en: 'Article 10. Battery Safety Requirements', cn: '第10条 蓄电池安全箱与固定规范' },
+                rule: {
+                    ru: 'При размещении в салоне — сухой/гелевый АКБ в герметичном пластиковом или алюминиевом коробе с трубкой вентиляции наружу. Механическое крепление шпильками М8 и верхней планкой. Защита плюсовой клеммы диэлектрической крышкой.',
+                    en: 'If in cabin, sealed dry-cell/gel battery in sealed box vented externally. Rigid mechanical mounting with M8 threaded rods and top bar. Insulating cover on positive terminal.',
+                    cn: '舱内电池必须为密封干式/胶体电池，置于带排气导管至车外的绝缘密封箱内。使用M8螺栓与刚性压条锁死。正极端子必须配防短路绝缘护套。'
+                },
+                action: { ru: 'Устранение: Закрыть короб АКБ, закрепить шпильками М8, изолировать плюсовую клемму.', en: 'Resolution: Fasten battery box with M8 rods, secure lid, cover positive terminal.', cn: '整改要求：盖严电池绝缘箱，加装M8固定杆，包裹正极端子。' }
+            },
+            {
+                id: 'catchcan',
+                title: { ru: '14. Маслоуловитель (Catch Can)', en: '14. Oil Catch Tank & Breather', cn: '14. 机油透气壶与排气回收' },
+                desc: { ru: 'Объем ≥0.5 л (до 2.0л) / ≥1.0 л (>2.0л), уровень жидкости, закрытый сапун', en: 'Min capacity 0.5L / 1.0L, fluid sight level, no venting onto track', cn: '容积≥0.5L/1.0L，带液位管，严禁向外喷射废机油' },
+                article: { ru: 'Статья 11. Система вентиляции картера двигателя', en: 'Article 11. Crankcase Oil Catch Tank System', cn: '第11条 曲轴箱强制通风透气壶要求' },
+                rule: {
+                    ru: 'Емкость маслоуловителя не менее 0.5 л (моторы до 2000 куб.см) или не менее 1.0 л (свыше 2000 куб.см). Оснащен прозрачной трубкой уровня жидкости. Сапун не должен выбрасывать масляный туман в подкапотное пространство или на трассу.',
+                    en: 'Minimum catch tank volume 0.5L (<2000cc) or 1.0L (>2000cc). Equipped with sight glass/tube. Breather filter must not vent oil residue onto track surface or headers.',
+                    cn: '透气壶容积2.0L以下发动机不少于0.5L，2.0L以上不少于1.0L。必须有液位观察管。呼吸口严禁向机舱或赛道抛洒油雾。'
+                },
+                action: { ru: 'Устранение: Установить маслоуловитель регламентного объема, вывести сапун в фильтр-ловушку.', en: 'Resolution: Install compliant volume catch tank with closed filter.', cn: '整改要求：加装符合容积标准的透气壶并规范排气过滤。' }
+            },
+            {
+                id: 'tow',
+                title: { ru: '15. Буксировочные петли / ленты', en: '15. Front & Rear Tow Hooks', cn: '15. 前后高强度拖车钩与拖车带' },
+                desc: { ru: 'Спереди и сзади к лонжеронам, диаметр ≥50 мм, яркий цвет, стрелка', en: 'Front and rear to chassis, min 50mm opening, high-vis color with arrow', cn: '前后固定于纵梁，内径≥50mm，荧光高亮色加贴指示箭头' },
+                article: { ru: 'Статья 12. Буксировочные проушины (КиТТ)', en: 'Article 12. Towing Eyes & Recovery Straps', cn: '第12条 前后拖车牵引装置技术标准' },
+                rule: {
+                    ru: 'Спереди и сзади должны быть установлены прочные стальные петли (внутренний диаметр не менее 50 мм) или омологированные текстильные буксировочные ленты, закрепленные болтами напрямую к лонжеронам. Окрашены в яркий цвет с контрастной стрелкой.',
+                    en: 'Front and rear towing eyes (min 50mm inside diameter) or certified textile tow straps bolted directly to chassis rails. Painted high-vis yellow/red with directional arrow.',
+                    cn: '前后必须各配备至少一个直接固定在车架纵梁上的高强度金属拖车钩或FIA标准高拉力织带（内径≥50mm），喷涂荧光高亮色并贴指示箭头。'
+                },
+                action: { ru: 'Устранение: Установить буксировочную петлю спереди/сзади, нанести контрастную стрелку.', en: 'Resolution: Bolt front/rear tow hook directly to frame rail, add arrow decal.', cn: '整改要求：在前后防撞梁纵梁上安装拖车带并张贴反光箭头。' }
+            },
+            {
+                id: 'wheels',
+                title: { ru: '16. Крепление колес и шпильки', en: '16. Wheel Lug Studs & Nuts', cn: '16. 轮毂螺栓与法兰紧固度' },
+                desc: { ru: 'Шпильки выступают не менее диаметра резьбы, полный комплект гаек', en: 'Wheel studs engage full thread depth, all lug nuts torqued', cn: '加长高强度轮毂螺栓，螺母全螺纹咬合，严禁缺螺母' },
+                article: { ru: 'Статья 18. Колеса и колесные ступичные шпильки', en: 'Article 18. Wheel Mounting & Lug Fasteners', cn: '第18条 轮圈装配与轮毂螺栓螺母' },
+                rule: {
+                    ru: 'Колесные шпильки должны иметь длину, достаточную для полного захода резьбы на толщину гайки (не менее диаметра шпильки). Запрещено отсутствие хотя бы одной колесной гайки. Запрещены глубокие трещины на дисках.',
+                    en: 'Wheel studs must protrude past open lug nut face by at least 1x stud thread diameter. No missing lug nuts permitted. Rims free of structural stress cracks.',
+                    cn: '轮毂加长螺栓在螺母完全拧紧后必须凸出至少1个螺距。严禁缺损任何一颗轮毂螺母。轮圈严禁有裂痕或变形。'
+                },
+                action: { ru: 'Устранение: Установить недостающие колесные гайки, заменить короткие шпильки на длинные.', en: 'Resolution: Install missing lug nuts, replace short studs with extended studs.', cn: '整改要求：补齐轮毂螺母，更换全螺纹加长高强度螺栓。' }
+            },
+            {
+                id: 'doors',
+                title: { ru: '17. Дверные карты и ручки', en: '17. Door Panels & Latches', cn: '17. 车门内饰板与应急拉绳' },
+                desc: { ru: 'Сплошные негорючие карты, внутреннее аварийное открытие выделено цветом', en: 'Solid fireproof door cards, inner emergency release colored', cn: '阻燃密封车门板，车内应急开启把手/拉绳高反差荧光标识' },
+                article: { ru: 'Статья 19. Двери и замки салона', en: 'Article 19. Doors, Latches & Emergency Egress', cn: '第19条 车门开合与逃生把手规范' },
+                rule: {
+                    ru: 'Передние двери должны быть обшиты сплошными негорючими картами (алюминий толщиной от 1 мм или карбон). Внутренний механизм аварийного открывания двери должен быть исправен и обозначен ярким флуоресцентным цветом.',
+                    en: 'Front doors must feature solid fireproof inner door cards (min 1mm aluminum or carbon sheet). Emergency interior door release strap clearly colored in bright fluorescent tint.',
+                    cn: '前车门内侧必须封闭安装阻燃金属板（厚度≥1mm铝板或碳纤维板）。车内应急车门开启拉手必须工作正常且有荧光醒目标记。'
+                },
+                action: { ru: 'Устранение: Закрыть внутреннюю полость двери картой, выделить аварийный трос открытия.', en: 'Resolution: Install aluminum door cards, color emergency egress pulls.', cn: '整改要求：装配阻燃车门内衬板，用荧光色标示应急开门把手。' }
+            },
+            {
+                id: 'hood_pins',
+                title: { ru: '18. Замки капота и багажника', en: '18. Hood & Trunk Safety Pins', cn: '18. 赛用快拆机盖锁' },
+                desc: { ru: 'Спортивные наружные замки (не менее 2 шт. на элемент), фиксаторы', en: 'Safety pins (min 2 per panel) with secondary clip retainers', cn: '赛用快拆机盖锁（每盖板至少2处）带安全防脱扣' },
+                article: { ru: 'Статья 20. Фиксаторы капота и крышки багажника', en: 'Article 20. Panel Safety Latches & Retaining Pins', cn: '第20条 前后机盖外置机械锁止' },
+                rule: {
+                    ru: 'Капот и крышка багажника должны быть надежно зафиксированы наружными спортивными замками (типа Aerocatch или шпилечными с булавками) — не менее 2 замков на капот и 2 на багажник. Штатные замки капота должны быть разблокированы.',
+                    en: 'Hood and trunk lids must be securely retained by at least 2 external motorsport pins (Aerocatch or spring clip style) per panel. OEM hood release cable bypassed.',
+                    cn: '引擎盖及后备箱盖必须各配备至少2个外部机械防脱锁扣（Aerocatch或插销式带防脱簧扣）。原厂拉线式机盖锁应予解除。'
+                },
+                action: { ru: 'Устранение: Установить внешние замки капота со шплинтами.', en: 'Resolution: Install secondary motorsport hood safety latch pins.', cn: '整改要求：在前机盖及后备箱盖各加装2套外置快拆插销锁。' }
+            },
+            {
+                id: 'gloves',
+                title: { ru: '19. Перчатки пилота', en: '19. Racing Gloves (FIA 8856)', cn: '19. 车手赛用阻燃手套' },
+                desc: { ru: 'Омологация FIA 8856-2000 или FIA 8856-2018, отсутствие разрывов', en: 'Homologated FIA 8856-2000 / 8856-2018, undamaged', cn: '具备FIA 8856-2000或8856-2018认证标，无破损' },
+                article: { ru: 'Статья 15 КиТТ. Экипировка пилота — Перчатки', en: 'Article 15 FIA App. L. Driver Apparel — Gloves', cn: '第15条 FIA附录L 车手安全装备：赛车手套' },
+                rule: {
+                    ru: 'Перчатки пилота должны иметь действующую вышитую маркировку стандарта FIA 8856-2000 или FIA 8856-2018. Запрещены перчатки с дырами, протертостями на ладонях или следами горючих жидкостей.',
+                    en: 'Driver gloves must carry legible FIA 8856-2000 or FIA 8856-2018 embroidered certification labels. No holes, palm tears or flammable grease soiling allowed.',
+                    cn: '车手手套必须具备FIA 8856-2000或8856-2018刺绣标签。严禁使用有破洞、手掌磨损穿孔或浸染油脂的手套。'
+                },
+                action: { ru: 'Устранение: Предоставить на ТИ сертифицированные перчатки с читаемой омологацией FIA.', en: 'Resolution: Present undamaged FIA-homologated gloves to scrutineering.', cn: '整改要求：更换具备有效FIA防伪刺绣的赛用阻燃手套。' }
+            },
+            {
+                id: 'balaclava',
+                title: { ru: '20. Подшлемник пилота', en: '20. Flameproof Balaclava', cn: '20. 阻燃安全头套' },
+                desc: { ru: 'Омологация FIA 8856-2000 или FIA 8856-2018, 100% Nomex', en: 'FIA 8856-2000 / 8856-2018, 100% flameproof Nomex', cn: 'FIA 8856-2000或8856-2018认证，全阻燃诺梅克斯面料' },
+                article: { ru: 'Статья 15 КиТТ. Экипировка пилота — Подшлемник', en: 'Article 15 FIA App. L. Driver Apparel — Balaclava', cn: '第15条 FIA附录L 车手安全装备：防火头套' },
+                rule: {
+                    ru: 'Подшлемник должен быть изготовлен из негорючего материала (Nomex) и иметь сертификационный лейбл FIA 8856-2000 или FIA 8856-2018. Запрещены синтетические балаклавы без омологации.',
+                    en: 'Balaclava must be constructed of 100% Nomex and display valid FIA 8856-2000 or 8856-2018 homologation. Non-fireproof synthetic balaclavas strictly prohibited.',
+                    cn: '头套必须为100%诺梅克斯阻燃面料并缝有FIA 8856-2000或8856-2018认证标。严禁佩戴非阻燃头套。'
+                },
+                action: { ru: 'Устранение: Использовать подшлемник с омологацией FIA.', en: 'Resolution: Wear homologated FIA Nomex balaclava.', cn: '整改要求：佩戴具备有效FIA认证刺绣的诺梅克斯阻燃头套。' }
+            },
+            {
+                id: 'helmet',
+                title: { ru: '21. Шлем пилота и HANS', en: '21. Helmet & FHR/HANS Posts', cn: '21. 赛车头盔与HANS安全栓' },
+                desc: { ru: 'FIA 8859-2015 / 8860-2018 / Snell SA2015/2020 + M6 клипсы HANS', en: 'FIA 8859-2015 / 8860-2018 or Snell SA2015/2020 + M6 HANS posts', cn: 'FIA 8859-2015、FIA 8860-2018或Snell SA2015/2020认证标，带M6 HANS扣' },
+                article: { ru: 'Статья 15 КиТТ. Защитный шлем и устройство FHR', en: 'Article 15 FIA App. L. Helmets & Head Restraints (FHR)', cn: '第15条 FIA附录L 赛车头盔与头颈保护系统（HANS）' },
+                rule: {
+                    ru: 'Шлем со стандартами FIA 8859-2015, FIA 8860-2018 или Snell SA2015/SA2020. Наличие оригинальных клипс M6 под систему HANS. Исправная застежка, отсутствие глубоких сколов скорлупы.',
+                    en: 'Helmet certified to FIA 8859-2015, FIA 8860-2018 or Snell SA2015/SA2020 equipped with factory FIA 8858-2010 M6 HANS anchors. Functional strap buckle, no outer shell fractures.',
+                    cn: '头盔必须符合FIA 8859-2015、FIA 8860-2018或Snell SA2015/SA2020标准，原厂配备M6 HANS固定栓。下颌带卡扣完好，盔体无结构裂损。'
+                },
+                action: { ru: 'Устранение: Установить клипсы M6 HANS или заменить шлем на сертифицированный.', en: 'Resolution: Install M6 HANS anchor posts or replace helmet with compliant model.', cn: '整改要求：加装原厂M6 HANS安全栓或更换认证头盔。' }
+            },
+            {
+                id: 'suit',
+                title: { ru: '22. Комбинезон пилота', en: '22. Racing Overall Suit', cn: '22. 赛车阻燃连体服' },
+                desc: { ru: 'Омологация FIA 8856-2000 или FIA 8856-2018, вышитая голограмма', en: 'FIA 8856-2000 or FIA 8856-2018, embroidered certification label', cn: '具备FIA 8856-2000或8856-2018刺绣标签' },
+                article: { ru: 'Статья 15 КиТТ. Комбинезон пилота', en: 'Article 15 FIA App. L. Driver Protective Overalls', cn: '第15条 FIA附录L 车手阻燃赛车服规范' },
+                rule: {
+                    ru: 'Многослойный негорючий комбинезон со стандартом FIA 8856-2000 или FIA 8856-2018 (вышитый логотип на воротнике сзади). Отсутствие сквозных дыр, следов ГСМ и несертифицированных нашивок.',
+                    en: 'Multi-layer fire-retardant suit compliant with FIA 8856-2000 or FIA 8856-2018 (embroidered on back of collar). No through-burns, structural tears or flammable patches.',
+                    cn: '必须穿着具备FIA 8856-2000或8856-2018后领刺绣认证的阻燃连体赛车服。表面严禁有破洞、大面积油污或非阻燃广告布贴。'
+                },
+                action: { ru: 'Устранение: Предоставить на ТИ сертифицированный комбинезон без повреждений.', en: 'Resolution: Present clean, certified FIA overalls to scrutineering.', cn: '整改要求：穿着具备有效FIA刺绣认证的合格赛车服受检。' }
+            }
+        ];
+
+        const LOCALES = {
+            ru: {
+                subtitle: "China Championship • Scrutineering v1.1",
+                tabScrutineer: "📋 Входной контроль ТИ",
+                tabSteward: "💻 Кабинет Комиссара",
+                eventInfo: "Этап Royal Drift Series (Stage)",
+                stageSelect: "Выберите этап чемпионата / 比赛分站:",
+                formTitle: "📋 Прохождение ТИ (Входной контроль)",
+                carModel: "Марка / модель автомобиля (RU, EN, транслит: Supra, Чайзер, S15...):",
+                driver: "Пилот (Фамилия Имя / Driver):",
+                raceNumber: "Стартовый № (СТ№ / Car #):",
+                cageNumber: "№ Каркаса (ровно 6 цифр / 6 digits):",
+                carColor: "Цвет авто / Color:",
+                pitBox: "№ Бокса (Pit Box):",
+                selectedGroups: "Группа (Class):",
+                remarks: "Замечания ТИ (Remarks):",
+                dailyLogTitle: "📊 Список участников ТИ",
+                stewardTitle: "Кабинет Главного Комиссара / Управление замечаниями",
+                clickDefectNotice: "Нажмите на замечание, чтобы показать официальный пункт регламента участнику:",
+                filterAll: "Все авто",
+                filterRemarks: "⚠️ С замечаниями",
+                filterOk: "✅ Без замечаний"
+            },
+            en: {
+                subtitle: "China Championship • Scrutineering v1.1",
+                tabScrutineer: "📋 Scrutineer Entry",
+                tabSteward: "💻 Steward Dashboard",
+                eventInfo: "Royal Drift Series Stage Selection",
+                stageSelect: "Select Championship Stage / 比赛分站:",
+                formTitle: "📋 Technical Scrutineering",
+                carModel: "Car Make / Model (RU, EN, translit: Supra, Chaser, S15...):",
+                driver: "Driver Name (Surname First):",
+                raceNumber: "Race Number (Car #):",
+                cageNumber: "Roll Cage Serial (strict 6 digits):",
+                carColor: "Vehicle Color:",
+                pitBox: "Pit Garage (Pit Box #):",
+                selectedGroups: "Competition Class:",
+                remarks: "Scrutineer Remarks:",
+                dailyLogTitle: "📊 Scrutineering Protocol",
+                stewardTitle: "Chief Steward Dashboard / Technical Infringements",
+                clickDefectNotice: "Click on an infringement below to display the official regulation clause to the driver/team:",
+                filterAll: "All Cars",
+                filterRemarks: "⚠️ With Remarks",
+                filterOk: "✅ Approved"
+            },
+            cn: {
+                subtitle: "中国汽车飘移系列赛 • 车检系统 v1.1",
+                tabScrutineer: "📋 车检登记录入",
+                tabSteward: "💻 仲裁与车检主管视图",
+                eventInfo: "RDS 分站选择设置",
+                stageSelect: "选择比赛分站 / Stage:",
+                formTitle: "📋 赛车技术检验",
+                carModel: "赛车车型 / 品牌 (中/英/俄: Supra, Chaser, S15...):",
+                driver: "车手姓名 (Driver):",
+                raceNumber: "赛车编号 (车号):",
+                cageNumber: "防滚架钢印号 (必须严格6位数字):",
+                carColor: "车身颜色:",
+                pitBox: "维修区 P房编号:",
+                selectedGroups: "参赛组别:",
+                remarks: "车检整改意见:",
+                dailyLogTitle: "📊 车检合格名单",
+                stewardTitle: "技术主管仲裁台 / 技术规则宣贯",
+                clickDefectNotice: "点击下方整改项目，向车手/车队展示官方技术规则对应条款及整改要求：",
+                filterAll: "全部车辆",
+                filterRemarks: "⚠️ 待整改项",
+                filterOk: "✅ 合格放行"
+            }
+        };
+
+        let currentLang = 'ru';
+        let dailyLog = [];
+        let yesterdayLog = [];
+        let selectedFormGroups = ['PRO'];
+        let gasScriptUrl = EMBEDDED_GAS_URL;
+        let checklistState = {};
+        let editingIndex = null;
+        let isProcessingQueue = false;
+        let stewardActiveFilter = 'all';
+        let stewardSelectedEntry = null;
+
+        function setAppLanguage(lang) {
+            currentLang = lang;
+            ['ru', 'en', 'cn'].forEach(l => {
+                document.getElementById(`btn_lang_${l}`).classList.toggle('active', l === lang);
+            });
+
+            const loc = LOCALES[lang];
+            document.getElementById('headerSubtitle').textContent = loc.subtitle;
+            document.getElementById('tabScrutineerLabel').textContent = loc.tabScrutineer;
+            document.getElementById('tabStewardLabel').textContent = loc.tabSteward;
+            document.getElementById('lblEventInfo').textContent = loc.eventInfo;
+            document.getElementById('lblStageSelect').textContent = loc.stageSelect;
+            document.getElementById('lblFormTitle').textContent = loc.formTitle;
+            document.getElementById('lblCarModel').textContent = loc.carModel;
+            document.getElementById('lblDriver').textContent = loc.driver;
+            document.getElementById('lblRaceNumber').textContent = loc.raceNumber;
+            document.getElementById('lblCageNumber').textContent = loc.cageNumber;
+            document.getElementById('lblCarColor').textContent = loc.carColor;
+            document.getElementById('lblPitBox').textContent = loc.pitBox;
+            document.getElementById('lblSelectedGroups').textContent = loc.selectedGroups;
+            document.getElementById('lblRemarks').textContent = loc.remarks;
+            document.getElementById('lblDailyLogTitle').textContent = loc.dailyLogTitle;
+            document.getElementById('lblStewardTitle').textContent = loc.stewardTitle;
+            document.getElementById('lblClickDefectNotice').textContent = loc.clickDefectNotice;
+
+            initChecklist();
+            renderLogTable();
+            renderStewardList();
+            if (stewardSelectedEntry) {
+                renderStewardDetail(stewardSelectedEntry);
+            }
+        }
+
+        function switchMainView(view) {
+            document.getElementById('tabScrutineer').classList.toggle('active', view === 'scrutineer');
+            document.getElementById('tabSteward').classList.toggle('active', view === 'steward');
+            document.getElementById('viewScrutineer').style.display = (view === 'scrutineer') ? 'block' : 'none';
+            document.getElementById('viewSteward').style.display = (view === 'steward') ? 'block' : 'none';
+
+            if (view === 'steward') {
+                renderStewardList();
+            }
+        }
+
+        function onStageChanged() {
+            const selectEl = document.getElementById('stageSelect');
+            const selectedOpt = selectEl.options[selectEl.selectedIndex];
+            const stageText = selectedOpt.value; // e.g. "Stage 1"
+            const stageMeta = selectedOpt.textContent;
+
+            document.getElementById('stewardStageMeta').textContent = stageMeta;
+            document.getElementById('printHeaderMeta').textContent = `Этап: ${stageMeta}`;
+
+            loadLocalLog();
+            if (navigator.onLine) fetchLogsFromGoogleSheet();
+        }
+
+        function getCurrentStageKey() {
+            return document.getElementById('stageSelect').value || 'Stage 1';
+        }
+
+        function getCurrentStageDate() {
+            const selectEl = document.getElementById('stageSelect');
+            const selectedOpt = selectEl.options[selectEl.selectedIndex];
+            return selectedOpt.getAttribute('data-date') || '2026-06-06';
+        }
+
+        /* --- STEWARD COMMISSIONER DASHBOARD LOGIC --- */
+        function setStewardFilter(filter) {
+            stewardActiveFilter = filter;
+            document.getElementById('filter_all').classList.toggle('active', filter === 'all');
+            document.getElementById('filter_remarks').classList.toggle('active', filter === 'remarks');
+            document.getElementById('filter_ok').classList.toggle('active', filter === 'ok');
+            renderStewardList();
+        }
+
+        function renderStewardList() {
+            const container = document.getElementById('stewardListContainer');
+            const searchVal = (document.getElementById('stewardSearchInput').value || '').trim().toLowerCase();
+
+            let cntAll = dailyLog.length;
+            let cntRemarks = 0;
+            let cntOk = 0;
+
+            dailyLog.forEach(item => {
+                if (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний')) {
+                    cntRemarks++;
+                } else {
+                    cntOk++;
+                }
+            });
+
+            document.getElementById('cntStewardAll').textContent = cntAll;
+            document.getElementById('cntStewardRemarks').textContent = cntRemarks;
+            document.getElementById('cntStewardOk').textContent = cntOk;
+
+            let filtered = dailyLog.filter(item => {
+                const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+                if (stewardActiveFilter === 'remarks' && !hasRemarks) return false;
+                if (stewardActiveFilter === 'ok' && hasRemarks) return false;
+
+                if (searchVal) {
+                    const match = (item.number && item.number.toString().toLowerCase().includes(searchVal)) ||
+                                  (item.car && item.car.toLowerCase().includes(searchVal)) ||
+                                  (item.driver && item.driver.toLowerCase().includes(searchVal)) ||
+                                  (item.cage && item.cage.toLowerCase().includes(searchVal)) ||
+                                  (item.notes && item.notes.toLowerCase().includes(searchVal));
+                    if (!match) return false;
+                }
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub);">Нет записей по заданному фильтру</div>`;
+                return;
+            }
+
+            container.innerHTML = filtered.map(item => {
+                const isSelected = stewardSelectedEntry && stewardSelectedEntry.id === item.id;
+                const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+                const statusColor = item.status === 'fail' ? '#ef4444' : (hasRemarks ? '#f59e0b' : '#22c55e');
+                const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+                return `
+                    <div class="participant-card-item ${isSelected ? 'selected' : ''}" onclick="selectStewardParticipant(${item.id})">
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span style="font-size:16px; font-weight:900; color:var(--gold-bright); background:#222; padding:3px 8px; border-radius:6px;">№${escapeHtml(item.number || 'б/н')}</span>
+                            <div>
+                                <strong style="font-size:14px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
+                                <div style="font-size:11px; color:#9ca3af;">${escapeHtml(item.car)} | Каркас: <span class="cage-code">${escapeHtml(item.cage || '—')}</span></div>
+                            </div>
+                        </div>
+                        <div style="text-align:right;">
+                            <span style="font-size:11px; font-weight:bold; color:${statusColor}; background:${statusColor}18; border:1px solid ${statusColor}; padding:3px 8px; border-radius:6px;">${statusText}</span>
+                            <div style="font-size:10px; color:#9ca3af; margin-top:3px;">${escapeHtml(item.group || 'PRO')}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function selectStewardParticipant(itemId) {
+            const item = dailyLog.find(x => x.id === itemId);
+            if (!item) return;
+            stewardSelectedEntry = item;
+            renderStewardDetail(item);
+            renderStewardList();
+            document.getElementById('stewardInspectorView').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function closeStewardDetail() {
+            stewardSelectedEntry = null;
+            document.getElementById('stewardInspectorView').style.display = 'none';
+            renderStewardList();
+        }
+
+        function renderStewardDetail(item) {
+            const view = document.getElementById('stewardInspectorView');
+            view.style.display = 'block';
+
+            document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
+            document.getElementById('dtlDriver').textContent = item.driver || 'Не указан';
+            document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''} (${item.group || 'PRO'})`;
+            document.getElementById('dtlBox').textContent = item.box || '—';
+            document.getElementById('dtlCage').textContent = item.cage || 'Не внесен';
+
+            const badge = document.getElementById('dtlStatusBadge');
+            const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+            if (item.status === 'fail') {
+                badge.style.background = '#7f1d1d';
+                badge.style.color = '#fca5a5';
+                badge.style.border = '1px solid #ef4444';
+                badge.textContent = '❌ ОТКАЗ В ДОПУСКЕ / REJECTED';
+            } else if (hasRemarks) {
+                badge.style.background = '#78350f';
+                badge.style.color = '#fef08a';
+                badge.style.border = '1px solid #f59e0b';
+                badge.textContent = '⚠️ ВЫЯВЛЕНЫ ЗАМЕЧАНИЯ / DEFECTS';
+            } else {
+                badge.style.background = '#14532d';
+                badge.style.color = '#86efac';
+                badge.style.border = '1px solid #22c55e';
+                badge.textContent = '✅ ТИ ПРОЙДЕН / PASSED';
+            }
+
+            // Defect tags
+            const defectsContainer = document.getElementById('dtlDefectsContainer');
+            defectsContainer.innerHTML = '';
+            document.getElementById('ruleCitationBox').style.display = 'none';
+
+            if (!item.notes || item.notes.toLowerCase() === 'без замечаний') {
+                defectsContainer.innerHTML = `<div style="color:var(--accent-green); font-size:13px; padding:6px 0;">Замечаний нет. Автомобиль полностью соответствует регламенту.</div>`;
+                return;
+            }
+
+            const rawNotes = item.notes.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+            rawNotes.forEach(defect => {
+                let matchedRule = CHECKLIST_22_ITEMS[8]; // default to cage
+                const lower = defect.toLowerCase();
+
+                for (let r of CHECKLIST_22_ITEMS) {
+                    if (lower.includes(r.id) || lower.includes(r.title.ru.toLowerCase()) || lower.includes(r.title.en.toLowerCase())) {
+                        matchedRule = r;
+                        break;
+                    }
+                }
+
+                const badgeEl = document.createElement('div');
+                badgeEl.className = 'defect-badge-clickable';
+                badgeEl.innerHTML = `⚠️ ${escapeHtml(defect)} <span style="font-size:10px; margin-left:6px; opacity:0.8;">[Регламент ↗]</span>`;
+                badgeEl.onclick = () => showRuleCitation(matchedRule, defect);
+                defectsContainer.appendChild(badgeEl);
+            });
+
+            if (rawNotes.length > 0) {
+                defectsContainer.children[0].click();
+            }
+        }
+
+        function showRuleCitation(ruleObj, defectTitle) {
+            const box = document.getElementById('ruleCitationBox');
+            box.style.display = 'block';
+
+            document.getElementById('ruleCitationHeading').textContent = `${ruleObj.article[currentLang]} (${ruleObj.title[currentLang]})`;
+            document.getElementById('ruleCitationText').textContent = ruleObj.rule[currentLang];
+            document.getElementById('ruleActionNeeded').innerHTML = `<strong>⚠️ Предписание комиссара / Action Required:</strong> ${ruleObj.action[currentLang]}`;
+        }
+
+        /* --- AUTOCOMPLETE WITH TRANSLIT AND SEARCH --- */
+        function normalizeString(str) {
+            let s = str.toLowerCase().trim();
+            for (let k in TRANSLIT_MAP) {
+                if (k.length > 2 && s.includes(k)) {
+                    s = s.replace(new RegExp(k, 'g'), TRANSLIT_MAP[k]);
+                }
+            }
+            let res = '';
+            for (let char of s) {
+                res += TRANSLIT_MAP[char] || char;
+            }
+            return res.replace(/[^a-z0-9]/g, '');
+        }
+
+        function setupAutocomplete() {
+            const input = document.getElementById('carInput');
+            const suggestionsEl = document.getElementById('suggestions');
+
+            if (!input || !suggestionsEl) return;
+
+            input.addEventListener('input', () => {
+                const val = input.value;
+                if (!val || val.length < 1) {
+                    suggestionsEl.style.display = 'none';
+                    return;
+                }
+
+                const queryNorm = normalizeString(val);
+                const rawLower = val.toLowerCase();
+
+                const filtered = LIVE_CAR_CATALOG.filter(item => {
+                    const brandNorm = normalizeString(item.brand);
+                    const brandLower = item.brand.toLowerCase();
+                    return brandLower.includes(rawLower) || brandNorm.includes(queryNorm);
+                });
+
+                if (filtered.length === 0) {
+                    suggestionsEl.innerHTML = `<div class="suggestion-item" onclick="selectCar('${escapeForJsString(val)}', 'PRO')">
+                        <div>➕ Добавить в базу "${escapeHtml(val)}"</div>
+                        <span class="group-tag">PRO</span>
+                    </div>`;
+                    suggestionsEl.style.display = 'block';
+                    return;
+                }
+
+                suggestionsEl.innerHTML = filtered.map(item => `
+                    <div class="suggestion-item" onclick="selectCar('${escapeForJsString(item.brand)}', '${escapeForJsString(item.comp_group || 'PRO')}')">
+                        <div><strong>${escapeHtml(item.brand)}</strong></div>
+                        <span class="group-tag">${escapeHtml(item.comp_group || 'PRO')}</span>
+                    </div>
+                `).join('');
+
+                suggestionsEl.style.display = 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !suggestionsEl.contains(e.target)) {
+                    suggestionsEl.style.display = 'none';
+                }
+            });
+        }
+
+        function setupNumberAutocomplete() {
+            const input = document.getElementById('numberInput');
+            const suggestionsEl = document.getElementById('yesterdaySuggestions');
+
+            if (!input || !suggestionsEl) return;
+
+            input.addEventListener('input', () => {
+                const val = input.value.trim();
+                if (!val || val.length < 1 || yesterdayLog.length === 0) {
+                    suggestionsEl.style.display = 'none';
+                    return;
+                }
+
+                const matches = yesterdayLog.filter(item => item.number && item.number.toString().trim() === val);
+                if (matches.length === 0) {
+                    suggestionsEl.style.display = 'none';
+                    return;
+                }
+
+                suggestionsEl.innerHTML = matches.map(item => `
+                    <div class="suggestion-item" onclick="applyYesterdayEntry('${escapeForJsString(item.car)}', '${escapeForJsString(item.driver)}', '${escapeForJsString(item.cage)}', '${escapeForJsString(item.color)}', '${escapeForJsString(item.box)}', '${escapeForJsString(item.group)}', '${escapeForJsString(item.notes)}')">
+                        <div>
+                            <small style="color: var(--gold-bright);">🔄 Предыдущий этап:</small><br>
+                            <strong>№${escapeHtml(item.number)}</strong> | ${escapeHtml(item.driver || 'Без имени')} | ${escapeHtml(item.car)}
+                        </div>
+                        <span class="group-tag">${escapeHtml(item.group || 'PRO')}</span>
+                    </div>
+                `).join('');
+
+                suggestionsEl.style.display = 'block';
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!input.contains(e.target) && !suggestionsEl.contains(e.target)) {
+                    suggestionsEl.style.display = 'none';
+                }
+            });
+        }
+
+        function applyYesterdayEntry(car, driver, cage, color, box, group, notes) {
+            document.getElementById('carInput').value = car;
+            document.getElementById('driverInput').value = driver;
+            document.getElementById('cageInput').value = (cage || '').replace(/\D/g, '').slice(0, 6);
+            document.getElementById('colorInput').value = color;
+            document.getElementById('boxInput').value = box;
+            document.getElementById('notesInput').value = notes;
+
+            if (group) setSelectedGroups([group]);
+            document.getElementById('yesterdaySuggestions').style.display = 'none';
+            saveCurrentDraft();
+        }
+
+        function selectCar(brand, group) {
+            document.getElementById('carInput').value = brand;
+            document.getElementById('suggestions').style.display = 'none';
+            if (group) setSelectedGroups([group]);
+            saveNewCarToSheetCatalog(brand, group);
+            saveCurrentDraft();
+        }
+
+        function saveNewCarToSheetCatalog(brand, group) {
+            if (!brand) return;
+            const exists = LIVE_CAR_CATALOG.some(item => item.brand.trim().toLowerCase() === brand.trim().toLowerCase());
+            const newCarObj = { brand: brand.trim(), track_group: group || "PRO", comp_group: group || "PRO" };
+
+            if (!exists) {
+                LIVE_CAR_CATALOG.push(newCarObj);
+                localStorage.setItem('ti_cached_car_catalog', JSON.stringify(LIVE_CAR_CATALOG));
+                enqueueTask('add_car_to_catalog', newCarObj);
+            }
+        }
+
+        /* --- 22-ITEM CHECKLIST INITIALIZATION --- */
+        function initChecklist() {
+            const container = document.getElementById('checklistItemsContainer');
+            container.innerHTML = '';
+
+            CHECKLIST_22_ITEMS.forEach(it => {
+                if (!checklistState[it.id]) checklistState[it.id] = 'ok';
+                const d = document.createElement('div');
+                d.className = 'checklist-item';
+                d.innerHTML = `
+                    <div class="checklist-item-info">
+                        <div style="font-size:13px; font-weight:bold; color:#fff;">${escapeHtml(it.title[currentLang])}</div>
+                        <div style="font-size:11px; color:#9ca3af;">${escapeHtml(it.desc[currentLang])}</div>
+                    </div>
+                    <div style="display:flex; gap:4px;">
+                        <button type="button" class="chk-btn active-ok" id="btn_ok_${it.id}" onclick="setChecklistItemState('${it.id}','ok')">ОК</button>
+                        <button type="button" class="chk-btn" id="btn_warn_${it.id}" onclick="setChecklistItemState('${it.id}','warn')">Зам.</button>
+                        <button type="button" class="chk-btn" id="btn_fail_${it.id}" onclick="setChecklistItemState('${it.id}','fail')">Отказ</button>
+                    </div>
+                `;
+                container.appendChild(d);
+            });
+        }
+
+        function setChecklistItemState(id, st) {
+            checklistState[id] = st;
+            ['ok', 'warn', 'fail'].forEach(s => {
+                const btn = document.getElementById(`btn_${s}_${id}`);
+                if (btn) btn.className = 'chk-btn' + (st === s ? ` active-${s}` : '');
+            });
+        }
+
+        function setAllChecklistOk() {
+            CHECKLIST_22_ITEMS.forEach(it => setChecklistItemState(it.id, 'ok'));
+        }
+
+        function toggleChecklistPanel() {
+            document.getElementById('checklistPanel').classList.toggle('open');
+        }
+
+        function submitChecklistAndLog() {
+            let remarks = [];
+            let status = 'ok';
+            CHECKLIST_22_ITEMS.forEach(it => {
+                const s = checklistState[it.id];
+                if (s === 'warn') {
+                    remarks.push(it.title[currentLang]);
+                    if (status !== 'fail') status = 'warn';
+                }
+                if (s === 'fail') {
+                    remarks.push('ОТКАЗ: ' + it.title[currentLang]);
+                    status = 'fail';
+                }
+            });
+
+            document.getElementById('notesInput').value = remarks.length ? remarks.join(', ') : 'Без замечаний';
+            addCarToLog(status);
+            document.getElementById('checklistPanel').classList.remove('open');
+        }
+
+        /* --- OFFLINE SYNC QUEUE SYSTEM --- */
+        function getSyncQueue() {
+            try { return JSON.parse(localStorage.getItem('ti_sync_queue') || '[]'); } catch (e) { return []; }
+        }
+
+        function saveSyncQueue(queue) {
+            localStorage.setItem('ti_sync_queue', JSON.stringify(queue));
+            updateQueueStatusUI();
+        }
+
+        function enqueueTask(action, payload) {
+            const queue = getSyncQueue();
+            const task = {
+                id: 'task_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+                action: action,
+                payload: payload,
+                createdAt: new Date().toISOString()
+            };
+            queue.push(task);
+            saveSyncQueue(queue);
+            if (navigator.onLine) processSyncQueue();
+        }
+
+        function updateQueueStatusUI() {
+            const queue = getSyncQueue();
+            const queueBadge = document.getElementById('queueStatus');
+            const queueCount = document.getElementById('queueCount');
+            if (queue.length > 0) {
+                queueBadge.style.display = 'inline-flex';
+                queueCount.textContent = queue.length;
+            } else {
+                queueBadge.style.display = 'none';
+            }
+        }
+
+        async function processSyncQueue(manualTrigger = false) {
+            if (isProcessingQueue) return;
+            const queue = getSyncQueue();
+            if (queue.length === 0) {
+                updateQueueStatusUI();
+                if (manualTrigger) alert('✅ Все данные синхронизированы с Google Таблицей.');
+                return;
+            }
+
+            if (!navigator.onLine) {
+                updateSyncStatus('offline', 'Офлайн (В очереди: ' + queue.length + ')');
+                if (manualTrigger) alert('⚠️ Нет интернета. Данные сохранены в памяти устройства.');
+                return;
+            }
+
+            const pin = getAppPin();
+            if (!pin) return;
+
+            isProcessingQueue = true;
+            updateSyncStatus('syncing', 'Синхронизация (' + queue.length + ')...');
+
+            while (true) {
+                const currentQueue = getSyncQueue();
+                if (currentQueue.length === 0) break;
+
+                const task = currentQueue[0];
+                let bodyPayload = { pin: pin, action: task.action };
+
+                if (task.action === 'add_entry') bodyPayload.data = task.payload;
+                else if (task.action === 'update_entry') {
+                    bodyPayload.date = task.payload.date;
+                    bodyPayload.rowIndex = task.payload.rowIndex;
+                    bodyPayload.data = task.payload.data;
+                } else if (task.action === 'delete_entry') {
+                    bodyPayload.date = task.payload.date;
+                    bodyPayload.rowIndex = task.payload.rowIndex;
+                } else if (task.action === 'add_car_to_catalog') {
+                    bodyPayload.brand = task.payload.brand;
+                    bodyPayload.track_group = task.payload.track_group;
+                    bodyPayload.comp_group = task.payload.comp_group;
+                }
+
+                try {
+                    const response = await fetch(gasScriptUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify(bodyPayload)
+                    });
+                    const result = await response.json();
+
+                    if (result && result.status === 'success') {
+                        // Очистка ТОЛЬКО при успехе
+                        currentQueue.shift();
+                        saveSyncQueue(currentQueue);
+                    } else {
+                        break;
+                    }
+                } catch (err) {
+                    console.warn('Sync queue net error:', err);
+                    break;
+                }
+            }
+
+            isProcessingQueue = false;
+            updateQueueStatusUI();
+
+            const remaining = getSyncQueue();
+            if (remaining.length === 0) {
+                updateSyncStatus('online', 'Онлайн (Таблица)');
+                fetchLogsFromGoogleSheet(true);
+            } else {
+                updateSyncStatus('offline', 'Очередь: ' + remaining.length);
+            }
+        }
+
+        /* --- DRAFT CRASH PROTECTION --- */
+        function setupDraftAutoSave() {
+            const fieldIds = ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'];
+            fieldIds.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', saveCurrentDraft);
+            });
+        }
+
+        function saveCurrentDraft() {
+            if (editingIndex !== null) return;
+            const draft = {
+                car: document.getElementById('carInput').value,
+                driver: document.getElementById('driverInput').value,
+                number: document.getElementById('numberInput').value,
+                cage: document.getElementById('cageInput').value,
+                color: document.getElementById('colorInput').value,
+                box: document.getElementById('boxInput').value,
+                notes: document.getElementById('notesInput').value,
+                groups: selectedFormGroups,
+                stage: getCurrentStageKey(),
+                timestamp: Date.now()
+            };
+            if (draft.car || draft.driver || draft.number || draft.cage || draft.notes) {
+                localStorage.setItem('ti_form_draft', JSON.stringify(draft));
+            } else {
+                clearDraft();
+            }
+        }
+
+        function restoreDraftIfAny() {
+            const raw = localStorage.getItem('ti_form_draft');
+            if (!raw) return;
+            try {
+                const draft = JSON.parse(raw);
+                if (!draft) return;
+                document.getElementById('carInput').value = draft.car || '';
+                document.getElementById('driverInput').value = draft.driver || '';
+                document.getElementById('numberInput').value = draft.number || '';
+                document.getElementById('cageInput').value = (draft.cage || '').replace(/\D/g, '').slice(0, 6);
+                document.getElementById('colorInput').value = draft.color || '';
+                document.getElementById('boxInput').value = draft.box || '';
+                document.getElementById('notesInput').value = draft.notes || '';
+                if (draft.groups) setSelectedGroups(draft.groups);
+                if (draft.car || draft.driver || draft.number || draft.cage) {
+                    document.getElementById('draftBanner').style.display = 'flex';
+                }
+            } catch(e) {}
+        }
+
+        function clearDraft() {
+            localStorage.removeItem('ti_form_draft');
+            document.getElementById('draftBanner').style.display = 'none';
+        }
+
+        function discardDraft() {
+            clearDraft();
+            clearInputs();
+        }
+
+        function getAppPin() {
+            let pin = localStorage.getItem('ti_app_pin');
+            if (!pin) {
+                pin = prompt("🔐 Введите ПИН-код контролера ТИ:");
+                if (pin) {
+                    pin = pin.trim();
+                    localStorage.setItem('ti_app_pin', pin);
+                }
+            }
+            return pin ? pin.trim() : "";
+        }
+
+        function resetPinAndConnect() {
+            let newPin = prompt("🔐 Введите новый ПИН-код доступа:");
+            if (newPin) {
+                localStorage.setItem('ti_app_pin', newPin.trim());
+                testConnection();
+            }
+        }
+
+        function escapeHtml(val) {
+            return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function escapeForJsString(value) {
+            return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"');
+        }
+
+        function updateSyncStatus(status, text) {
+            const badge = document.getElementById('syncStatus');
+            const icon = document.getElementById('syncIcon');
+            const txt = document.getElementById('syncText');
+            if (status === 'online') {
+                badge.style.background = '#14301d';
+                badge.style.borderColor = '#22c55e';
+                badge.style.color = '#4ade80';
+                icon.style.color = '#4ade80';
+                txt.textContent = text || 'Онлайн';
+            } else if (status === 'syncing') {
+                badge.style.background = '#3d2508';
+                badge.style.borderColor = '#d4af37';
+                badge.style.color = '#ffd700';
+                icon.style.color = '#ffd700';
+                txt.textContent = text || 'Связь...';
+            } else {
+                badge.style.background = '#1c1c1c';
+                badge.style.borderColor = '#333';
+                badge.style.color = '#9ca3af';
+                icon.style.color = '#9ca3af';
+                txt.textContent = text || 'Автономно';
+            }
+        }
+
+        function testConnection() {
+            if (!gasScriptUrl || !navigator.onLine) return;
+            const pin = getAppPin();
+            if (!pin) return;
+
+            const stageKey = getCurrentStageKey();
+            fetch(`${gasScriptUrl}?date=${encodeURIComponent(stageKey)}&pin=${encodeURIComponent(pin)}&ping=1`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.status === 'success') {
+                        updateSyncStatus('online', 'Онлайн (Таблица)');
+                        if (data.entries) {
+                            dailyLog = data.entries;
+                            saveLocalLog();
+                            renderLogTable();
+                            renderStewardList();
+                        }
+                    }
+                })
+                .catch(() => updateSyncStatus('offline', 'Ошибка связи'));
+        }
+
+        function fetchLogsFromGoogleSheet(silent = false) {
+            if (!gasScriptUrl || !navigator.onLine) return;
+            const pin = getAppPin();
+            if (!pin) return;
+
+            const stageKey = getCurrentStageKey();
+            if (!silent) updateSyncStatus('syncing', 'Загрузка...');
+
+            fetch(`${gasScriptUrl}?date=${encodeURIComponent(stageKey)}&pin=${encodeURIComponent(pin)}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.status === 'success' && data.entries) {
+                        dailyLog = data.entries;
+                        saveLocalLog();
+                        renderLogTable();
+                        renderStewardList();
+                        if (!silent) updateSyncStatus('online', 'Онлайн (Таблица)');
+                    }
+                })
+                .catch(() => {
+                    if (!silent) updateSyncStatus('offline', 'Ошибка связи');
+                });
+        }
+
+        function saveLocalLog() {
+            const stageKey = getCurrentStageKey();
+            localStorage.setItem(`ti_log_${stageKey}`, JSON.stringify(dailyLog));
+        }
+
+        function loadLocalLog() {
+            const stageKey = getCurrentStageKey();
+            const stored = localStorage.getItem(`ti_log_${stageKey}`);
+            if (stored) {
+                try { dailyLog = JSON.parse(stored); } catch(e) { dailyLog = []; }
+            } else {
+                dailyLog = [];
+            }
+            renderLogTable();
+            renderStewardList();
+        }
+
+        function addCarToLog(status = 'unverified') {
+            const car = document.getElementById('carInput').value.trim();
+            const driver = document.getElementById('driverInput').value.trim();
+            const number = document.getElementById('numberInput').value.trim();
+            let cage = document.getElementById('cageInput').value.trim().replace(/\D/g, '').slice(0, 6);
+            const color = document.getElementById('colorInput').value.trim();
+            const box = document.getElementById('boxInput').value.trim();
+            const groupStr = selectedFormGroups.join(', ') || 'PRO';
+            const notes = document.getElementById('notesInput').value.trim();
+            const stageKey = getCurrentStageKey();
+            const stageDate = getCurrentStageDate();
+
+            if (!car) { alert('Укажите марку автомобиля!'); return; }
+
+            // Validate 6 digits cage
+            if (cage && cage.length !== 6) {
+                alert('Номер каркаса безопасности должен состоять ровно из 6 цифр!');
+                document.getElementById('cageInput').focus();
+                return;
+            }
+
+            saveNewCarToSheetCatalog(car, selectedFormGroups[0]);
+
+            if (editingIndex !== null && editingIndex >= 0 && editingIndex < dailyLog.length) {
+                const targetItem = dailyLog[editingIndex];
+                targetItem.car = car;
+                targetItem.driver = driver;
+                targetItem.number = number;
+                targetItem.cage = cage;
+                targetItem.color = color;
+                targetItem.box = box;
+                targetItem.group = groupStr;
+                targetItem.notes = notes;
+                targetItem.status = status;
+                targetItem.timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+                saveLocalLog();
+                renderLogTable();
+                renderStewardList();
+
+                if (targetItem.sheetRowIndex) {
+                    enqueueTask('update_entry', {
+                        date: targetItem.date || stageKey,
+                        rowIndex: targetItem.sheetRowIndex,
+                        data: targetItem
+                    });
+                }
+                cancelEditing();
+                return;
+            }
+
+            const newItem = {
+                id: Date.now(),
+                date: stageKey,
+                stageDate: stageDate,
+                car: car,
+                driver: driver,
+                number: number,
+                cage: cage,
+                color: color,
+                box: box,
+                group: groupStr,
+                notes: notes,
+                status: status,
+                timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+            };
+
+            dailyLog.push(newItem);
+            saveLocalLog();
+            renderLogTable();
+            renderStewardList();
+            clearDraft();
+            clearInputs();
+            enqueueTask('add_entry', newItem);
+        }
+
+        function clearInputs() {
+            ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            setSelectedGroups(['PRO']);
+        }
+
+        function cancelEditing() {
+            editingIndex = null;
+            clearInputs();
+            clearDraft();
+            document.getElementById('editModeIndicator').style.display = 'none';
+            document.getElementById('cancelEditBtn').style.display = 'none';
+            document.getElementById('quickSubmitBtn').textContent = '⚡ Выдать ТИ (быстро)';
+            document.getElementById('checklistPanel').classList.remove('open');
+        }
+
+        function renderLogTable() {
+            const tbody = document.getElementById('logTableBody');
+            document.getElementById('totalCarsCount').textContent = dailyLog.length;
+
+            if (!dailyLog.length) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-sub); padding:20px;">Список на выбранный этап пуст</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = dailyLog.map((item, idx) => {
+                const statusColor = item.status === 'fail' ? '#ef4444' : ((item.status === 'warn' || (item.notes && item.notes !== 'Без замечаний')) ? '#f59e0b' : '#22c55e');
+                return `
+                    <tr>
+                        <td><strong>${idx + 1}</strong></td>
+                        <td>
+                            <span class="status-badge" style="background:${statusColor};"></span>
+                            <strong>${escapeHtml(item.car)}</strong>
+                            <div style="font-size:11px; color:#9ca3af;">${escapeHtml(item.driver || '—')} ${item.color ? '(' + escapeHtml(item.color) + ')' : ''}</div>
+                            ${item.notes ? `<small style="color:#f59e0b;">📝 ${escapeHtml(item.notes)}</small>` : ''}
+                        </td>
+                        <td><span style="background:#222; padding:2px 6px; border-radius:4px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
+                        <td><span class="cage-code">${escapeHtml(item.cage || '—')}</span></td>
+                        <td><span class="group-tag">${escapeHtml(item.group || 'PRO')}</span></td>
+                        <td class="action-col" style="white-space:nowrap;">
+                            <button style="background:none; border:none; cursor:pointer; font-size:16px; margin-right:6px;" onclick="viewInStewardDashboard(${item.id})" title="Открыть в кабинете комиссара">🔍</button>
+                            <button style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer;" onclick="deleteCar(${idx})" title="Удалить">🗑️</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function deleteCar(idx) {
+            if (idx < 0 || idx >= dailyLog.length) return;
+            const item = dailyLog[idx];
+            if (confirm(`Удалить ${item.car} (№${item.number})?`)) {
+                dailyLog.splice(idx, 1);
+                saveLocalLog();
+                renderLogTable();
+                renderStewardList();
+                if (item.sheetRowIndex) {
+                    enqueueTask('delete_entry', { date: item.date || getCurrentStageKey(), rowIndex: item.sheetRowIndex });
+                }
+            }
+        }
+
+        function viewInStewardDashboard(itemId) {
+            switchMainView('steward');
+            selectStewardParticipant(itemId);
+        }
+
+        function setSelectedGroups(groups) {
+            selectedFormGroups = [...groups];
+            const chips = document.querySelectorAll('#groupChipsContainer .group-chip');
+            chips.forEach(c => {
+                c.classList.toggle('active', selectedFormGroups.includes(c.textContent.trim()));
+            });
+        }
+
+        function initGroupChips() {
+            const container = document.getElementById('groupChipsContainer');
+            container.innerHTML = '';
+            ['PRO', 'SEMI-PRO', 'DC1', 'DC2'].forEach(g => {
+                const chip = document.createElement('div');
+                chip.className = 'group-chip' + (selectedFormGroups.includes(g) ? ' active' : '');
+                chip.textContent = g;
+                chip.onclick = () => {
+                    setSelectedGroups([g]);
+                    saveCurrentDraft();
+                };
+                container.appendChild(chip);
+            });
+        }
+
+        function shareParticipantList() {
+            if (dailyLog.length === 0) { alert('Список участников пуст!'); return; }
+            const stage = document.getElementById('stageSelect').value;
+            let text = `👑 *ROYAL DRIFT SERIES — ${stage}* 👑\nВсего авто: ${dailyLog.length}\n\n`;
+            dailyLog.forEach((item, idx) => {
+                const icon = item.status === 'ok' ? '✅' : '⚠️';
+                text += `${idx + 1}. ${icon} №${item.number || 'б/н'} | ${item.car} | ${item.driver || '—'} | Каркас: ${item.cage || 'б/н'}${item.notes ? ' | ' + item.notes : ''}\n`;
+            });
+            text += `\n⚡ Royal Drift Series Scrutineering App`;
+
+            if (navigator.share) {
+                navigator.share({ title: `RDS ТИ - ${stage}`, text: text }).catch(() => copyToClipboard(text));
+            } else {
+                copyToClipboard(text);
+            }
+        }
+
+        function exportToPDF() {
+            window.print();
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => alert('Список скопирован!')).catch(() => alert(text));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initGroupChips();
+            initChecklist();
+            setupAutocomplete();
+            setupNumberAutocomplete();
+            setupDraftAutoSave();
+            restoreDraftIfAny();
+            onStageChanged();
+
+            if (navigator.onLine) testConnection();
+            window.addEventListener('online', () => { updateSyncStatus('online', 'Онлайн'); processSyncQueue(); });
+            window.addEventListener('offline', () => updateSyncStatus('offline', 'Офлайн'));
+        });
+    </script>
+</body>
+</html>
