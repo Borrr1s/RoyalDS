@@ -8,7 +8,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ROYAL%20DS%20Scrutineering%22%2C%22short_name%22%3A%22RDS%20TI%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%7D">
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ROYAL%20DS%20Scrutineering%22%2C%22short_name%22%3A%22Royal DS%20TI%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%7D">
     
     <style>
         :root {
@@ -732,6 +732,7 @@
                 <button class="lang-btn" id="btn_lang_cn" onclick="setAppLanguage('cn')">中文</button>
             </div>
 
+            <button onclick="openSettingsModal()" style="background:#222; border:1px solid #444; color:var(--gold-bright); border-radius:10px; padding:4px 8px; font-size:14px; cursor:pointer;" title="Настройки подключения">⚙️</button>
             <div id="syncStatus" class="sync-badge" onclick="resetPinAndConnect()">
                 <span id="syncIcon">●</span> <span id="syncText">Связь</span>
             </div>
@@ -818,10 +819,7 @@
                     <input type="text" id="boxInput" placeholder="15 бокс">
                 </div>
                 
-                <div class="form-group">
-                    <label id="lblSelectedGroups">Группа (Class):</label>
-                    <div id="groupChipsContainer" class="chips-container"></div>
-                </div>
+                
 
                 <div class="form-group full">
                     <label id="lblRemarks">Замечания ТИ (Remarks):</label>
@@ -845,10 +843,22 @@
             <!-- 22 Checklist Items -->
             <div id="checklistPanel" class="checklist-panel">
                 <div style="font-size: 13px; font-weight: 700; color: var(--gold-bright); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; position:sticky; top:0; background:#0d0d0d; padding:6px 0; z-index:10;">
-                    <span>Пункты инспекции (22 пункта КиТТ/FIA):</span>
+                    <span>Чеклист технической инспекции:</span>
                     <span style="font-size: 12px; cursor: pointer; color: var(--gold-primary);" onclick="setAllChecklistOk()">✅ Отметить все [ОК]</span>
                 </div>
-                <div id="checklistItemsContainer"></div>
+                
+                <div class="checklist-section-header">
+                    <span>Раздел 1: Внешний осмотр (16 пунктов)</span>
+                    <span style="font-size:11px; cursor:pointer; color:var(--gold-bright);" onclick="setSectionOk('ext')">ОК (Раздел 1)</span>
+                </div>
+                <div id="checklistExtContainer"></div>
+
+                <div class="checklist-section-header" style="margin-top:16px;">
+                    <span>Раздел 2: Внутренний осмотр (25 пунктов)</span>
+                    <span style="font-size:11px; cursor:pointer; color:var(--gold-bright);" onclick="setSectionOk('int')">ОК (Раздел 2)</span>
+                </div>
+                <div id="checklistIntContainer"></div>
+
                 <button id="checklistSubmitBtn" class="btn btn-checklist-submit" onclick="submitChecklistAndLog()">
                     ✅ Завершить ТИ по чеклисту
                 </button>
@@ -879,7 +889,7 @@
                             <th>Авто / Пилот</th>
                             <th>СТ№</th>
                             <th>№ Каркаса</th>
-                            <th>Группа</th>
+                            <th>Статус</th>
                             <th class="action-col">Действие</th>
                         </tr>
                     </thead>
@@ -937,8 +947,8 @@
                 <!-- Regulation Clause Display Box -->
                 <div id="ruleCitationBox" class="rule-citation-box">
                     <div class="rule-title">
-                        <span id="ruleCitationHeading">Статья Регламента RDS</span>
-                        <a id="ruleOfficialDocLink" href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Официальные документы RDS ↗</a>
+                        <span id="ruleCitationHeading">Статья Регламента Royal DS</span>
+                        <a id="ruleOfficialDocLink" href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Официальные документы Royal DS ↗</a>
                     </div>
                     <div class="rule-text" id="ruleCitationText">...</div>
                     <div class="rule-action-needed" id="ruleActionNeeded">...</div>
@@ -951,7 +961,38 @@
     </div>
 
     <script>
-        const EMBEDDED_GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
+
+        
+        const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
+        function getActiveGasUrl() {
+            return localStorage.getItem('ti_gas_url') || DEFAULT_GAS_URL;
+        }
+        let gasScriptUrl = getActiveGasUrl();
+
+        function openSettingsModal() {
+            const currentUrl = localStorage.getItem('ti_gas_url') || DEFAULT_GAS_URL;
+            const currentPin = localStorage.getItem('ti_app_pin') || '1337';
+            
+            const newUrl = prompt("⚙️ URL веб-приложения Google Apps Script (exec):\n(Вставьте URL, полученный при развертывании новой таблицы)", currentUrl);
+            if (newUrl !== null) {
+                const trimmedUrl = newUrl.trim();
+                if (trimmedUrl) {
+                    localStorage.setItem('ti_gas_url', trimmedUrl);
+                    gasScriptUrl = trimmedUrl;
+                } else {
+                    localStorage.removeItem('ti_gas_url');
+                    gasScriptUrl = DEFAULT_GAS_URL;
+                }
+            }
+
+            const newPin = prompt("🔐 ПИН-код доступа к таблице:", currentPin);
+            if (newPin !== null && newPin.trim()) {
+                localStorage.setItem('ti_app_pin', newPin.trim());
+            }
+
+            testConnection();
+        }
+
         const SPREADSHEET_ID = "1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY";
 
         /* --- FULL CAR CATALOG & TRANSLITERATION --- */
@@ -1028,13 +1069,13 @@
             },
             {
                 id: 'stickers',
-                title: { ru: '3. Обязательные наклейки RDS', en: '3. Mandatory Series Decals', cn: '3. 官方指定广告与车号贴纸' },
+                title: { ru: '3. Обязательные наклейки Royal DS', en: '3. Mandatory Series Decals', cn: '3. 官方指定广告与车号贴纸' },
                 desc: { ru: 'Реклама серии, стартовый номер на дверях/стеклах, Фамилия, флаг', en: 'Series sponsors, door race number plates, driver surname, flag', cn: '赛事官方广告、车门号码牌、车手姓名拼音与国旗' },
                 article: { ru: 'Статья 14 Спортивного регламента. Рекламная схема', en: 'Article 14 Sporting Regs. Decal Placement Scheme', cn: '第14条 赛事运动规则：车身广告与标识张贴规范' },
                 rule: {
-                    ru: 'Автомобиль должен строго соответствовать официальной карте оклейки RDS: полоса на лобовом стекле, наклейки титульных партнеров на передних крыльях/бамперах, стартовый номер на передних дверях и задних боковых стеклах, флаг и фамилия пилота.',
-                    en: 'Vehicle must strictly follow official RDS decal map: windshield sunstrip, title partners on fenders/bumpers, door number panels, driver surname and national flag on rear quarter windows.',
-                    cn: '赛车车身必须严格遵守RDS官方贴纸规范：前挡太阳膜、指定赞助商贴纸、车门大号码牌、车手国旗及姓名贴。'
+                    ru: 'Автомобиль должен строго соответствовать официальной карте оклейки Royal DS: полоса на лобовом стекле, наклейки титульных партнеров на передних крыльях/бамперах, стартовый номер на передних дверях и задних боковых стеклах, флаг и фамилия пилота.',
+                    en: 'Vehicle must strictly follow official Royal DS decal map: windshield sunstrip, title partners on fenders/bumpers, door number panels, driver surname and national flag on rear quarter windows.',
+                    cn: '赛车车身必须严格遵守Royal DS官方贴纸规范：前挡太阳膜、指定赞助商贴纸、车门大号码牌、车手国旗及姓名贴。'
                 },
                 action: { ru: 'Устранение: Доклеить недостающие спонсорские логотипы и стартовые номера в штабе ТИ.', en: 'Resolution: Apply missing sponsor decals and race number panels at scrutineering HQ.', cn: '整改要求：在车检处领齐并补齐缺失的赞助商标识及车号贴纸。' }
             },
@@ -1054,7 +1095,7 @@
                 id: 'belts',
                 title: { ru: '5. Ремни безопасности', en: '5. Safety Harness (FIA 8853-2016)', cn: '5. 赛车多点式安全带' },
                 desc: { ru: '5/6-точечные, омологация FIA 8853-2016, угол 0-20°, HANS', en: '5/6-point, FIA 8853-2016 standard, 0-20° shoulder angle, FHR/HANS', cn: 'FIA 8853-2016认证，5/6点式，防伪有效，0-20°肩带角度' },
-                article: { ru: 'Статья 6. Ремни безопасности пилота', en: 'Article 6. Driver Safety Harness Standards', cn: '第6条 车手赛用安全带规定' },
+                article: { ru: 'Статья 6. Ремни безопасности пилота', en: 'Article 6. Driver Safety Harness Standaroyal_ds', cn: '第6条 车手赛用安全带规定' },
                 rule: {
                     ru: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8853-2016. Точки крепления плечевых лямок к перемычке каркаса должны обеспечивать угол наклона 0°–20° назад-вниз. Лямки не должны иметь потертостей и повреждений.',
                     en: 'Mandatory 5- or 6-point harness with valid FIA 8853-2016 homologation. Shoulder strap angles between 0° and 20° downward onto roll cage harness crossbar. Straps free of fraying or UV damage.',
@@ -1092,11 +1133,11 @@
                 desc: { ru: 'FIA 8865-2015, манометр в норме, форсунки мотор/салон, наклейки E и ⚡', en: 'FIA 8865-2015, pressure OK, engine/cabin nozzles, external E and ⚡', cn: 'FIA 8865-2015认证，压力表绿区，喷头机舱/驾驶舱，内外E和⚡开关' },
                 article: { ru: 'Статья 9. Система пожаротушения и электровыключатель', en: 'Article 9. Fire Suppression & Circuit Breaker', cn: '第9条 车载灭火与应急切断电路规范' },
                 rule: {
-                    ru: 'Действующая омологированная система пожаротушения FIA 8865-2015 или Technical List 16. Манометр в зеленой зоне. Внешний тросик 'E' и внешний прерыватель цепи '⚡' должны быть легкодоступны снаружи и четко обозначены наклейками.',
-                    en: 'Homologated system complying with FIA 8865-2015 or Technical List 16. Pressure in green zone. External pull cable 'E' and master cut-off '⚡' must be easily accessible and clearly marked.',
+                    ru: 'Действующая омологированная система пожаротушения FIA 8865-2015 или Technical List 16. Манометр в зеленой зоне. Внешний тросик "E" и внешний прерыватель цепи "⚡" должны быть легкодоступны снаружи и четко обозначены наклейками.',
+                    en: 'Homologated system complying with FIA 8865-2015 or Technical List 16. Pressure in green zone. External pull cable "E" and master cut-off "⚡" must be easily accessible and clearly marked.',
                     cn: '必须配备符合FIA 8865-2015标准的车载灭火系统。压力在绿色工作区。车外拉索“E”及总断电开关“⚡”必须触手可及并清晰张贴标识。'
                 },
-                action: { ru: 'Устранение: Проверить давление в баллоне, наклеить знаки 'E' и '⚡' у наружных ручек.', en: 'Resolution: Verify extinguisher pressure, apply 'E' and '⚡' decals near cowl pulls.', cn: '整改要求：核实灭火气瓶压力，在车外控制柄旁张贴标准E和闪电标识。' }
+                action: { ru: 'Устранение: Проверить давление в баллоне, наклеить знаки "E" и "⚡" у наружных ручек.', en: 'Resolution: Verify extinguisher pressure, apply "E" and "⚡" decals near cowl pulls.', cn: '整改要求：核实灭火气瓶压力，在车外控制柄旁张贴标准E和闪电标识。' }
             },
             {
                 id: 'cage',
@@ -1197,14 +1238,14 @@
             {
                 id: 'doors',
                 title: { ru: '17. Дверные карты и ручки', en: '17. Door Panels & Latches', cn: '17. 车门内饰板与应急拉绳' },
-                desc: { ru: 'Сплошные негорючие карты, внутреннее аварийное открытие выделено цветом', en: 'Solid fireproof door cards, inner emergency release colored', cn: '阻燃密封车门板，车内应急开启把手/拉绳高反差荧光标识' },
+                desc: { ru: 'Сплошные негорючие карты, внутреннее аварийное открытие выделено цветом', en: 'Solid fireproof door caroyal_ds, inner emergency release colored', cn: '阻燃密封车门板，车内应急开启把手/拉绳高反差荧光标识' },
                 article: { ru: 'Статья 19. Двери и замки салона', en: 'Article 19. Doors, Latches & Emergency Egress', cn: '第19条 车门开合与逃生把手规范' },
                 rule: {
                     ru: 'Передние двери должны быть обшиты сплошными негорючими картами (алюминий толщиной от 1 мм или карбон). Внутренний механизм аварийного открывания двери должен быть исправен и обозначен ярким флуоресцентным цветом.',
-                    en: 'Front doors must feature solid fireproof inner door cards (min 1mm aluminum or carbon sheet). Emergency interior door release strap clearly colored in bright fluorescent tint.',
+                    en: 'Front doors must feature solid fireproof inner door caroyal_ds (min 1mm aluminum or carbon sheet). Emergency interior door release strap clearly colored in bright fluorescent tint.',
                     cn: '前车门内侧必须封闭安装阻燃金属板（厚度≥1mm铝板或碳纤维板）。车内应急车门开启拉手必须工作正常且有荧光醒目标记。'
                 },
-                action: { ru: 'Устранение: Закрыть внутреннюю полость двери картой, выделить аварийный трос открытия.', en: 'Resolution: Install aluminum door cards, color emergency egress pulls.', cn: '整改要求：装配阻燃车门内衬板，用荧光色标示应急开门把手。' }
+                action: { ru: 'Устранение: Закрыть внутреннюю полость двери картой, выделить аварийный трос открытия.', en: 'Resolution: Install aluminum door caroyal_ds, color emergency egress pulls.', cn: '整改要求：装配阻燃车门内衬板，用荧光色标示应急开门把手。' }
             },
             {
                 id: 'hood_pins',
@@ -1317,7 +1358,7 @@
                 subtitle: "中国汽车飘移系列赛 • 车检系统 v1.1",
                 tabScrutineer: "📋 车检登记录入",
                 tabSteward: "💻 仲裁与车检主管视图",
-                eventInfo: "RDS 分站选择设置",
+                eventInfo: "Royal DS 分站选择设置",
                 stageSelect: "选择比赛分站 / Stage:",
                 formTitle: "📋 赛车技术检验",
                 carModel: "赛车车型 / 品牌 (中/英/俄: Supra, Chaser, S15...):",
@@ -1341,7 +1382,7 @@
         let dailyLog = [];
         let yesterdayLog = [];
         let selectedFormGroups = ['PRO'];
-        let gasScriptUrl = EMBEDDED_GAS_URL;
+        
         let checklistState = {};
         let editingIndex = null;
         let isProcessingQueue = false;
@@ -1482,7 +1523,7 @@
                         </div>
                         <div style="text-align:right;">
                             <span style="font-size:11px; font-weight:bold; color:${statusColor}; background:${statusColor}18; border:1px solid ${statusColor}; padding:3px 8px; border-radius:6px;">${statusText}</span>
-                            <div style="font-size:10px; color:#9ca3af; margin-top:3px;">${escapeHtml(item.group || 'PRO')}</div>
+                            <div style="font-size:10px; color:var(--gold-primary); margin-top:3px;">Открыть дело ↗</div>
                         </div>
                     </div>
                 `;
@@ -1510,7 +1551,7 @@
 
             document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
             document.getElementById('dtlDriver').textContent = item.driver || 'Не указан';
-            document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''} (${item.group || 'PRO'})`;
+            document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''} `;
             document.getElementById('dtlBox').textContent = item.box || '—';
             document.getElementById('dtlCage').textContent = item.cage || 'Не внесен';
 
@@ -1953,13 +1994,7 @@
             return pin ? pin.trim() : "";
         }
 
-        function resetPinAndConnect() {
-            let newPin = prompt("🔐 Введите новый ПИН-код доступа:");
-            if (newPin) {
-                localStorage.setItem('ti_app_pin', newPin.trim());
-                testConnection();
-            }
-        }
+        function resetPinAndConnect() { openSettingsModal(); }
 
         function escapeHtml(val) {
             return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -2118,7 +2153,7 @@
                 cage: cage,
                 color: color,
                 box: box,
-                group: groupStr,
+                group: '',
                 notes: notes,
                 status: status,
                 timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
@@ -2172,7 +2207,7 @@
                         </td>
                         <td><span style="background:#222; padding:2px 6px; border-radius:4px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
                         <td><span class="cage-code">${escapeHtml(item.cage || '—')}</span></td>
-                        <td><span class="group-tag">${escapeHtml(item.group || 'PRO')}</span></td>
+                        <td><span style="font-size:11px; font-weight:bold; color:${statusColor};">${statusText}</span></td>
                         <td class="action-col" style="white-space:nowrap;">
                             <button style="background:none; border:none; cursor:pointer; font-size:16px; margin-right:6px;" onclick="viewInStewardDashboard(${item.id})" title="Открыть в кабинете комиссара">🔍</button>
                             <button style="background:none; border:none; color:#ef4444; font-size:16px; cursor:pointer;" onclick="deleteCar(${idx})" title="Удалить">🗑️</button>
@@ -2235,7 +2270,7 @@
             text += `\n⚡ Royal Drift Series Scrutineering App`;
 
             if (navigator.share) {
-                navigator.share({ title: `RDS ТИ - ${stage}`, text: text }).catch(() => copyToClipboard(text));
+                navigator.share({ title: `Royal DS ТИ - ${stage}`, text: text }).catch(() => copyToClipboard(text));
             } else {
                 copyToClipboard(text);
             }
@@ -2262,6 +2297,7 @@
             window.addEventListener('online', () => { updateSyncStatus('online', 'Онлайн'); processSyncQueue(); });
             window.addEventListener('offline', () => updateSyncStatus('offline', 'Офлайн'));
         });
-    </script>
+    
+</script>
 </body>
 </html>
