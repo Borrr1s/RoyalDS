@@ -271,7 +271,6 @@ input:focus, select:focus { border-color: var(--gold-primary); box-shadow: 0 0 0
       <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск (№, пилот, авто, каркас)..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:8px 12px; font-size:12px;">
     </div>
 
-    <!-- Индивидуальная шторка выбранного пилота (по умолчанию скрыта) -->
     <div id="stewardInspectorView" class="steward-inspector-view">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
         <span style="color:var(--gold-primary); font-size:11px; font-weight:bold; text-transform:uppercase;">Фокус на участнике • Participant Detail</span>
@@ -307,7 +306,6 @@ input:focus, select:focus { border-color: var(--gold-primary); box-shadow: 0 0 0
       </div>
     </div>
 
-    <!-- Список всех участников: ЗАМЕЧАНИЯ ВНУТРИ СТРОК ПОЛНОСТЬЮ СКРЫТЫ -->
     <div id="stewardListContainer" style="margin-top:12px;"></div>
   </div>
 </div>
@@ -383,6 +381,7 @@ let GAS_URL = "https://script.google.com/macros/s/AKfycbzEZy266e6ON833GEzWEJbY5o
 const STEWARD_PIN = "0852";
 const CONTROLLER_PIN = "1337";
 
+/* --- ОФИЦИАЛЬНЫЕ ССЫЛКИ НА СКАЧИВАНИЕ РЕГЛАМЕНТА RDS ПО ЯЗЫКАМ --- */
 const REGULATION_DOC_LINKS = {
   ru: "https://royalds.cn/ru/docs/technical-regulations/file/ru?dl=1",
   en: "https://royalds.cn/ru/docs/technical-regulations/file/en?dl=1",
@@ -466,501 +465,501 @@ const UI_TEXT = {
 
 let currentLang = 'ru';
 
-/* --- 16 ВНЕШНИХ ПУНКТОВ: ТОЧНАЯ ПРИВЯЗКА К СТАТЬЯМ РЕГЛАМЕНТА --- */
+/* --- 16 ВНЕШНИХ ПУНКТОВ: ТОЧНАЯ ПРИВЯЗКА К СТАТЬЯМ РЕГЛАМЕНТА RDS --- */
 const CHECKLIST_EXT = [
   {
     code: '1.1',
-    title: { ru: 'Бамперы', en: 'Bumpers', cn: '保险杠' },
-    article: { ru: 'Статья 9. Кузов и наружные элементы', en: 'Article 9. Bodywork & Exterior Elements', cn: '第9条 车身与外观部件' },
+    title: { ru: '1.1 Бамперы', en: '1.1 Bumpers', cn: '1.1 保险杠' },
+    article: { ru: 'Статья 9. Бампер', en: 'Article 9. Bumper', cn: '第9条 保险杠' },
     desc: { ru: 'Бамперы установлены, закрывают кузов, надёжно закреплены (не на хомутах/скотче)', en: 'Bumpers installed, covering bodywork, securely mounted (no zip-ties/tape)', cn: '保险杠安装到位，覆盖车身，固定牢固（严禁扎带）' },
     rule: {
-      ru: 'Передний и задний бамперы должны быть установлены, надежно закреплены и полностью закрывать силовые элементы кузова. Запрещено крепление исключительно на пластиковые хомуты или скотч.',
-      en: 'Front and rear bumpers must be installed, firmly attached, covering chassis structural elements. Securing solely by zip-ties or tape is prohibited.',
-      cn: '前、后保险杠必须安装完整，固定牢固，完全覆盖车身受力结构件。严禁仅使用塑料扎带或胶带固定。'
+      ru: 'Передний и задний бамперы должны полностью закрывать соответствующие зоны кузова. Сзади никакие узлы не должны выступать из-под бампера, кроме выхлопной трубы. Перед техническим осмотром бамперы должны быть установлены и надежно закреплены. Конструкция крепления, основанная на пластиковых хомутах (стяжках), запрещена.',
+      en: 'Front and rear bumpers must completely cover the corresponding body areas. When viewed from the rear, no components shall protrude from beneath the bumper, except for the exhaust pipe. Bumpers must be securely attached. Mounting systems based on plastic zip ties/cable ties are strictly prohibited.',
+      cn: '前后保险杠必须完全覆盖对应的车身区域。从后方观察时，除排气管外，任何部件不得从保险杠下方突出。保险杠必须在技术检验前安装到位，并牢固固定。严禁使用塑料扎带/束线带作为固定系统。'
     },
     action: { ru: 'Установить бамперы на штатные или быстросъемные крепления.', en: 'Mount bumpers using OEM or motorsport quick-release fasteners.', cn: '使用原厂或赛用快拆支架牢固安装保险杠。' }
   },
   {
     code: '1.2',
-    title: { ru: 'Капот и багажник', en: 'Hood & Trunk', cn: '发动机盖与后备箱盖' },
-    article: { ru: 'Статья 9. Замки капота и багажника', en: 'Article 9. Hood & Trunk Lid Latches', cn: '第9条 机盖与后备箱锁销' },
+    title: { ru: '1.2 Капот и багажник', en: '1.2 Hood & Trunk Fasteners', cn: '1.2 引擎盖/后备箱盖锁扣' },
+    article: { ru: 'Статья 14. Фиксаторы капота', en: 'Article 14. Hood Fasteners', cn: '第14条 引擎盖/后备箱盖锁扣' },
     desc: { ru: '4 точки крепления + ≥2 внешних фиксатора, штатные замки удалены', en: '4 mounting points + ≥2 external pins, OEM latches removed', cn: '4点固定 + 至少2个外部安全锁销，原厂机械锁已拆除' },
     rule: {
-      ru: 'Капот и крышка багажника должны иметь не менее 4 точек крепления и быть оборудованы минимум 2 внешними спортивными замками (Aerocatch, шпильки). Штатные замки капота должны быть демонтированы.',
-      en: 'Hood and trunk lid must have at least 4 mounting points and be fitted with min 2 external motorsport pins. OEM release latches must be removed.',
-      cn: '机盖及后备箱盖必须具备至少4个固定点，并配备至少2套外部赛车安全锁销。原厂机盖拉线锁机构必须拆除。'
+      ru: 'Штатные механические замки капота и крышки багажника запрещены; они должны быть удалены или выведены из строя. На капоте и крышке багажника устанавливаются не менее двух внешних фиксирующих замков. Капот и багажник должны иметь четыре точки крепления (например, две петли и два замка разнесённые по сторонам).',
+      en: 'Factory mechanical hood and trunk lid locks are prohibited and must be removed or disabled. Hood and trunk lid must each have at least two external locking pins/latches. Hood and trunk must have four attachment points total.',
+      cn: '原厂机械式引擎盖/后备箱盖锁禁止使用，必须拆除或失效化处理。引擎盖与后备箱盖必须各自配备至少两个外部锁扣/快拆销。引擎盖与后备箱必须共计四个固定点。'
     },
     action: { ru: 'Установить внешние замки капота/багажника и снять штатный трос.', en: 'Install external safety hood pins and remove OEM latch cable.', cn: '安装机盖/后备箱外部安全锁销并拆除原车拉线。' }
   },
   {
     code: '1.3',
-    title: { ru: 'Буксировочные стропы', en: 'Tow Straps', cn: '拖车带' },
-    article: { ru: 'Статья 10. Буксировочная стропа', en: 'Article 10. Tow Straps', cn: '第10条 拖车带' },
+    title: { ru: '1.3 Буксировочные стропы', en: '1.3 Towing Strap', cn: '1.3 拖车带' },
+    article: { ru: 'Статья 10. Буксировочная стропа', en: 'Article 10. Towing Strap', cn: '第10条 拖车带' },
     desc: { ru: 'Нейлон/трос ∅10 мм, выступ 15–25 см, стрелка ≥12 см', en: 'Nylon/cable ∅10mm, protruding 15-25cm, marking arrow ≥12cm', cn: '尼龙/钢索 ∅10mm，伸出15-25cm，反光指示箭头≥12cm' },
     rule: {
-      ru: 'На передней и задней части автомобиля устанавливаются мягкие буксировочные стропы из нейлона (ленточного типа) или из металлического троса диаметром 10 мм. Крепление — к штатным проушинам; выступ за бампер 15–25 см. Место на бампере/усилителе помечается стрелкой яркого цвета длиной ≥12 см.',
-      en: 'Soft towing straps made of nylon webbing or ∅10mm steel cable must be installed front and rear. Attached to OEM tow eyes, protruding 15-25cm past bumper. Marked with bright arrow min 12cm.',
-      cn: '赛车前后必须各安装一条尼龙带或∅10mm金属钢索拖车带。固定于原车拖车孔，突出保险杠15-25cm。安装位置贴有长度≥12cm的醒目反光指示箭头。'
+      ru: 'На передней и задней части автомобиля устанавливаются мягкие буксировочные стропы из нейлона (ленточного типа) или из металлического троса диаметром 10 мм. Стропы должны быть надежно закреплены. Повреждённые стропы ремонту не подлежат. Крепление — к штатным проушинам; выступ за бампер 15–25 см. Место на бампере/усилителе помечается стрелкой яркого цвета длиной ≥12 см.',
+      en: 'Soft nylon towing straps (webbing type) or steel wire ropes with a diameter of 10 mm must be installed on the front and rear of the car. Straps must be securely attached. Protrusion: The strap loop must extend 15-25 cm beyond the bumper. The location on the bumper/reinforcement bar must be marked with a brightly colored arrow at least 12 cm in length.',
+      cn: '车辆前后必须安装软质尼龙拖车带（织带型）或直径10mm的钢丝绳拖车带。拖车带必须牢固安装。固定方式：固定于原厂拖车钩/拖车眼。突出长度：拖车带环须超出保险杠15-25cm。保险杠/加强杠上的安装位置须用长度≥12cm的醒目彩色箭头标记。'
     },
-    action: { ru: 'Установить буксировочные стропы спереди и сзади и нанести стрелки маркировки ≥12 см.', en: 'Mount tow straps front/rear and apply yellow/red arrow decals min 12cm.', cn: '安装前后拖车带并张贴长度≥12cm的醒目反光箭头。' }
+    action: { ru: 'Установить буксировочные стропы спереди и сзади и нанести стрелки маркировки ≥12 см.', en: 'Mount tow straps front/rear and apply bright arrow decals min 12cm.', cn: '安装前后拖车带并张贴长度≥12cm的醒目反光箭头。' }
   },
   {
     code: '1.4',
-    title: { ru: 'Башбары (Bash-bars)', en: 'Bash-bars', cn: '防撞梁（Bash-bars）' },
-    article: { ru: 'Статья 9. Защитные балки (Башбары)', en: 'Article 9. Protective Tubular Bars (Bash-bars)', cn: '第9条 防撞保护梁（Bash-bars）' },
+    title: { ru: '1.4 Башбары (Bash-bars)', en: '1.4 Bash Bar', cn: '1.4 防撞杠（加强杠）' },
+    article: { ru: 'Статья 11. Башбар', en: 'Article 11. Bash Bar', cn: '第11条 防撞杠（加强杠）' },
     desc: { ru: 'Стальная труба ∅25–44 мм, стенка 1,6–3,2 мм, болты 4×М10 8.8 или сварка', en: 'Steel tubing ∅25-44mm, wall 1.6-3.2mm, mounted with 4xM10 8.8 bolts or welded', cn: '钢管∅25-44mm，壁厚1.6-3.2mm，4×M10 8.8螺栓固定或焊接' },
     rule: {
-      ru: 'Трубчатые защитные балки (башбары) изготавливаются из бесшовной стальной трубы ∅25-44 мм с толщиной стенки 1.6-3.2 мм. Крепление к лонжеронам болтами не менее 4хМ10 (класс 8.8) с пластинами толщиной от 3 мм либо качественной сваркой.',
-      en: 'Tubular bash-bars must be seamless steel tube ∅25-44mm, wall 1.6-3.2mm. Attached to frame rails using min 4xM10 grade 8.8 bolts with min 3mm backing plates or certified weld.',
-      cn: '前后管状防撞梁必须由∅25-44mm、壁厚1.6-3.2mm的无缝钢管制成。通过至少4颗M10（8.8级）螺栓及≥3mm加强垫板或高质量焊接与纵梁连接。'
+      ru: 'Неоригинальные структуры безопасности (башбары) должны быть выполнены из стальной трубы диаметром 25-44 мм с толщиной стенки 1,6-3,2 мм и закреплены на лонжеронах болтами: 4 болта 10 мм, прочностью не менее 8.8, с каждой стороны или приварены, и должны быть горизонтальными (+/- 10 градусов). Трубы на всем протяжении должны оставаться полыми. Конструкция крепления на стяжках запрещена.',
+      en: 'Non-original safety structures (bash bars) must be made of steel tubes 25-44 mm dia. and 1.6-3.2 mm wall thickness, and secured to the side members with bolts: Four 10 mm dia. bolts, min grade of 8.8, on each side or welded, and must be horizontal (+/- 10 degrees). Tubes must remain hollow along their entire length.',
+      cn: '非原厂安全结构（防撞杠）必须采用钢管制造，管径25-44mm，壁厚1.6-3.2mm；必须通过每侧4颗直径10mm、强度等级≥8.8的螺栓固定于纵梁，或采用焊接固定；必须保持水平（±10°）。管材全长必须保持空心状态。'
     },
     action: { ru: 'Усилить крепление башбаров болтами М10 класса 8.8 с пластинами ≥3 мм.', en: 'Strengthen bash bar mounts with M10 grade 8.8 hardware and plates.', cn: '改用M10 8.8级高强度螺栓及加强垫板加固防撞梁底座。' }
   },
   {
     code: '1.5',
-    title: { ru: 'Крылья и арки', en: 'Fenders & Wheel Arches', cn: '翼子板与轮拱' },
-    article: { ru: 'Статья 9. Крылья и колесные арки', en: 'Article 9. Fenders and Wheel Arches', cn: '第9条 翼子板与轮拱' },
-    desc: { ru: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)', en: 'Fenders cover wheels (tire projection <=20% of tire width)', cn: '翼子板遮盖轮胎（轮胎突出不得超过宽度的20%）' },
+    title: { ru: '1.5 Крылья и арки', en: '1.5 Exterior (Fenders & Arches)', cn: '1.5 车身外观（翼子板与轮拱）' },
+    article: { ru: 'Статья 12. Экстерьер', en: 'Article 12. Exterior', cn: '第12条 车身外观' },
+    desc: { ru: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)', en: 'Fenders cover wheels (tire contact surface protrusion <=20%)', cn: '翼子板遮盖轮胎（轮胎接触面突出不得超过宽度的20%）' },
     rule: {
-      ru: 'Крылья и расширители должны полностью закрывать колесо сверху. Выступание протектора шины за внешнюю кромку крыла допускается не более чем на 20% ширины шины при виде сверху.',
-      en: 'Fenders/overfenders must cover the top of wheels. Tire tread protrusion beyond the fender contour must not exceed 20% of tire section width viewed from above.',
-      cn: '翼子板或宽体套件必须从上方完全遮盖轮胎胎面。垂直俯视时，胎面突出翼子板外沿严禁超过胎宽的20%。'
+      ru: 'Колёса автомобиля (при виде сверху) должны быть закрыты крыльями, при этом допускается выступание рабочей поверхности колеса в верхней его точке, но не более 20% от ширины шины, указанной на маркировке. Крепление расширителей крыльев должно быть выполнено с помощью инструмента. Крепление на двухсторонний скотч, пластиковые хомуты запрещено.',
+      en: 'Wheels must be covered by fenders (top view). Protrusion of the tire contact surface at its highest point is permitted, but not exceeding 20% of the tire marked width. Fender flare/widebody attachment must be tool-fastened. Double-sided tape or plastic zip ties are prohibited.',
+      cn: '车轮必须被翼子板覆盖（俯视图）。轮胎接触面最高点允许突出，但不得超过轮胎标称宽度的20%。宽体/翼子板扩展件必须使用工具紧固。禁止使用双面胶或塑料扎带固定。'
     },
     action: { ru: 'Установить расширители арок (фендеры) или отрегулировать вылет колес.', en: 'Install wider fender flares or adjust wheel offset/camber.', cn: '加装宽体轮眉或调整轮毂ET偏距/倾角。' }
   },
   {
     code: '1.6',
-    title: { ru: 'Лобовое стекло', en: 'Windshield', cn: '前挡风玻璃' },
-    article: { ru: 'Статья 11. Лобовое стекло', en: 'Article 11. Windshield', cn: '第11条 前挡风玻璃' },
-    desc: { ru: 'Триплекс/поликарбонат ≥5 мм, без трещин в зоне водителя', en: 'Laminated glass/polycarbonate >=5mm, clear vision without cracks in driver area', cn: '夹胶安全玻璃/聚碳酸酯板≥5mm，雨刮清扫区域无裂纹' },
+    title: { ru: '1.6 Лобовое стекло', en: '1.6 Windshield', cn: '1.6 前挡风玻璃' },
+    article: { ru: 'Статья 31. Лобовое и заднее стекло', en: 'Article 31. Windshield and rear window', cn: '第31条 前风挡及后窗玻璃' },
+    desc: { ru: 'Триплекс/поликарбонат ≥5 мм, без трещин в зоне водителя', en: 'Laminated glass/polycarbonate, clear vision without cracks in driver area', cn: '夹胶安全玻璃/聚碳酸酯板，无妨碍视线的危险裂纹' },
     rule: {
-      ru: 'Лобовое стекло — триплекс с маркировкой или монолитный поликарбонат с устойчивым к царапинам покрытием (≥5 мм). Запрещены трещины в зоне работы водительского стеклоочистителя.',
-      en: 'Laminated glass with safety marks or hard-coated polycarbonate (thickness >=5mm). No cracks allowed within driver wiper sweep.',
-      cn: '前挡风玻璃必须使用符合标准的夹胶安全玻璃或耐磨聚碳酸酯板（厚度≥5mm）。雨刮清扫区域严禁有裂纹。'
+      ru: 'Лобовое стекло: только многослойное безопасное, с маркировкой. Возможно применение стекла из поликарбоната, специально изготовленного фабричным способом для конкретного автомобиля. Должно обеспечивать прозрачный обзор по всей зоне. Трещины на лобовом отмечаются яркой лентой снаружи; при длинных трещинах или угрозе безопасности автомобиль может быть снят.',
+      en: 'Windshield: only laminated safety glass with homologation marking is permitted. Polycarbonate windshields specifically manufactured for the car model are permitted. Must provide clear visibility across the entire viewing area. Cracks on the windshield must be marked with bright tape on the exterior.',
+      cn: '前风挡：仅允许使用带认证标识的夹层安全玻璃。允许使用专为该车型制造的聚碳酸酯前风挡。必须在整个视野范围内提供清晰视野。前风挡上的裂纹必须在外侧用醒目胶带标记。'
     },
     action: { ru: 'Заменить поврежденное лобовое стекло.', en: 'Replace damaged windshield.', cn: '更换受损前挡风玻璃。' }
   },
   {
     code: '1.7',
-    title: { ru: 'Боковые стёкла', en: 'Side Windows', cn: '侧车窗' },
-    article: { ru: 'Статья 11. Боковое и заднее остекление', en: 'Article 11. Side and Rear Windows', cn: '第11条 侧窗及后窗' },
-    desc: { ru: 'Оригинальные с плёнкой ≥100 мкм изнутри или пластик 3–5 мм', en: 'OEM with inside safety film >=100um or polycarbonate 3-5mm', cn: '原厂带内部防爆膜≥100微米或3-5mm聚碳酸酯板' },
+    title: { ru: '1.7 Боковые стёкла', en: '1.7 Side Windows', cn: '1.7 侧窗玻璃' },
+    article: { ru: 'Статья 31. Лобовое и заднее стекло (Боковые стёкла)', en: 'Article 31. Windshield and rear window (Side windows)', cn: '第31条 前风挡及后窗玻璃（侧窗）' },
+    desc: { ru: 'Оригинальные с плёнкой изнутри или пластик 3–5 мм', en: 'OEM glass with protective film inside or rigid plastic 3-5mm', cn: '原厂玻璃内侧粘贴防爆膜或3-5mm硬质塑料板' },
     rule: {
-      ru: 'Боковые стекла: оригинальные закаленные должны быть оклеены изнутри защитной пленкой ≥100 мкм, либо заменены на поликарбонат 3-5 мм с надежной фиксацией.',
-      en: 'Side windows: OEM toughened glass must have internal transparent anti-shatter film (min 100 microns), or be replaced with 3-5mm polycarbonate securely fastened.',
-      cn: '侧车窗：原厂钢化玻璃内侧必须贴有厚度≥100微米的透明防爆膜；或换装3-5mm厚聚碳酸酯赛用透明板并可靠固定。'
+      ru: 'Оригинальные боковые и заднее окна, изготовленные из стекла, должны быть оклеены с внутренней стороны защитной плёнкой, предотвращающей образование осколков при разрушении. Допускаются прозрачные жёсткие пластиковые панели толщиной не менее 3 мм не более 5 мм. Стёкла полностью закрывают проёмы.',
+      en: 'Original glass side and rear windows must be lined on the interior with protective film to prevent shattering. Transparent rigid plastic panels, thickness 3-5 mm, are permitted. Windows must fully cover openings; no components may protrude beyond the glass plane or exterior surface.',
+      cn: '原厂玻璃侧窗及后窗必须在内侧粘贴防爆膜以防破碎。允许使用厚度3-5mm的透明硬质塑料板。车窗必须完全覆盖开口；任何部件不得突出于玻璃平面或外表面。'
     },
     action: { ru: 'Оклеить боковые стекла защитной пленкой или установить поликарбонат.', en: 'Apply safety film inside OEM glass or fit polycarbonate.', cn: '在车窗内侧贴防爆防碎膜或换装聚碳酸酯板。' }
   },
   {
     code: '1.8',
-    title: { ru: 'Зеркала заднего вида', en: 'Rearview Mirrors', cn: '后视镜' },
-    article: { ru: 'Статья 12. Зеркала заднего вида', en: 'Article 12. Rearview Mirrors', cn: '第12条 后视镜' },
+    title: { ru: '1.8 Зеркала заднего вида', en: '1.8 Rearview Mirrors', cn: '1.8 后视镜' },
+    article: { ru: 'Статья 30. Зеркала заднего вида', en: 'Article 30. Rearview Mirrors', cn: '第30条 后视镜' },
     desc: { ru: '2 наружных зеркала, площадь каждого ≥60 см²', en: '2 external mirrors, reflective area of each >=60 cm2', cn: '左右2个外部后视镜，每个镜面有效面积≥60 cm2' },
     rule: {
-      ru: 'Автомобиль должен быть оборудован двумя внешними зеркалами заднего вида. Площадь зеркального элемента каждого зеркала должна составлять не менее 60 см².',
-      en: 'Car must be equipped with 2 external rearview mirrors. Reflective surface area of each mirror must be at least 60 cm2.',
-      cn: '赛车必须配备左、右2个外后视镜。每个后视镜的有效反光镜面面积不得小于60平方厘米。'
+      ru: 'Обзор назад обеспечивается двумя наружными зеркалами в штатных местах (допустимы стандартные). Площадь зеркального элемента каждого не менее 60 см².',
+      en: 'Rear visibility must be provided by two external mirrors in factory locations (standard mirrors permitted). Minimum reflective surface area per mirror: 60 cm².',
+      cn: '后方视野必须由两个位于原厂位置的外部后视镜提供（允许使用标准后视镜）。每个后视镜的最小反射面积：60 cm²。'
     },
     action: { ru: 'Установить зеркала требуемой площади (не менее 60 см²).', en: 'Install regulation mirrors meeting min 60 cm2 area.', cn: '安装有效镜面面积≥60cm2的后视镜。' }
   },
   {
     code: '1.9',
-    title: { ru: 'Стоп-сигналы', en: 'Brake Lights', cn: '刹车灯' },
-    article: { ru: 'Статья 13. Световая сигнализация и стоп-сигналы', en: 'Article 13. Lighting and Brake Lights', cn: '第13条 刹车灯与信号指示灯' },
+    title: { ru: '1.9 Стоп-сигналы', en: '1.9 Brake Lights', cn: '1.9 刹车灯' },
+    article: { ru: 'Статья 28. Осветительные приборы (Стоп-сигналы)', en: 'Article 28. Lighting equipment (Brake Lights)', cn: '第28条 照明设备（制动灯）' },
     desc: { ru: 'Исправны, светят красным при торможении (основные + дублер)', en: 'Functional red brake lights + LED strip', cn: '红光正常工作 + 高位LED灯带' },
     rule: {
-      ru: 'Обязательны исправные задние стоп-сигналы красного цвета и дополнительный верхний светодиодный дублер, срабатывающие строго синхронно с нажатием педали.',
-      en: 'Functional rear red brake lights and secondary high-mount LED brake strip required, illuminating synchronously upon brake activation.',
-      cn: '必须配备正常工作的后部红色刹车灯及高位刹车灯带，踩下制动踏板时同步点亮。'
+      ru: 'Штатные стоп-сигналы должны быть исправны. По верхней кромке заднего стекла могут устанавливаться LED-ленты, синхронизированные со стоп-сигналами. В режиме торможения они должны светить красным. Исправность обязательна на всех стадиях заезда.',
+      en: 'Factory brake lights must be functional. LED strips may be installed along the upper edge of the rear window, synchronized with the brake lights. They must emit red light when braking. Functionality is mandatory throughout all stages of a run.',
+      cn: '原厂制动灯必须功能正常。可沿后窗上边缘安装LED灯带，并与制动灯同步。制动时必须发出红光。在所有比赛阶段必须保持功能正常。'
     },
     action: { ru: 'Восстановить проводку и обеспечить синхронную работу стоп-сигналов и дублера.', en: 'Repair brake light wiring and ensure synchronous operation.', cn: '修复刹车灯线路及灯组，确保同步点亮。' }
   },
   {
     code: '1.10',
-    title: { ru: 'Передние фары', en: 'Headlights', cn: '前大灯' },
-    article: { ru: 'Статья 13. Головной свет (Фары)', en: 'Article 13. Headlights', cn: '第13条 前大灯' },
+    title: { ru: '1.10 Передние фары', en: '1.10 Headlights', cn: '1.10 前大灯' },
+    article: { ru: 'Статья 28. Осветительные приборы (Передние фары)', en: 'Article 28. Lighting equipment (Headlights)', cn: '第28条 照明设备（前大灯）' },
     desc: { ru: 'В штатных местах, видны с расстояния 50 м', en: 'Headlights in OEM locations, visible from at least 50m', cn: '前大灯位于原车标准位置，至少50米外清晰可见' },
     rule: {
-      ru: 'Передняя оптика должна быть смонтирована в штатных местах. Фары или ходовые огни должны обеспечивать отчетливую видимость автомобиля с расстояния не менее 50 метров.',
-      en: 'Front lighting mounted in OEM locations, ensuring vehicle visibility from min 50 meters in all weather conditions.',
-      cn: '前大灯必须安装在原车灯位，保证在任何条件下至少50米外清晰可见。'
+      ru: 'Должны стоять в штатных местах, быть исправными и различимыми на дистанции до 50 м. Если фары выполнены из стекла, то они должны быть дополнительно оклеены прозрачной пленкой, препятствующей образованию осколков. Разрешается заменить фары на фальшпанель.',
+      en: 'The headlights must be at their stock locations, be operational, and visible at distances up to 50 m. If headlights are made of glass, they must be additionally covered with transparent film to prevent shattering. Headlights may be replaced with a dummy panel (fake cover).',
+      cn: '前大灯必须安装在原厂位置，功能正常，且在50米距离内可见。若前大灯为玻璃材质，必须额外粘贴透明防爆膜以防破碎。前大灯可更换为装饰面板（假盖）。'
     },
     action: { ru: 'Закрепить фары и обеспечить надежное электропитание.', en: 'Mount headlights securely and connect functional wiring.', cn: '固定前大灯并恢复正常供电线路。' }
   },
   {
     code: '1.11',
-    title: { ru: 'Внешний выключатель массы', en: 'External Master Switch', cn: '外部总电源开关' },
-    article: { ru: 'Статья 19. Внешний аварийный выключатель массы', en: 'Article 19. External Master Cut-off Switch', cn: '第19条 外部电源总断路开关' },
-    desc: { ru: 'Знак «красная Е» или молния в синем треугольнике ∅10–12 см', en: 'Marked symbol ∅10-12cm, beneath windshield or rear pillar', cn: '红色"E"/闪电标识 ∅10-12cm，位于挡风玻璃或后柱下沿' },
+    title: { ru: '1.11 Внешний выключатель массы', en: '1.11 Master Switch (External)', cn: '1.11 主电源切断开关（外部）' },
+    article: { ru: 'Статья 26. Электрооборудование (Главный выключатель массы)', en: 'Article 26. Electrical equipment (Master electrical cut-off switch)', cn: '第26条 电气系统（主电源切断开关）' },
+    desc: { ru: 'Знак молнии в синем треугольнике (сторона 12 см), под лобовым/задним стеклом', en: 'Red spark in blue triangle (12cm side), under windshield or rear pillar', cn: '边长12cm蓝色三角红闪电标识，位于前风挡或后立柱' },
     rule: {
-      ru: 'Привод внешнего аварийного выключателя массы располагается в нижней части рамки лобового стекла или задней стойки. Обозначается знаком ∅10–12 см.',
-      en: 'External electrical cut-off pull/switch located at lower windshield corner or rear pillar. Marked by official sticker with red spark in blue triangle or letter E.',
-      cn: '外部电源总切断拉环必须设置在前挡风下沿或后柱，张贴带有蓝色三角红闪电或红色"E"的标准标识。'
+      ru: 'Должны быть независимые органы управления внутри и снаружи; внешний выключатель — стационарный. Рядом с наружным органом наносится знак по образцу (треугольник со сторонами 12 см). Наружный привод выключателя должен быть установлен под лобовым стеклом; если капот у основания стекла поднят, разместить на панели кузова под задним окном или на задней стойке.',
+      en: 'Independent internal and external controls are required; the external switch must be permanently mounted. A marking according to the sample (triangle with 12 cm sides) must be placed next to the external control. The external cut-off switch must be mounted under the windshield, or relocated to the body panel under the rear window or rear pillar.',
+      cn: '必须设置独立的内部与外部控制装置；外部开关必须永久固定。外部控制装置旁必须张贴标识（边长12cm的三角形）。外部切断开关必须安装于前风挡玻璃下方，或移至后窗下方的车身面板上或后车顶立柱的侧表面。'
     },
     action: { ru: 'Установить привод выключателя массы наружу и нанести знак.', en: 'Fit external master switch cable and regulation decal.', cn: '布置外部断电开关拉索并张贴标准标识贴纸。' }
   },
   {
     code: '1.12',
-    title: { ru: 'Внешний привод пожаротушения', en: 'External Extinguisher Pull', cn: '外部灭火控制手柄' },
-    article: { ru: 'Статья 23. Внешний привод системы пожаротушения', en: 'Article 23. External Fire Extinguisher Release', cn: '第23条 外部灭火控制手柄' },
-    desc: { ru: 'Рядом с выключателем массы, наклейка «красная Е» ∅10 см', en: 'Adjacent to cut-off switch, marked with Red E decal', cn: '紧邻总开关，带有白底红圈红"E"标识 ∅10cm' },
+    title: { ru: '1.12 Внешний привод пожаротушения', en: '1.12 External Extinguisher Pull', cn: '1.12 外部灭火启动点' },
+    article: { ru: 'Статья 6. Система пожаротушения', en: 'Article 6. Fire suppression system', cn: '第6条 灭火系统' },
+    desc: { ru: 'Рядом с выключателем массы, наклейка «красная Е в красном круге» ∅10–12 см', en: 'Adjacent to master cut-off, marked with Red E decal (10-12cm)', cn: '靠近外部电源总开关，带白底红圈红"E"标识（直径10-12cm）' },
     rule: {
-      ru: 'Внешний спусковой механизм СПТ должен располагаться рядом с выключателем массы. Обозначается наклейкой ∅10 см с красной буквой «E».',
-      en: 'External fire trigger handle located directly adjacent to electrical cut-off. Marked by 10cm round decal with red letter E in white circle.',
-      cn: '外部灭火触发拉柄必须紧靠外部电源开关，并张贴直径10cm的白底红圈红"E"灭火标识。'
+      ru: 'Внешний привод активации системы пожаротушения должен находиться в непосредственной близости от внешнего привода главного выключателя электрооборудования либо совмещён с ним и обозначен наклейкой «Красная Е в красном круге на белом фоне» диаметром 10-12 см.',
+      en: 'The external activation point must be located close to the external master electrical switch cut-off, or combined with it, and clearly marked with a sticker: "Red E inside a red circle on a white background", diameter 10-12 cm.',
+      cn: '外部启动点必须靠近外部主电源切断开关，或与其集成，并清晰张贴标识贴纸："白色背景上红色圆圈内含红色字母 E"，直径 10–12 cm。'
     },
     action: { ru: 'Вывести трос СПТ наружу рядом с выключателем массы и нанести знак «Е».', en: 'Route extinguisher release cable outside and affix decal E.', cn: '将灭火器钢索引出车外并张贴红色"E"贴纸。' }
   },
   {
     code: '1.13',
-    title: { ru: 'Выхлопная система', en: 'Exhaust System', cn: '排气系统' },
-    article: { ru: 'Статья 14. Выхлопная система', en: 'Article 14. Exhaust System', cn: '第14条 排气系统规范' },
-    desc: { ru: 'Металл, 15–20 см от бака/магистралей, выступ ≤10 мм за кузов', en: 'Metal pipe, 15-20cm from fuel tank, exits rear/side, protrusion <=10mm', cn: '全金属管路，离油箱15-20cm以上，朝后或侧方，突出车身≤10mm' },
+    title: { ru: '1.13 Выхлопная система', en: '1.13 Exhaust System', cn: '1.13 排气系统' },
+    article: { ru: 'Статья 17. Выпускная система', en: 'Article 17. Exhaust System', cn: '第17条 排气系统' },
+    desc: { ru: 'Металл, 15–20 см от бака, направлен назад/вбок, не выступает за кузов', en: 'Metallic, 15-20cm from fuel tank, exits rear/side, no protrusion past body', cn: '金属材质，离油箱15-20cm，朝后或侧方，不得突出车身轮廓' },
     rule: {
-      ru: 'Выхлопная труба полностью металлическая, проходит на расстоянии не менее 15–20 см от бака/магистралей (или имеет термоэкран). Выступ за кузов — не более 10 мм.',
-      en: 'Exhaust must be entirely metal, passing min 15-20cm from fuel cell and lines (or heat shielded). Protruding no more than 10mm past body perimeter.',
-      cn: '排气管必须为全金属结构，距油箱及管路至少15-20cm（或加隔热板）。伸出车身外沿不得超过10mm。'
+      ru: 'Система выпуска должна быть металлической. Конец выхлопной трубы должен находиться на расстоянии не менее 15-20 см от топливного бака, выступать за заднюю плоскость колеса и быть направлен наружу от шины. Окончание трубы системы выпуска не должно выступать за периметр кузова. Вывод выхлопной трубы в переднее крыло запрещен. Проводка через кокпит запрещена.',
+      en: 'Exhaust system design is unrestricted, but must be metallic. Exhaust outlet must be positioned at least 15-20 cm from the fuel tank, protruding beyond the rear plane of the wheel and directed outward. The exhaust outlet must not protrude beyond the body perimeter. Routing through cockpit or into front fender is prohibited.',
+      cn: '排气系统必须为金属材质。排气出口位置要求：距燃油箱≥15–20 cm；突出于车轮后平面；朝外导向，远离轮胎。排气出口不得突出于车身轮廓之外。禁止将排气管穿过驾驶舱或导入前翼子板内。'
     },
     action: { ru: 'Укоротить выхлоп по контуру кузова и установить термоэкран.', en: 'Trim exhaust flush with bodywork and install heatshielding.', cn: '将排气尾管修剪至车身轮廓内，加装隔热罩。' }
   },
   {
     code: '1.14',
-    title: { ru: 'Шины', en: 'Tires', cn: '轮胎规范' },
-    article: { ru: 'Статья 15. Требования к шинам', en: 'Article 15. Tire Regulations', cn: '第15条 轮胎技术规范' },
-    desc: { ru: 'Дорожный рисунок, глубина ≥1.6 мм, слики и химобработка запрещены', en: 'Road tread pattern, depth >=1.6mm, slicks and chemical treatment forbidden', cn: '民用花纹，花纹深度≥1.6mm，严禁光头胎及化学软化' },
+    title: { ru: '1.14 Шины', en: '1.14 Tires', cn: '1.14 轮胎规范' },
+    article: { ru: 'Статья 34. Шины и диски (Шины)', en: 'Article 34. Tires and Wheels (Tires)', cn: '第34条 轮胎及轮圈（轮胎）' },
+    desc: { ru: 'Без повреждений и корда, химобработка запрещена, слики запрещены. Зад R18 265/35', en: 'No cord/damage, no chemical treatment, slicks prohibited. Rear max R18 265/35', cn: '无帘线外露，严禁化学软化，严禁光头胎。后轮最大R18 265/35' },
     rule: {
-      ru: 'Разрешены только дорожные радиальные шины с рисунком протектора с остатком не менее 1.6 мм. Слики (включая резаные) и химическая обработка строго запрещены.',
-      en: 'Only road-legal radial tires with molded tread pattern permitted (min 1.6mm depth). Racing slicks and chemical softening strictly forbidden.',
-      cn: '仅限带有胎面花纹的民用半热熔轮胎（深度≥1.6mm）。严禁使用光头胎（含手工开槽）及任何化学软化处理。'
+      ru: 'Разрешается использование любых автомобильных шин, без видимых повреждений и деформаций. Запрещена любая химическая обработка шин. Запрещено использование шин, поврежденных или изношенных до выступания корда. Слики (полностью гладкие, в т.ч. дорезанные) — запрещены. Ограничение шин на ведущей: Зад размер шин R18 265/35, давление без ограничений. Дистанционное регулирование запрещено.',
+      en: 'Any automotive tires permitted, provided they show no visible damage, deformation, or exposed cords. Chemical treatments are prohibited. Slicks (completely smooth, including hand-cut) are prohibited. Driven Axle Requirements: Rear max size R18 265/35, tire pressure unrestricted. Remote pressure adjustment prohibited.',
+      cn: '允许使用任何汽车轮胎，前提是无明显损伤、变形或帘线外露。禁止化学处理。禁止使用光头胎（完全光滑，包括手工切割）。驱动轴限制：后轮最大规格 R18 265/35。胎压不限。禁止远程胎压调节。'
     },
     action: { ru: 'Заменить шины на разрешенную серию регламента RDS.', en: 'Mount eligible series-approved tires.', cn: '更换符合规则许可的常规民用花纹半热熔轮胎。' }
   },
   {
     code: '1.15',
-    title: { ru: 'Диски и крепеж', en: 'Wheels & Studs', cn: '轮毂与轮栓' },
-    article: { ru: 'Статья 15. Колесные диски и крепеж', en: 'Article 15. Wheels and Fasteners', cn: '第15条 轮圈及车轮固定件' },
-    desc: { ru: 'Металл (магний запрещён), шпильки не выступают, все гайки затянуты', en: 'Metal (magnesium prohibited), studs not protruding, all nuts tight', cn: '金属材质（严禁镁合金），螺栓螺母齐全，螺柱不得异常突出' },
+    title: { ru: '1.15 Диски и колесный крепеж', en: '1.15 Wheels and Fasteners', cn: '1.15 轮圈与固定件' },
+    article: { ru: 'Статья 34. Шины и диски (Диски)', en: 'Article 34. Tires and Wheels (Wheels)', cn: '第34条 轮胎及轮圈（轮圈）' },
+    desc: { ru: 'Металл (магний запрещён), шпильки не выступают, все болты/гайки на месте', en: 'Metallic (magnesium prohibited), studs flush, all bolts/nuts secure', cn: '金属材质（严禁镁合金），螺栓螺母齐全，螺柱不得异常突出' },
     rule: {
-      ru: 'Диски из алюминиевых или стальных сплавов (магний запрещен). Зацепление гайки шпилькой должно быть не менее диаметра резьбы. Все гайки должны быть затянуты.',
-      en: 'Wheels made of aluminum or steel alloys. Magnesium wheels strictly prohibited. Studs must engage nut by at least the thread diameter.',
-      cn: '轮毂仅限铝合金或钢制。严禁使用镁合金轮毂。轮栓旋入螺母深度至少达到螺纹公称直径。'
+      ru: 'Колесные диски должны быть изготовлены из металла. Диски, изготовленные из магния или сплавов на его основе, запрещены. Шпильки не должны выступать за внешнюю плоскость колёсного диска. Все колёса должны быть надёжно закреплены колесными болтами или гайками. Не допускается отсутствие болта или гайки крепления колеса.',
+      en: 'Wheels must be metallic. Magnesium or magnesium-alloy wheels are prohibited. Wheel studs must not protrude beyond the rim outer face. All wheels must be securely fastened with wheel bolts or nuts. No missing bolts or nuts are allowed.',
+      cn: '轮圈设计不限，但必须为金属材质。禁止使用镁或镁合金轮圈。轮螺栓/螺柱不得突出于轮圈外表面。所有车轮必须牢固固定；禁止缺少螺栓或螺母。'
     },
     action: { ru: 'Установить полный комплект закрытых гаек и проверить затяжку.', en: 'Install complete set of correct lug nuts and torque to spec.', cn: '补齐全部规定轮毂螺母并按标准扭矩上紧。' }
   },
   {
     code: '1.16',
-    title: { ru: 'Обязательные наклейки на кузове', en: 'Mandatory Decals', cn: '强制车身贴纸' },
-    article: { ru: 'Статья 32. Обязательные наклейки на кузове', en: 'Article 32. Mandatory Championship Decals', cn: '第32条 强制车身车贴规范' },
-    desc: { ru: 'Номера на дверях/капоте, баннер RDS на лобовом, спонсоры, флаг, фамилия', en: 'Door/hood numbers, RDS windshield banner, sponsors, flag, driver name', cn: '两侧车门及机盖号码牌、前挡RDS遮阳条、赞助商车贴、国旗及车手姓名' },
+    title: { ru: '1.16 Наклейки на кузове', en: '1.16 Body decals/livery', cn: '1.16 车身贴纸/涂装' },
+    article: { ru: 'Статья 32. Наклейки на кузове', en: 'Article 32. Body decals/livery', cn: '第32条 车身贴纸/涂装' },
+    desc: { ru: 'Номера на дверях/капоте, баннер RDS на лобовом, спонсоры, флаг, фамилия, группа крови', en: 'Numbers, RDS banner, sponsors, flag, driver surname, blood type', cn: '门板车号、前挡RDS遮阳条、赞助商车贴、国旗、车手姓名、血型' },
     rule: {
-      ru: 'Автомобиль обязан нести полную официальную оклейку чемпионата: стартовые номера на дверях и капоте, баннер Royal Drift Series на лобовом стекле, спонсоры серии, флаг и фамилия на стеклах.',
-      en: 'Vehicle must carry complete official livery: competition numbers on doors and hood, Royal Drift Series windshield banner, title sponsor decals, and driver name with national flag.',
-      cn: '赛车车身必须完整张贴官方车贴：两侧车门及机盖号码牌、前挡风玻璃顶部Royal Drift Series遮阳条、赞助商车贴，以及后侧窗车手姓名及国旗标识。'
+      ru: 'Рекламные наклейки должны быть размещены в соответствии с регламентом соревнования. На задних боковых стёклах или передних крыльях с двух сторон указываются: флаг страны, выдавшей лицензию, фамилия водителя и первая буква имени, группа крови. Стартовые номера размещаются с противоположной стороны от водителя, наклейки группы тренировок наклеить ниже номера.',
+      en: 'Advertising decals must be placed in accordance with the competition regulations. On rear side windows or front fenders (both sides), the following must be displayed: Flag of the country, Driver surname and first initial, Blood type. Start numbers must be placed on the side opposite the driver.',
+      cn: '广告贴纸必须按照比赛规则放置。在后侧窗或前翼子板（两侧）必须显示以下内容：颁发车手执照国家的国旗、车手姓氏及名字首字母、血型。起步号码必须放置在车手对侧。训练组别贴纸必须贴在前风挡起步号码下方。'
     },
     action: { ru: 'Получить в штабе соревнований недостающие спонсорские наклейки и наклеить по схеме.', en: 'Obtain missing official decals from race HQ and apply strictly per diagram.', cn: '前往赛事指挥部领取缺失的官方贴纸，并严格按官方图纸位置张贴。' }
   }
 ];
 
-/* --- 25 ВНУТРЕННИХ ПУНКТОВ: ТОЧНАЯ ПРИВЯЗКА К СТАТЬЯМ РЕГЛАМЕНТА --- */
+/* --- 25 ВНУТРЕННИХ ПУНКТОВ: ТОЧНАЯ ПРИВЯЗКА К СТАТЬЯМ РЕГЛАМЕНТА RDS --- */
 const CHECKLIST_INT = [
   {
     code: '2.1',
-    title: { ru: 'Каркас: основные дуги и маркировка', en: 'Roll Cage: Main Hoops & Tag', cn: '防滚架：主圈及认证钢印' },
-    article: { ru: 'Статья 8. Каркас безопасности', en: 'Article 8. Safety Roll Cage', cn: '第8条 安全防滚架规范' },
-    desc: { ru: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт', en: 'Main & front hoops ∅45/50mm, 6-digit number, passport', cn: '主圈及前圈∅45/50mm，6位编号，铭牌及认证手册' },
+    title: { ru: '2.1 Каркас: основные дуги и паспорт', en: '2.1 Safety Cage: Main Hoops & Tag', cn: '2.1 防滚架：主圈及认证钢印' },
+    article: { ru: 'Статья 2. Каркас безопасности', en: 'Article 2. Safety Cage (Roll Cage)', cn: '第2条 防滚架/安全架' },
+    desc: { ru: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт', en: 'Main & front hoops ∅45/50mm, 6-digit serial, ASN tag/passport', cn: '主圈及前圈∅45/50mm，6位编号，铭牌及认证手册' },
     rule: {
-      ru: 'Главная и передняя дуги из бесшовной трубы ∅45×2.5 или ∅50×2.0 мм. Обязателен технический паспорт и четкий выбитый 6-значный номер.',
-      en: 'Main and front hoops cold drawn seamless steel tube ∅45x2.5 or ∅50x2.0mm. Must have official ASN passport and 6-digit stamped serial.',
-      cn: '主防滚圈必须采用∅45x2.5或∅50x2.0mm冷拔无缝碳钢管。必须具备官方注册手册及清晰的6位防滚架编号钢印。'
+      ru: 'Во всех автомобилях должен быть установлен каркас безопасности по требованиям Приложения J ст. 253-8 FIA либо омологированный ASN. Каркас должен иметь идентификационную табличку: наименование производителя, номер омологации/сертификата, индивидуальный серийный номер. Трубы: сталь холоднотянутая бесшовная 45х2.5 мм или 50х2.0 мм.',
+      en: 'All cars must be equipped with a safety cage conforming to FIA Appendix J Art 253-8 or ASN certified. Must have manufacturer identification plate with serial number. Cold-drawn seamless carbon steel: 45x2.5mm or 50x2.0mm for main roll bar.',
+      cn: '所有参加飘移赛事的车辆必须安装防滚架。符合FIA附录J第253-8条或ASN认证。防滚架须附带制造商固定铭牌（含序列号）。冷拔无缝非合金碳钢：主防滚圈45x2.5mm或50x2.0mm。'
     },
     action: { ru: 'Предъявить паспорт каркаса и зачистить выбитый 6-значный номер.', en: 'Present roll cage technical passport and ensure stamped number is visible.', cn: '出示防滚架认证手册，清理并确保钢印6位编号清晰可辨。' }
   },
   {
     code: '2.2',
-    title: { ru: 'Каркас: дверные брусья', en: 'Cage: Door Bars', cn: '防滚架：车门防撞横梁' },
-    article: { ru: 'Статья 8. Каркас (Боковая защита)', en: 'Article 8. Roll Cage Side Protection', cn: '第8条 防滚架侧向防撞结构' },
-    desc: { ru: 'Боковые защитные кресты или продольные брусья в проемах дверей', en: 'Door crosses or longitudinal bars in door apertures', cn: '车门防撞X支撑或双道纵向平直防撞梁' },
+    title: { ru: '2.2 Каркас: дверные брусья', en: '2.2 Safety Cage: Door Bars', cn: '2.2 防滚架：车门防撞横梁' },
+    article: { ru: 'Статья 2. Каркас безопасности (Боковая защита)', en: 'Article 2. Safety Cage (Door bars)', cn: '第2条 防滚架/安全架（车门侧向防护）' },
+    desc: { ru: 'Боковые защитные кресты или продольные брусья в проемах дверей', en: 'Door crosses or longitudinal bars in door openings', cn: '车门防撞X支撑或双道纵向平直防撞梁' },
     rule: {
-      ru: 'В дверных проемах со стороны пилота и пассажира должны быть вварены защитные кресты с усилительными косынками либо продольные брусья по ст. 253 FIA.',
-      en: 'Side protection crosses with gussets or parallel bars compliant with FIA App J Art 253 must be fitted in door openings.',
-      cn: '车门开口处必须焊装符合FIA附录J第253条的X型加强防撞梁或双道平行防撞管。'
+      ru: 'Продольные элементы (дверные планки) должны быть установлены с каждой стороны автомобиля (рис. 103-2, 103-3 или 103-4). Боковое ограждение должно быть как можно выше, но его верхняя точка не должна превышать половины высоты дверного проема. Ни при каких обстоятельствах дверная рейка не должна проходить через стойку «А» или «В» шасси.',
+      en: 'Door bars must be installed on each side of the car (Figures 103-2, 103-3, or 103-4). Side protection upper mounting point must not exceed half the height of the door opening. Under no circumstances shall a door bar pass through the chassis "A" or "B" pillar.',
+      cn: '车门防撞杆必须按照图103-2、103-3或103-4安装在车辆两侧。侧面防护装置其上部固定点距车门开口底部的高度不得超过开口总高度的一半。在任何情况下，车门防撞杆均不得穿过底盘"A"柱或"B"柱。'
     },
     action: { ru: 'Вварить недостающие усилительные элементы в дверные проемы.', en: 'Weld required door reinforcement bars in door openings.', cn: '按规范在车门处补焊符合FIA标准的防撞加强管。' }
   },
   {
     code: '2.3',
-    title: { ru: 'Каркас: опорные пластины', en: 'Cage: Base Plates', cn: '防滚架：底板支撑加固板' },
-    article: { ru: 'Статья 8. Каркас (Опорные пластины)', en: 'Article 8. Roll Cage Footplates', cn: '第8条 防滚架底板固定要求' },
-    desc: { ru: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥3 мм', en: 'Chassis baseplates: area >=120 cm2, steel thickness >=3mm', cn: '车身加固底板：承压面积≥120 cm2，钢板厚度≥3mm' },
+    title: { ru: '2.3 Каркас: опорные пластины', en: '2.3 Safety Cage: Base Plates', cn: '2.3 防滚架：底板支撑加固板' },
+    article: { ru: 'Статья 2. Каркас безопасности (Опоры)', en: 'Article 2. Safety Cage (Mounting)', cn: '第2条 防滚架/安全架（固定板）' },
+    desc: { ru: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥2 мм', en: 'Chassis baseplates: area >=120 cm2, steel thickness >=2mm', cn: '车身加固底板：承压面积≥120 cm2，钢板厚度≥2mm' },
     rule: {
-      ru: 'Каждая опора дуги каркаса крепится к кузову через опорную пластину площадью не менее 120 см² и толщиной стали не менее 3 мм.',
-      en: 'Each roll cage foot must anchor to chassis via reinforcement baseplate with min area of 120 cm2 and steel thickness min 3mm.',
-      cn: '防滚架每个接地点必须焊接在面积不小于120平方厘米、厚度不小于3毫米的钢质加强底板上。'
+      ru: 'Каркас безопасности должен крепиться к шасси в шести (6) или используя усиление моторного щита восьми (8) точках крепления. Используя пластину толщиной не менее 2 мм, площадью не менее 120 см², приваренную к концу трубы каркаса безопасности.',
+      en: 'The safety cage must be fixed to the chassis at a minimum of six (6) mounting points, or at eight (8) points when firewall reinforcement is fitted. The mounting is a plate at least 2 mm thick, with a minimum area of 120 cm², welded to the end of the safety cage tube.',
+      cn: '防滚架须以6个点（若使用防火墙加强则为8个点）固定于底盘。管材末端须焊接厚度≥2mm、面积≥120 cm² 的加强钢板。'
     },
-    action: { ru: 'Усилить опорные пластины каркаса согласно регламенту.', en: 'Reinforce cage mounting baseplates to meet min 120 cm2 x 3mm.', cn: '将防滚架底板加强垫板升级加厚至≥3mm且面积≥120cm2。' }
+    action: { ru: 'Усилить опорные пластины каркаса согласно регламенту.', en: 'Reinforce cage mounting baseplates to meet min 120 cm2 x 2mm.', cn: '将防滚架底板加强垫板加固至厚度≥2mm且面积≥120cm2。' }
   },
   {
     code: '2.4',
-    title: { ru: 'Каркас: диагонали на главной дуге', en: 'Cage: Main Hoop Diagonals', cn: '防滚架：主圈对角斜撑' },
-    article: { ru: 'Статья 8. Каркас (Диагонали главной дуги)', en: 'Article 8. Roll Cage Diagonals', cn: '第8条 防滚架对角斜撑' },
-    desc: { ru: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов', en: 'Straight diagonals, junction <=100mm from corner mounting points', cn: '主防滚圈对角斜撑：直线平直，交汇点距离支撑拐角≤100mm' },
+    title: { ru: '2.4 Каркас: диагонали на главной дуге', en: '2.4 Safety Cage: Diagonals', cn: '2.4 防滚架：主圈对角斜撑' },
+    article: { ru: 'Статья 2. Каркас безопасности (Диагонали)', en: 'Article 2. Safety Cage (Diagonals)', cn: '第2条 防滚架/安全架（斜向部件）' },
+    desc: { ru: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов', en: 'Straight diagonals, junction <=100mm from corners/baseplates', cn: '主防滚圈对角斜撑：直线平直，交汇点距离支撑拐角≤100mm' },
     rule: {
-      ru: 'Диагональные элементы главной дуги должны быть прямолинейными. Соединение диагонали с дугой — не далее 100 мм от угла или пластины опоры.',
-      en: 'Main hoop diagonal members must be straight. Junction with hoop must be positioned within 100mm from main hoop corner or baseplate.',
-      cn: '主防滚圈对角斜撑管必须保持平直。对角支撑与主管交汇点距离拐角受力点不得超过100mm。'
+      ru: 'Защитный каркас должен иметь две диагональные стойки на главном продольном брусе. Стойки должны быть прямыми. Нижний конец диагональной стойки должен соединяться с главной дугой на расстоянии не более 100 мм от опорной ножки. Верхний конец — не более 100 мм от места соединения с задней стойкой.',
+      en: 'The safety cage must have two straight diagonal braces on the main roll bar. Uprights must be straight. The lower end must connect within 100 mm of the mounting foot; the upper end within 100 mm of its junction with the rear upright.',
+      cn: '防滚架须在主纵向部件上配置两根直斜向部件。每根斜向部件下端须连接至主防滚架，距安装底座不超过100毫米；上端连接处距后立柱连接处不超过100毫米。'
     },
     action: { ru: 'Переварить диагональ в пределы 100 мм от узла главной дуги.', en: 'Re-weld diagonals to meet 100mm junction tolerance.', cn: '重新修正主圈对角斜撑交汇位置至100mm允许公差以内。' }
   },
   {
     code: '2.5',
-    title: { ru: 'Каркас: защитные накладки', en: 'Cage: Protective Padding', cn: '防滚架：阻燃缓冲保护垫' },
-    article: { ru: 'Статья 8. Каркас (Защитные накладки)', en: 'Article 8. Roll Cage Padding (FIA 8857-2001)', cn: '第8条 防滚架防撞吸能垫' },
+    title: { ru: '2.5 Каркас: защитные накладки', en: '2.5 Safety Cage: Padding', cn: '2.5 防滚架：阻燃缓冲保护垫' },
+    article: { ru: 'Статья 2. Каркас безопасности (Накладки)', en: 'Article 2. Safety Cage (Padding)', cn: '第2条 防滚架/安全架（缓冲垫）' },
     desc: { ru: 'Зоны контакта со шлемом/пилотом: негорючие накладки омологации FIA 8857-2001', en: 'Helmet/body contact zones: FIA 8857-2001 certified fireproof padding', cn: '车手头部及肢体碰撞接触区包裹FIA 8857-2001阻燃泡棉' },
     rule: {
-      ru: 'Трубы каркаса в зонах возможного контакта со шлемом пилота должны быть закрыты сертифицированными накладками по стандарту FIA 8857-2001.',
-      en: 'All roll cage tubes within possible contact zone with driver helmet or limbs must be covered with FIA 8857-2001 certified high-density padding.',
-      cn: '在车手头部头盔或躯干可能碰撞接触的所有防滚架管件表面，必须包裹符合FIA 8857-2001标准的高密度阻燃吸能防撞衬垫。'
+      ru: 'Зоны возможного контакта с телом пилота допускается покрывать несгораемыми демпфирующими материалами. Зоны контакта шлема — постоянно закреплёнными накладками типа FIA 8857-2001, Тип А (Технический лист FIA № 23). Никакие провода и трубопроводы не могут располагаться между каркасом и внешними панелями.',
+      en: 'Areas where the driver might come into contact may be covered with fireproof padding. Helmet contact zones must use permanently fixed padding that complies with FIA 8857-2001, Type A (FIA Technical List No. 23). Routing wires/pipes between cage and body is prohibited.',
+      cn: '车手可能接触的区域可覆盖防火缓冲垫。头盔接触区必须使用永久性固定的缓冲垫，符合 FIA 8857-2001 A型标准（FIA技术清单 No.23）。电线、管路不得布设于防滚架与车身外板之间。'
     },
     action: { ru: 'Установить энергопоглощающие накладки омологации FIA 8857-2001.', en: 'Fit certified FIA 8857-2001 fireproof roll bar padding.', cn: '在车手头部接触区域安装FIA 8857-2001认证防撞阻燃保护衬垫。' }
   },
   {
     code: '2.6',
-    title: { ru: 'Спортивное сиденье (ковш)', en: 'Racing Seat', cn: '赛车座椅' },
-    article: { ru: 'Статья 20. Сиденье пилота и крепления', en: 'Article 20. Racing Seats & Mounts', cn: '第20条 赛车座椅与安装支架' },
-    desc: { ru: 'Ковш FIA 8855/8862, 4 точки, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9', en: 'Bucket seat FIA 8855/8862, 4 points, brackets steel >=3mm / alu >=5mm, bolts M8 10.9', cn: 'FIA 8855/8862认证，4点固定，支架钢≥3mm/铝≥5mm，高强度螺栓M8 10.9' },
+    title: { ru: '2.6 Спортивное сиденье (ковш)', en: '2.6 Racing Seat & Mounts', cn: '2.6 赛车座椅与安装支架' },
+    article: { ru: 'Статья 5. Сиденья, точки крепления и кронштейны', en: 'Article 5. Seats, Mounting Points, and Brackets', cn: '第5条 座椅、安装点及支架' },
+    desc: { ru: 'Ковш FIA 8855/8862, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9', en: 'Bucket seat FIA 8855/8862, steel brackets >=3mm / alu >=5mm, bolts M8 10.9', cn: 'FIA 8855/8862认证，支架钢≥3mm/铝≥5mm，高强度螺栓M8 10.9' },
     rule: {
-      ru: 'Спортивное сиденье с омологацией FIA. Крепление на 4 болтах М8 класса не ниже 10.9 через стальные кронштейны ≥3 мм (или алюминиевые ≥5 мм) с шайбами пола ≥40 см².',
-      en: 'Bucket seat with valid FIA homologation. Mounted via steel brackets min 3mm (or alu min 5mm), 4xM8 bolts min grade 10.9 with floor plates min 40 cm2.',
-      cn: '桶椅必须具有FIA认证。采用≥3mm钢制（或≥5mm铝制）支架，4颗公称直径≥M8、强度等级≥10.9的高强度螺栓固定，底板加强垫片面积≥40cm2。'
+      ru: 'Штатные сиденья заменяются на сиденья спортивного типа (рекомендуется FIA 8855/1999, 8855-2021 или 8862/2009). Сиденье крепится в четырёх точках болтами ∅≥8 мм класса прочности 10.9. Кронштейны — сталь толщиной ≥3 мм или алюминий ≥5 мм. Площадь контакта на каждую точку между кронштейном, кузовом и усиливающей пластиной ≥40 см² (толщина пластины ≥3 мм). Толщина подкладки между пилотом и сиденьем не более 50 мм.',
+      en: 'Standard seats must be replaced with racing-type seats (FIA 8855/1999, 8855-2021, or 8862/2009 recommended). Secured with four bolts, ∅>=8 mm, grade 10.9. Brackets steel min 3mm or alu min 5mm. Reinforcing plate area >=40 cm² (thickness >=3mm). Padding thickness <=50 mm.',
+      cn: '原厂座椅必须更换为赛车专用座椅（推荐8855/1999、8855-2021或8862/2009认证）。座椅必须采用四点固定，螺栓直径≥8mm，强度等级10.9。支架钢制≥3mm或铝制≥5mm。加强板单块面积≥40cm²，厚度≥3mm。车手与座椅之间的衬垫厚度≤50mm。'
     },
     action: { ru: 'Заменить болты сиденья на класс 10.9 и установить усилительные пластины пола.', en: 'Replace seat bolts with grade 10.9 hardware and reinforce floor mounts.', cn: '将座椅固定螺栓升级为10.9级高强度螺栓并加装底板钢垫片。' }
   },
   {
     code: '2.7',
-    title: { ru: 'Ремни безопасности', en: 'Safety Harness', cn: '赛车安全带' },
-    article: { ru: 'Статья 21. Ремни безопасности', en: 'Article 21. Safety Harnesses', cn: '第21条 赛车安全带规范' },
+    title: { ru: '2.7 Ремни безопасности', en: '2.7 Safety Harnesses', cn: '2.7 赛车安全带' },
+    article: { ru: 'Статья 4. Ремни безопасности', en: 'Article 4. Safety harnesses', cn: '第4条 赛车安全带' },
     desc: { ru: '5/6-точечные, действующая омологация FIA 8854/98 или 8853-2016, металл замки', en: '5/6-point, valid FIA 8854/98 or 8853-2016 homologation, metal tongue tangs', cn: '5/6点式，有效FIA 8854/98或8853-2016认证，全金属搭扣锁舌' },
     rule: {
-      ru: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8854/98 или 8853-2016. Металлические защелки без следов износа и повреждений.',
-      en: 'Mandatory 5- or 6-point safety harness with valid FIA 8854/98 or 8853-2016 homologation. Metal latch mechanism, no frayed edges, cuts, burns or chemical degradation.',
-      cn: '必须使用5点或6点式赛车安全带，具有有效FIA 8854/98或8853-2016认证标签。金属快脱锁扣完好，织带无破损老化。'
+      ru: 'В автомобиле должны быть установлены ремни, имеющие 5 или 6 точек крепления к кузову, с омологацией FIA 8854/98 или 8853-2016. Фиксирующие зубья пряжки металлические, механизм с поворотной пряжкой-замком, имеющие действующую омологацию. После серьёзного удара, при порезах или старении ремни подлежат замене.',
+      en: 'Cars must be equipped with 5-point or 6-point safety harnesses mounted to the body/chassis, homologated to FIA standard 8854/98 or 8853-2016. Buckle teeth must be metallic with rotary lock. Defective or compromised harnesses must be replaced immediately.',
+      cn: '车辆必须配备5点式或6点式赛车安全带，固定于车身/底盘。安全带必须符合 FIA 标准 8854/98 或 8853-2016 认证。锁扣齿必须为金属材质，旋转式锁扣。受损或老化安全带必须立即更换。'
     },
     action: { ru: 'Установить ремни безопасности с неистекшим сроком FIA.', en: 'Replace harness with valid in-date FIA homologated set.', cn: '换装在FIA认证有效期内的5/6点式正品赛车安全带。' }
   },
   {
     code: '2.8',
-    title: { ru: 'Точки крепления ремней', en: 'Harness Anchors', cn: '安全带固定锚点' },
-    article: { ru: 'Статья 21. Точки крепления ремней', en: 'Article 21. Harness Anchors', cn: '第21条 安全带固定锚点' },
-    desc: { ru: 'К кузову (7/16-20 UNF, контрпластины ≥40 см²×3 мм) или harness bar (запрещено к сиденью!)', en: 'To chassis (7/16-20 UNF, plates >=40cm2x3mm) or harness bar (forbidden to seat sliders)', cn: '固定于车身加强板（7/16-20 UNF，垫板≥40cm2×3mm）或防滚架拉带梁（严禁固定于座椅/滑轨）' },
+    title: { ru: '2.8 Точки крепления ремней', en: '2.8 Harness Anchors', cn: '2.8 安全带固定锚点' },
+    article: { ru: 'Статья 4. Ремни безопасности (Установка)', en: 'Article 4. Safety harnesses (Installation)', cn: '第4条 赛车安全带（安装要求）' },
+    desc: { ru: 'К кузову/каркасу (строго запрещено к сиденью или салазкам!)', en: 'To body/chassis or cage (strictly prohibited to seat/sliders)', cn: '固定于车身/底盘或防滚架横梁（严禁固定于座椅或滑轨）' },
     rule: {
-      ru: 'Поясные лямки крепятся только к усиленным точкам кузова с резьбой 7/16-20 UNF и пластинами ≥40 см² толщиной ≥3 мм. Плечевые — на harness bar каркаса. Крепить ремни к сиденью запрещено.',
-      en: 'Lap straps anchor to reinforced floor/tunnel points with 7/16-20 UNF thread and min 40 cm2 x 3mm plates. Shoulder straps wrap around cage harness bar. Forbidden to attach to seat sliders.',
-      cn: '腰带必须使用7/16-20 UNF螺栓固定在加装有≥40cm2×3mm钢垫板的车身骨架上。肩带缠绕在防滚架横梁上。严禁固定于座椅本体或滑轨。'
+      ru: 'Запрещено крепить ремни к сиденью или его салазкам/кронштейнам. Допускается крепление к штатным точкам кузова либо создание новых точек с использованием закладных с рым-болтами (использование строительных рым-болтов запрещено). Плечевые ремни можно крепить к каркасу или охватывать трубу-перемычку под углом не более 45° от спинки.',
+      en: 'Prohibited: Attaching harnesses to the seat or its sliders/brackets. Shoulder straps angle not exceeding 45° from the top edge of seatback. If standard points cannot be used, reinforced inserts with eye bolts must be created. The use of non-racing grade hardware (standard construction eye bolts) is strictly forbidden.',
+      cn: '禁止将安全带固定于赛车座椅或其滑轨/支架上。肩带倾角不得超过45°。若无法使用标准安装点，必须通过加强衬套配合赛用眼螺栓创建新固定点。严禁使用非赛车级五金件（如普通建筑用眼螺栓）。'
     },
     action: { ru: 'Перенести точки крепления ремней с салазок сиденья на кузов/каркас.', en: 'Relocate harness anchors from seat sliders to chassis/cage.', cn: '将安全带固定点从座椅滑轨转移至车身底板强化锚点或防滚架拉带梁。' }
   },
   {
     code: '2.9',
-    title: { ru: 'Система HANS/FHR', en: 'HANS/FHR Device', cn: '头颈保护系统HANS/FHR' },
-    article: { ru: 'Статья 22. Система защиты головы и шеи HANS/FHR', en: 'Article 22. FHR / HANS System', cn: '第22条 头颈保护装置' },
-    desc: { ru: 'Обязательна во всех заездах, клипсы на шлеме и поводки стандарта FIA 8858-2010', en: 'Mandatory in all sessions, helmet anchors and tether straps FIA 8858-2010', cn: '强制使用，与头盔卡扣匹配，符合FIA 8858-2010认证' },
+    title: { ru: '2.9 Система HANS/FHR', en: '2.9 HANS/FHR System', cn: '2.9 头颈保护系统HANS/FHR' },
+    article: { ru: 'Статья 7. Экипировка пилота', en: 'Article 7. Driver\'s safety equipment', cn: '第7条 车手安全装备' },
+    desc: { ru: 'Обязательна во всех заездах, клипсы на шлеме FIA 8858', en: 'Mandatory in all sessions, helmet anchors compliant with FIA 8858', cn: '强制使用，与头盔卡扣匹配，符合FIA 8858认证' },
     rule: {
-      ru: 'Применение системы защиты шеи HANS/FHR стандарта FIA 8858 обязательно. Клипсы на шлеме и поводки должны иметь маркировку FIA 8858-2010.',
-      en: 'Frontal Head Restraint (FHR/HANS) complying with FIA 8858 is mandatory across all on-track sessions. Helmet anchors and tether straps must bear authentic FIA 8858-2010 labels.',
-      cn: '所有上场车手必须佩戴符合FIA 8858标准的头颈保护装置（HANS/FHR）。头盔固定锚点及连接拉带必须具有清晰完好的FIA 8858-2010认证标签。'
+      ru: 'Обязательное использование систем фронтального удержания головы и шеи (HANS® Стандарт FIA 8858-2002; FHR Стандарт FIA 8858–2010 или SFI SPEC 38.1). Допускаются только шлемы, совместимые с системой защиты головы и шеи, имеющие соответствующую маркировку.',
+      en: 'Mandatory use of Frontal Head and Neck Restraint Systems (HANS® FIA 8858-2002; FHR FIA 8858-2010 or SFI SPEC 38.1). Only helmets compatible with Head and Neck Restraint systems with manufacturer-installed anchor posts are permitted.',
+      cn: '必须使用前向头颈保护系统（HANS® FIA 8858-2002；FHR FIA 8858-2010 或 SFI SPEC 38.1）。仅允许使用与头颈保护系统兼容并带有相应认证标识的头盔。'
     },
     action: { ru: 'Предоставить омологированную систему HANS и шлем с клипсами FIA.', en: 'Present valid FIA-approved HANS device and helmet anchors.', cn: '提供符合FIA认证的HANS装置及带有标准连接卡扣的头盔。' }
   },
   {
     code: '2.10',
-    title: { ru: 'Система пожаротушения (СПТ)', en: 'Fire Extinguisher System', cn: '车载灭火系统' },
-    article: { ru: 'Статья 23. Стационарная система пожаротушения', en: 'Article 23. Fire Extinguishing System', cn: '第23条 车载灭火系统' },
-    desc: { ru: 'Омологация FIA (лист №16/52), распылители: ≥2 в моторный отсек и ≥2 в ноги пилота', en: 'FIA homologated (Technical List 16/52), nozzles: >=2 into engine bay and >=2 into cockpit', cn: 'FIA认证（技术清单16/52），喷嘴覆盖驾驶舱脚部及发动机舱' },
+    title: { ru: '2.10 Система пожаротушения (СПТ)', en: '2.10 Fire Suppression System', cn: '2.10 车载灭火系统' },
+    article: { ru: 'Статья 6. Система пожаротушения', en: 'Article 6. Fire suppression system', cn: '第6条 灭火系统' },
+    desc: { ru: 'Омологация FIA (лист №16/52), сертифицирована под применяемое топливо', en: 'FIA homologated (Technical List 16/52), agent certified for fuel type', cn: 'FIA认证（技术清单16/52），灭火剂经认证适用于赛车燃油' },
     rule: {
-      ru: 'Система пожаротушения FIA (лист 16 или 52). Не менее 2 сопел направлены в двигатель и не менее 2 сопел — в ноги водителя.',
-      en: 'Vehicle must feature plumbed-in fire extinguishing system homologated by FIA (List 16 or 52). At least 2 nozzles into engine bay and 2 into cockpit footwell.',
-      cn: '赛车必须安装符合FIA技术清单第16或52号认证的管路灭火系统。至少2个喷头喷向发动机舱，至少2个喷头覆盖驾驶员脚踏板及腿部区域。'
+      ru: 'Необходимо оборудовать автомобиль системой пожаротушения, омологированной FIA (технический лист FIA № 16 и № 52). Система пожаротушения должна быть установлена согласно инструкции производителя. Огнегасящий состав должен быть сертифицирован для тушения топлива, применяемого в автомобиле.',
+      en: 'The car must be equipped with a fire suppression system homologated by the FIA (FIA Technical Lists No. 16 and No. 52). The system must be installed strictly in accordance with manufacturer instructions. The agent must be certified for the type of fuel used.',
+      cn: '车辆必须配备经国际汽联（FIA）认证的灭火系统（FIA技术清单 No.16及No.52）。系统必须严格按照制造商说明进行安装；灭火剂必须经认证适用于车辆所用燃油类型。'
     },
-    action: { ru: 'Развести сопла пожаротушения в ноги пилота и моторный отсек.', en: 'Route extinguisher nozzles correctly to footwell and engine bay.', cn: '按规范将灭火喷嘴正确布置至驾驶员脚部和机舱。' }
+    action: { ru: 'Установить сопла пожаротушения по инструкции производителя.', en: 'Install extinguisher nozzles strictly per manufacturer manual.', cn: '按规范将灭火系统喷头按厂商说明书布置安装。' }
   },
   {
     code: '2.11',
-    title: { ru: 'Внутренний привод СПТ', en: 'Internal Extinguisher Handle', cn: '驾驶员灭火触发拉手' },
-    article: { ru: 'Статья 23. Органы управления СПТ', en: 'Article 23. Fire Extinguisher Internal Pull', cn: '第23条 驾驶员灭火拉索位置' },
-    desc: { ru: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями', en: 'Easily accessible by driver strapped in harness', cn: '车手在紧固安全带坐姿状态下单手伸手可及' },
+    title: { ru: '2.11 Внутренний привод СПТ', en: '2.11 Internal Extinguisher Pull', cn: '2.11 驾驶员灭火触发装置' },
+    article: { ru: 'Статья 6. Система пожаротушения (Привод)', en: 'Article 6. Fire suppression system (Activation)', cn: '第6条 灭火系统（内部启动装置）' },
+    desc: { ru: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями', en: 'Easily accessible by driver strapped in seat with harness', cn: '车手在紧固安全带就座状态下随时单手可及' },
     rule: {
-      ru: 'Внутренняя ручка/кнопка СПТ должна располагаться в зоне прямой досягаемости руки пилота, пристегнутого ремнями в сиденье.',
-      en: 'Internal fire extinguisher trigger mechanism must be reachable by the driver seated normally with full harness tightened.',
-      cn: '驾驶舱内灭火系统手动拉手或按钮必须位于车手紧固安全带正常坐姿下单手即刻能够触及的区域。'
+      ru: 'Внутренний привод системы пожаротушения должен быть в любой момент доступен пилоту, пристегнутому в кресле.',
+      en: 'The internal activation mechanism must be easily reachable by the driver at all times while seated and harnessed.',
+      cn: '内部启动装置必须在车手就座并系好安全带的状态下随时可操作。'
     },
     action: { ru: 'Перенести ручку привода СПТ ближе к пилоту.', en: 'Relocate internal pull handle within driver arm reach.', cn: '将舱内灭火触发拉柄移至车手伸手可及的控制台或转向柱旁。' }
   },
   {
     code: '2.12',
-    title: { ru: 'Срок поверки и давление СПТ', en: 'Extinguisher Inspection Date', cn: '灭火器检定周期' },
-    article: { ru: 'Статья 23. Сроки поверки системы пожаротушения', en: 'Article 23. Extinguisher Service Interval', cn: '第23条 灭火器检定周期' },
-    desc: { ru: 'Срок поверки баллона СПТ ≤2 лет, стрелка манометра строго в зеленой зоне', en: 'Service date stamped <=2 years, pressure gauge strictly in green zone', cn: '上次检定距今≤2年，压力表指针严格保持在绿色安全区域' },
+    title: { ru: '2.12 Срок поверки СПТ', en: '2.12 Extinguisher Service Interval', cn: '2.12 灭火器检定有效期' },
+    article: { ru: 'Статья 6. Система пожаротушения (Сроки)', en: 'Article 6. Fire suppression system (Service interval)', cn: '第6条 灭火系统（有效期）' },
+    desc: { ru: 'Срок эксплуатации ≤2 лет с момента изготовления или сервиса', en: 'Valid for 2 years from manufacture or last certified service', cn: '灭火系统自制造或上次保养之日起有效期为2年' },
     rule: {
-      ru: 'Баллон СПТ должен иметь читаемый стикер поверки с датой (интервал ≤2 лет). Стрелка манометра строго в зеленой зоне.',
-      en: 'Extinguisher cylinder must carry legible inspection decal indicating service date (interval <=2 years). Pressure gauge strictly in green zone.',
-      cn: '灭火器钢瓶必须有可读的厂商检定标签，上次检验日期距今不得超过2年，压力表指针必须在绿色安全区域。'
+      ru: 'Срок эксплуатации системы пожаротушения составляет 2 года с момента изготовления или предыдущего сервисного обслуживания.',
+      en: 'The fire suppression system is valid for 2 years from the date of manufacture or from the date of the last certified service/recharge.',
+      cn: '灭火系统自制造日期或上次认证维护/重装之日起有效期为 2 年。'
     },
     action: { ru: 'Пройти поверку баллона СПТ у дилера либо заменить баллон.', en: 'Service and recertify extinguisher cylinder with certified agent.', cn: '对灭火系统进行再检定或更换全新年检钢瓶。' }
   },
   {
     code: '2.13',
-    title: { ru: 'Топливо и наклейка «ALCOHOL»', en: 'Fuel & Alcohol Decal', cn: '赛用燃料与乙醇贴纸' },
-    article: { ru: 'Статья 24. Топливо и маркировка «ALCOHOL»', en: 'Article 24. Permitted Fuel & Identification', cn: '第24条 燃料及警示标识' },
-    desc: { ru: 'Товарный бензин или этанол/E85. При спирте — наклейка «ALCOHOL» 10–12 см', en: 'Commercial gasoline or ethanol/E85; if alcohol is used, mandatory ALCOHOL sticker 10-12cm', cn: '常规汽油或E85/乙醇；使用乙醇燃料必须张贴10-12cm ALCOHOL反光贴纸' },
+    title: { ru: '2.13 Топливо и наклейка «ALCOHOL»', en: '2.13 Fuel & "ALCOHOL" Decal', cn: '2.13 燃油与乙醇贴纸' },
+    article: { ru: 'Статья 20. Топливо', en: 'Article 20. Fuel', cn: '第20条 燃油' },
+    desc: { ru: 'Бензин, дизель или спирт. При спирте — наклейка ALCOHOL с двух сторон (квадрат 10–12 см)', en: 'Gasoline, diesel, alcohol. If alcohol: ALCOHOL decal on both sides (10-12cm)', cn: '汽油、柴油、酒精。使用酒精燃料：车身两侧贴ALCOHOL标识（10-12cm）' },
     rule: {
-      ru: 'При использовании биоэтанола/E85 на лобовое стекло и у горловины бака обязательно наносится крупная световозвращающая наклейка «ALCOHOL» 10–12 см.',
-      en: 'If alcohol-based fuel (E85/ethanol) is used, reflective "ALCOHOL" stickers (10-12cm) must be displayed on windshield and near fuel filler.',
-      cn: '使用含乙醇燃料的赛车，必须在前挡风玻璃及加油口旁张贴醒目的"ALCOHOL"大字反光警示贴纸（高度≥10cm）。'
+      ru: 'Разрешено только жидкое углеводородное топливо: бензин, дизельное топливо, спирт и их смеси. Автомобили, использующие в качестве топлива спирт, должны быть обозначены наклейкой с надписью ALCOHOL, расположенной с обеих сторон автомобиля на видном месте. Сторона квадрата 10-12 см. Использование спирта разрешено только при наличии сертифицированной FIA системы пожаротушения.',
+      en: 'Only liquid hydrocarbon fuels are permitted: gasoline, diesel, alcohol, and their mixtures. Cars using alcohol-based fuel must display an "ALCOHOL" sticker on both sides of the car in a prominent location. Sticker dimensions: square with 10-12 cm sides. Alcohol fuel is allowed only if the car has an FIA-certified fire suppression system.',
+      cn: '仅允许使用液态碳氢燃料：汽油、柴油、酒精及其混合物。使用酒精燃料的车辆必须在车身两侧醒目位置张贴"ALCOHOL"标识贴纸（正方形，边长10-12cm）。仅当车辆配备 FIA认证灭火系统时，方允许使用酒精燃料。'
     },
-    action: { ru: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.', en: 'Affix mandatory ALCOHOL decals on windshield and near fuel filler.', cn: '在车窗及加油口加贴标准"ALCOHOL"警示贴纸。' }
+    action: { ru: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.', en: 'Affix mandatory ALCOHOL decals on both sides of the car.', cn: '在车身两侧加贴标准"ALCOHOL"警示贴纸。' }
   },
   {
     code: '2.14',
-    title: { ru: 'Запрещенные газы (N2O)', en: 'Prohibited Gases (N2O)', cn: '严禁使用笑气及气体介质' },
-    article: { ru: 'Статья 24. Запрещенные газы и вещества (N2O)', en: 'Article 24. Prohibited Substances', cn: '第24条 严禁辅助加压介质' },
-    desc: { ru: 'Запрещены пропан, метан, закись азота (N₂O). Баллоны и магистрали демонтированы', en: 'Prohibited: propane, methane, nitrous oxide (N2O) bottles and plumbing', cn: '严禁使用的燃料及介质：液化丙烷、天然气、笑气（N2O）系统及管路' },
+    title: { ru: '2.14 Запрещенные газы (N2O)', en: '2.14 Prohibited Substances (N2O)', cn: '2.14 严禁使用笑气及气体介质' },
+    article: { ru: 'Статья 20. Топливо (Запрещенные вещества)', en: 'Article 20. Fuel (Prohibitions)', cn: '第20条 燃油（禁止燃料）' },
+    desc: { ru: 'Запрещены пропан, метан, система закиси азота (N2O)', en: 'Prohibited: propane, methane, nitrous oxide (N2O) systems', cn: '严禁使用丙烷、甲烷及氮气加速系统（NOS/N2O）' },
     rule: {
-      ru: 'Категорически запрещено применение закиси азота (N2O), метанола и баллонов под давлением с окислителями. Баллоны и магистрали должны быть полностью сняты.',
-      en: 'Strictly forbidden to use nitrous oxide (N2O), pure methanol, or pressurized oxidizer systems. Any N2O tanks and plumbing must be completely removed.',
-      cn: '严禁使用一氧化二氮笑气（N2O）系统、纯甲醇及任何氧化助燃瓶罐。车上原有的笑气瓶及管路必须彻底拆除。'
+      ru: 'Использование в качестве топлива пропан, метан запрещено, система закиси азота (N2O) запрещена.',
+      en: 'The use of propane or methane as fuel is strictly prohibited. Nitrous oxide (N2O) systems are prohibited.',
+      cn: '严禁使用丙烷或甲烷作为燃料。禁止使用氮气加速系统（NOS/N2O）。'
     },
     action: { ru: 'Полностью демонтировать баллон и электромагистрали закиси азота.', en: 'Completely remove nitrous bottle, solenoids and injector lines.', cn: '彻底拆除笑气瓶、高压喷射电磁阀及连接管线。' }
   },
   {
     code: '2.15',
-    title: { ru: 'Топливный бак', en: 'Safety Fuel Cell', cn: '安全燃油箱' },
-    article: { ru: 'Статья 25. Топливный бак и клапан roll-over', en: 'Article 25. Fuel Tank & Cells', cn: '第25条 安全燃油箱规范' },
-    desc: { ru: 'Штатный или омологированный FIA FT3/FT5, в багажнике, клапан опрокидывания', en: 'OEM or FIA FT3/FT5 certified cell, in trunk or OEM location, roll-over check valve', cn: '原厂或FIA FT3/FT5安全防爆油箱，位于后备箱或原车位置，配备防翻滚止回阀' },
+    title: { ru: '2.15 Топливный бак', en: '2.15 Safety Fuel Cell', cn: '2.15 安全燃油箱' },
+    article: { ru: 'Статья 22. Безопасный топливный бак', en: 'Article 22. Safety Fuel Cell (FT3 Tank)', cn: '第22条 安全燃油箱' },
+    desc: { ru: 'Штатный или омологированный FIA, закреплен лентами 20×0.8 мм, обратный клапан', en: 'OEM or FIA approved, secured with two steel straps 20x0.8mm, check valve', cn: '原厂或FIA认证，采用2条20×0.8mm钢带固定，带单向防翻滚阀' },
     rule: {
-      ru: 'Штатный бак либо безопасный бак FIA FT3/FT5. Обязательны противоотливная губка, гравитационный клапан roll-over на вентиляции и крепление стальными лентами.',
-      en: 'OEM fuel tank or FIA FT3-1999 / FT5 safety cell permitted. Must feature internal safety foam, roll-over check valve, and rigid mounting straps.',
-      cn: '允许保留原厂油箱或安装通过FIA FT3-1999/FT5认证的安全防爆燃油箱。必须填充防浪海绵，配备防翻滚止回阀并用钢带牢固固定。'
+      ru: 'Допускается штатный бак или изготовленный производителем, одобренным FIA (в багажнике или штатном месте). Маркировка: производитель, спецификация, срок действия, серийный номер. Специальный бак крепится по инструкции либо двумя стальными лентами 20 мм шириной и 0.8 мм толщиной. Если заливная труба проходит через салон, обязателен обратный клапан (FIA-сертифицированный) со стороны бака.',
+      en: 'Standard tank permitted. Racing tanks must be from an FIA-approved manufacturer, located in trunk or original position. Secured per instructions or with two steel straps (min 20 mm wide, 0.8 mm thick). If filler neck passes through cockpit, an FIA-certified check valve is mandatory at the tank end.',
+      cn: '允许使用原厂油箱。赛车油箱必须由 FIA 认证制造商生产，安装于后备箱或原厂位置。须按说明固定或使用两条钢带（宽度≥20 mm，厚度≥0.8 mm）固定。若加油管穿过驾驶舱，必须在油箱端安装 FIA 认证的单向阀。'
     },
     action: { ru: 'Установить клапан опрокидывания на вентиляцию бака.', en: 'Install roll-over vent valve on fuel cell breather.', cn: '在安全油箱透气孔管路加装重力防翻滚溢流阀。' }
   },
   {
     code: '2.16',
-    title: { ru: 'Огнестойкая перегородка бака', en: 'Fireproof Bulkhead', cn: '油箱防火密封隔板' },
-    article: { ru: 'Статья 25. Огнестойкая перегородка бака', en: 'Article 25. Fireproof Bulkhead', cn: '第25条 驾驶舱防火密封隔板' },
-    desc: { ru: 'Бак в багажнике герметично отделён от салона (сталь ≥0.8 мм / алюм ≥1.2 мм)', en: 'Fuel cell in trunk separated by sealed bulkhead (steel >=0.8mm / alu >=1.2mm)', cn: '后备箱油箱采用密封钢板（≥0.8mm）或铝板（≥1.2mm）完全隔断驾驶舱' },
+    title: { ru: '2.16 Огнестойкая перегородка бака', en: '2.16 Fireproof Bulkhead', cn: '2.16 油箱防火密封隔板' },
+    article: { ru: 'Статья 22. Безопасный топливный бак (Перегородка)', en: 'Article 22. Safety Fuel Cell (Bulkhead)', cn: '第22条 安全燃油箱（隔板要求）' },
+    desc: { ru: 'Бак отделён от салона герметичной перегородкой из стали/алюминия', en: 'Tank isolated from cockpit by sealed fireproof bulkhead (steel/aluminum)', cn: '油箱必须通过密封且刚性固定的防火隔板（钢/铝）与驾驶舱完全隔离' },
     rule: {
-      ru: 'Если бак или насосы расположены в багажнике, салон должен быть герметично изолирован сплошной несгораемой перегородкой со швами на огнестойком герметике.',
-      en: 'If fuel cell, pumps or fillers are located in trunk, they must be completely isolated from cockpit by liquid-tight fireproof bulkhead in steel (>=0.8mm) or alu (>=1.2mm).',
-      cn: '若燃油箱或油泵安装在后备箱，必须使用密封防明火的连续隔板将后备箱与驾驶舱完全隔断（钢板≥0.8mm，铝板≥1.2mm），接缝采用耐火胶密封。'
+      ru: 'Бак должен быть отделён от салона герметичной противопожарной перегородкой из стали/алюминия, жёстко закреплённой к кузову.',
+      en: 'Tank must be isolated from cockpit by a sealed, rigidly mounted fireproof bulkhead (steel/aluminum).',
+      cn: '油箱必须通过密封且刚性固定的防火隔板（钢/铝材质）与驾驶舱完全隔离。'
     },
     action: { ru: 'Установить металлическую перегородку и загерметизировать технологические отверстия.', en: 'Fit metal firewall and seal all pass-throughs with fire sealant.', cn: '安装全封闭金属防火隔板并使用耐火阻燃胶密封所有孔隙。' }
   },
   {
     code: '2.17',
-    title: { ru: 'Магистрали топлива и масла в салоне', en: 'Fuel & Oil Lines in Cockpit', cn: '贯穿座舱管线' },
-    article: { ru: 'Статья 26. Магистрали топлива и масла в салоне', en: 'Article 26. Fuel & Oil Lines', cn: '第26条 燃油与机油输送管路' },
-    desc: { ru: 'В салоне только цельные шланги без соединений, защита PTFE/AN от перетирания и огня', en: 'Inside cockpit only seamless continuous lines, braided PTFE/AN with fire sleeves', cn: '贯穿座舱内部必须为无接头一体式高压航空编织管（PTFE内衬），防磨阻燃保护' },
+    title: { ru: '2.17 Топливная система и магистрали', en: '2.17 Fuel System Lines', cn: '2.17 燃油系统与管路' },
+    article: { ru: 'Статья 21. Топливная система', en: 'Article 21. Fuel System', cn: '第21条 燃油系统' },
+    desc: { ru: 'Вне салона либо в салоне только цельные шланги без соединений, защита от истирания', en: 'Lines outside cabin or seamless continuous lines inside, protected from abrasion', cn: '管路布设于舱外；若穿过驾驶舱必须为无接头一体式管路，带防火防磨保护' },
     rule: {
-      ru: 'Топливные и масляные магистрали, проходящие через салон, должны быть цельными без разъемов внутри кокпита и выполнены из армированных рукавов PTFE/AN.',
-      en: 'Lines passing through cockpit must be continuous one-piece without internal junctions/fittings. Must be certified braided PTFE/AN hoses with fire sleeves.',
-      cn: '贯穿驾驶舱内部的燃油与机油管路必须为一整根连续无接头的高压航空编织管（PTFE内衬），严禁在座舱内部设置活接头。'
+      ru: 'Топливные, масляные и тормозные трубопроводы должны иметь внешнюю защиту от истирания и возгорания. При отсутствии штатной компоновки: топливные, охлаждающие и смазочные магистрали — вне салона. В салоне могут проходить только цельные (без соединений) линии несгораемых жидкостей (рис. 253-59/60). Топливные насосы должны работать только при запущенном двигателе.',
+      en: 'Fuel, oil, and brake lines must have external protection against abrasion and fire. Fuel, coolant, and oil lines must be routed outside passenger compartment. Only seamless lines (without joints/fittings) may pass through cockpit (Figs. 253-59/60). Fuel pumps must operate only when engine is running.',
+      cn: '燃油、机油及制动管路必须具备外部防磨损及防火保护层。燃油、冷却液及机油管路必须布设于乘员舱外。仅允许不易燃液体的无缝管路（无接头）穿过驾驶舱（图 253-59/60）。燃油泵仅可在发动机运转时工作。'
     },
     action: { ru: 'Заменить составные шланги в салоне на цельные армированные рукава PTFE.', en: 'Replace multi-piece hose in cockpit with single seamless braided PTFE line.', cn: '换装一体式无接头特氟龙编织航空管路并加装防火隔热套管。' }
   },
   {
     code: '2.18',
-    title: { ru: 'Главный выключатель массы', en: 'Master Electrical Switch', cn: '主电源切断总开关' },
-    article: { ru: 'Статья 19. Главный размыкатель массы', en: 'Article 19. Master Electrical Cut-off', cn: '第19条 电源总隔离开关' },
-    desc: { ru: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ; доступен пилоту + внешний привод', en: 'Cuts battery/alternator/ignition and stops engine; driver reachable + external cable', cn: '同时切断电瓶、发电机、点火并熄火发动机；车手伸手可触 + 外部联动' },
+    title: { ru: '2.18 Главный выключатель массы', en: '2.18 Master Electrical Switch', cn: '2.18 主电源切断开关' },
+    article: { ru: 'Статья 26. Электрооборудование (Главный выключатель массы)', en: 'Article 26. Electrical equipment (Master electrical cut-off switch)', cn: '第26条 电气系统（主电源切断开关）' },
+    desc: { ru: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ/зажигание; доступен пилоту', en: 'Cuts battery/alternator/ignition and stops engine; driver reachable when strapped', cn: '同时切断电瓶、发电机、点火并熄火发动机；车手就座系紧安全带可触及' },
     rule: {
-      ru: 'Выключатель массы должен мгновенно обесточивать АКБ, генератор, зажигание, насосы и глушить двигатель. Управляется из салона и снаружи.',
-      en: 'Master disconnect switch must instantly cut all electrical circuits (battery, alternator, ignition, fuel pumps) and immediately stop running engine. Operable from inside and outside.',
-      cn: '总电源断电开关必须能瞬间切断全车所有电路（电瓶、发电机、ECU点火及燃油泵），确保发动机立即熄火。车内及车外联动拉索均有效。'
+      ru: 'Обязателен для всех автомобилей. Главный выключатель массы должен отключать аккумулятор, генератор (AC/DC), освещение, сигнализацию, зажигание и управляющую электронику, а также глушить двигатель. Должен быть доступен для пилота на штатном месте с пристёгнутыми ремнями и установленным рулём. Должны быть независимые органы управления внутри и снаружи.',
+      en: 'Mandatory for all cars. Must disconnect: battery, alternator (AC/DC), lighting, horn, ignition, engine management electronics, and must stop the engine. Must be accessible to the driver while seated and harnessed, with the steering wheel installed. Independent internal and external controls are required.',
+      cn: '所有车辆必须配备。必须能切断：蓄电池、发电机（交流/直流）、照明、喇叭、点火、发动机管理电子系统，并必须能停止发动机。必须在车手就座、系好安全带且方向盘安装状态下可操作。必须设置独立的内部与外部控制装置。'
     },
     action: { ru: 'Подключить генератор и зажигание к цепи размыкания выключателя массы.', en: 'Wire alternator field/ignition kill circuit through master cut-off.', cn: '正确接线，使总开关动作时同步切断发电机励磁与点火继电器。' }
   },
   {
     code: '2.19',
-    title: { ru: 'Электропроводка', en: 'Electrical Wiring', cn: '赛车电气线束' },
-    article: { ru: 'Статья 19. Электропроводка и защита жгутов', en: 'Article 19. Electrical Wiring', cn: '第19条 赛车电气线束布局' },
-    desc: { ru: 'В защитной гофре, закреплена. Запрещено зажимать между каркасом и кузовом', en: 'In protective loom, clamped. Pinching between roll cage and chassis is forbidden', cn: '加装阻燃波纹套管并固定。严禁夹在车身与防滚架钢管之间' },
+    title: { ru: '2.19 Электропроводка', en: '2.19 Electrical Wiring', cn: '2.19 电气线束布局' },
+    article: { ru: 'Статья 26. Электрооборудование', en: 'Article 26. Electrical equipment', cn: '第26条 电气系统' },
+    desc: { ru: 'Не между кузовом и каркасом, защищена от повреждений/пожара, закреплена', en: 'Not between body and cage, protected against fire and damage, bundled', cn: '严禁布设于车身与防滚架之间，具备防机械损伤与防火保护，固定良好' },
     rule: {
-      ru: 'Электропроводка должна быть в термостойкой гофре и надежно закреплена. Категорически запрещена прокладка жгутов проводов между трубами каркаса и кузовом.',
-      en: 'Wiring must be enclosed in flame-retardant split looms, clamped securely. Routing wires pinched between cage tubes and chassis is strictly forbidden.',
-      cn: '所有电线束必须包裹在阻燃耐磨波纹管中并牢固固定。严禁将线束夹在防滚架钢管与车身钣金缝隙之间。'
+      ru: 'Кабели, жгуты, разъёмы, выключатели, тросы, защита электроники не могут находиться между кузовом и каркасом. Электросистема должна быть защищена от механических повреждений, пожара и поражения током. Все токоведущие части должны быть закрыты. Проводка в салоне должна быть стянута и закреплена по стенкам; концы кабелей с изоляцией.',
+      en: 'Cables, harnesses, connectors, switches, pull-cables, and electronics protection must not be routed between the body and the safety cage. The electrical system must be protected against mechanical damage, fire, and electric shock. All live electrical parts must be enclosed or insulated. Wiring in cockpit must be bundled and secured.',
+      cn: '电缆、线束、连接器、开关、拉索及电子设备防护件不得布设于车身与防滚架之间。电气系统必须具备防机械损伤、防火及防触电保护。所有带电部分必须封闭/绝缘。驾驶舱内的线束必须捆扎并沿车壁固定。'
     },
     action: { ru: 'Переложить жгут проводов из зазора между каркасом и кузовом в гофру.', en: 'Re-route wiring harness away from pinch points into protective conduit.', cn: '将夹在防滚架管件后的线束移出并装入阻燃保护波纹管内固定。' }
   },
   {
     code: '2.20',
-    title: { ru: 'Аккумулятор (АКБ)', en: 'Battery Mount & Box', cn: '蓄电池固定与密闭箱' },
-    article: { ru: 'Статья 19. Аккумуляторная батарея (АКБ)', en: 'Article 19. Battery Mount & Enclosure', cn: '第19条 蓄电池固定要求' },
-    desc: { ru: 'При переносе: металлическое гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс', en: 'If relocated: metal cradle + 2 steel straps 20x0.8mm, bolts >=M10, sealed vented box', cn: '移位时：金属固定托架 + 2道20×0.8mm钢带，M10螺栓，绝缘密闭透气盒' },
+    title: { ru: '2.20 Аккумулятор (АКБ)', en: '2.20 Battery Mount & Box', cn: '2.20 蓄电池固定与密闭箱' },
+    article: { ru: 'Статья 27. Аккумулятор', en: 'Article 27. Battery', cn: '第27条 蓄电池' },
+    desc: { ru: 'При переносе: металл-гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс', en: 'If relocated: metal cradle + 2 steel straps 20x0.8mm, bolts >=M10, fluid-proof box', cn: '移位时：金属托盘 + 2道20×0.8mm钢带，螺栓≥M10，防液绝缘通风外壳' },
     rule: {
-      ru: 'Перенесенный АКБ крепится к кузову двумя стальными лентами 20×0.8 мм на болтах М10. Жидкостный АКБ закрывается герметичным боксом с вентиляцией наружу.',
-      en: 'If relocated to cabin/trunk: mounted via rigid steel baseplate with two steel straps min 20x0.8mm secured by M10 bolts. Wet batteries must reside inside sealed vented box.',
-      cn: '电池后移时：必须安装在专用金属底座上，使用至少2道20×0.8mm钢带及M10高强度螺栓穿透底板加固。富液电瓶必须加装带外排废气管的密闭绝缘防酸盒。'
+      ru: 'В случае переноса аккумулятор должен быть прикреплён к кузову с использованием металлического гнезда и двух стальных лент шириной не менее 20 мм и толщиной не менее 0,8 мм, болтами/шпильками диаметром не менее 10 мм с усилительными пластинами (толщиной ≥3 мм и площадью ≥20 см²). Жидкостный АКБ закрывается герметичным диэлектрическим кожухом с вентиляцией наружу. Клеммы изолированы.',
+      en: 'If relocated: secured using metal cradle and two steel straps (min 20 mm wide, 0.8 mm thick) with bolts/studs min 10 mm diameter with reinforcement plates (min 3 mm thick, 20 cm² area). Wet batteries must be enclosed in dielectric, fluid-proof vented box. Terminals insulated.',
+      cn: '若蓄电池移装，必须使用金属托盘和两条钢带（宽度≥20mm，厚度≥0.8mm）固定，螺栓直径≥10mm带加强板（厚度≥3mm，面积≥20cm²）。富液电瓶必须装于绝缘防酸通风盒内。端子绝缘保护。'
     },
     action: { ru: 'Закрепить АКБ стальными лентами на болтах М10 и изолировать клеммы.', en: 'Secure battery using steel straps with M10 bolts and insulate terminals.', cn: '使用双道20mm钢带加固电瓶并盖上绝缘保护盖板。' }
   },
   {
     code: '2.21',
-    title: { ru: 'Тормозная система', en: 'Braking System', cn: '液压制动系统' },
-    article: { ru: 'Статья 16. Тормозная система и гидроручник', en: 'Article 16. Braking System', cn: '第16条 液压制动系统规范' },
-    desc: { ru: '≥2 независимых контура от педали, исправная; магистрали в салоне металл/PTFE; жесткий ручник', en: '>=2 independent circuits, functional; lines metal/PTFE; rigid hydraulic handbrake', cn: '双独立回路，制动良好有效；座舱内管路全金属或航空编织管；液压手刹稳固' },
+    title: { ru: '2.21 Тормозная система', en: '2.21 Brake System', cn: '2.21 制动系统' },
+    article: { ru: 'Статья 24. Тормозная система', en: 'Article 24. Brake System', cn: '第24条 制动系统' },
+    desc: { ru: '≥2 независимых контура от педали, трубки металл/авиационные, ручник с гидроприводом', en: '>=2 independent circuits, metal/aero lines in cockpit, hydraulic handbrake', cn: '至少两个独立回路，座舱内为金属管或航空编织软管，液压手刹' },
     rule: {
-      ru: 'Минимум 2 независимых контура. Трубки в салоне — бесшовные металлические или тефлоновые армированные PTFE. Кронштейн гидроручника жестко закреплен.',
-      en: 'Brake system must consist of at least 2 independent circuits. Lines inside cabin seamless metal or aero braided PTFE. Hydraulic handbrake cylinder securely mounted.',
-      cn: '制动系统必须具有至少2个独立液压回路。座舱内刹车管必须采用无缝金属管或特氟龙高压编织航空管。液压手刹泵体必须稳固固定。'
+      ru: 'Наличие действующей тормозной системы обязательно, она должна иметь минимум два контура. В случае прохождения тормозных магистралей по кокпиту магистрали должны быть выполнены из металлических трубок либо шлангов авиационного типа с внешним металлическим армированием. Жидкостное охлаждение тормозов запрещено. Разрешен ручной тормоз с гидроприводом на заднюю ось.',
+      en: 'A fully functional brake system with a minimum of two independent circuits is mandatory. Brake lines passing through cockpit must be metallic tubing or aviation-style hoses with metal braiding. Liquid cooling of brakes is prohibited. Hydraulic handbrake acting on rear axle permitted.',
+      cn: '必须配备功能完整、至少含两个独立回路的制动系统。穿过驾驶舱的制动管路必须为金属管或带金属编织外层的航空式软管。禁止液体冷却制动系统。允许安装作用于后轴的液压手刹。'
     },
     action: { ru: 'Устранить люфты гидроручника и прокачать тормозную систему.', en: 'Bleed brakes, eliminate fluid leaks and secure handbrake mounts.', cn: '排空制动管路空气，排除渗漏并牢固加固手刹底座。' }
   },
   {
     code: '2.22',
-    title: { ru: 'Петля карданоуловителя', en: 'Driveshaft Safety Loop', cn: '传动轴安全保护卡箍' },
-    article: { ru: 'Статья 18. Карданоуловитель (Driveshaft Loop)', en: 'Article 18. Driveshaft Loop', cn: '第18条 传动轴防掉落保护环' },
-    desc: { ru: '≤150 мм от переднего шарнира крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм', en: '<=150mm from front joint, steel strap 50x5mm or tube ∅20x1.5mm', cn: '距离前万向节十字轴≤150mm，50×5mm钢带或∅20×1.5mm钢管闭环' },
+    title: { ru: '2.22 Петля карданоуловителя', en: '2.22 Driveshaft Safety Loop', cn: '2.22 传动轴安全环' },
+    article: { ru: 'Статья 23. Трансмиссия (Карданоуловитель)', en: 'Article 23. Transmission/Drivetrain (Driveshaft Loop)', cn: '第23条 变速箱/传动系统（传动轴安全环）' },
+    desc: { ru: '≤150 мм от передней крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм', en: '<=150mm from front U-joint, steel strip 50x5mm or tube ∅20x1.5mm', cn: '前万向节中心150mm内，钢带50×5mm或钢管∅20×1.5mm' },
     rule: {
-      ru: 'Заднеприводные автомобили должны быть оснащены защитной петлей (сталь 50×5 мм или труба ∅20×1.5 мм) на расстоянии не далее 150 мм от переднего шарнира.',
-      en: 'RWD vehicles must feature a driveshaft safety loop preventing shaft dropping. Located within 150mm of front joint. Made of steel strip 50x5mm or tube ∅20x1.5mm.',
-      cn: '后驱赛车传动轴前端必须配备防掉落钢制安全保护环（距离前万向节≤150mm）。采用截面≥50×5mm的钢板或∅20×1.5mm钢管制造。'
+      ru: 'Рекомендуем установить петлю карданоуловителя на расстоянии не более 150 мм от центра передней крестовины. Она должна быть выполнена из стальной ленты минимальной шириной 50 и толщиной 5 мм или из стальной трубы минимальным диаметром 20 и толщиной стенки 1,5 мм. Закреплена болтами 8 мм с усилительными шайбами 40 см² толщиной 3 мм. Сварка запрещена.',
+      en: 'Driveshaft Safety Loop: Recommended within 150 mm of front U-joint center. Steel strip min 50x5 mm or steel pipe min ∅20x1.5 mm. Secured to body with two min ∅8 mm bolts reinforced with washers (min 40 cm², 3 mm thick). Welding loop to body prohibited.',
+      cn: '传动轴安全环：建议安装于前万向节中心150mm范围内。材质为钢带（最小50×5mm）或钢管（最小∅20×1.5mm）。通过两颗最小∅8mm螺栓固定，两侧垫片加强（面积≥40cm²，厚度≥3mm）。严禁将安全环焊接至车身。'
     },
-    action: { ru: 'Установить стальную петлю карданоуловителя толщиной 5 мм.', en: 'Install steel driveshaft safety loop within 150mm of front joint.', cn: '在前万向节后方150mm内加装符合规格的钢制传动轴安全保护环。' }
+    action: { ru: 'Установить стальную петлю карданоуловителя толщиной 5 мм на болтах.', en: 'Install steel driveshaft safety loop with 8mm bolts and washers.', cn: '在前万向节后方150mm内加装符合规格的钢制传动轴安全保护环。' }
   },
   {
     code: '2.23',
-    title: { ru: 'Рулевое колесо и быстросъем', en: 'Steering Wheel & Quick Release', cn: '方向盘与快拆机构' },
-    article: { ru: 'Статья 17. Рулевое колесо и быстросъемный механизм', en: 'Article 17. Steering Wheel & Quick Release', cn: '第17条 方向盘与快拆机构' },
-    desc: { ru: 'Руль: замкнутый обод (не деревянный), быстросъём без люфта с жёлтым кольцом фиксатора', en: 'Continuous rim (no wood), quick release without play and yellow release collar', cn: '闭环圆周（严禁木质），赛用快拆底座无间隙旷量并带黄色警示释放环' },
+    title: { ru: '2.23 Рулевое колесо и быстросъем', en: '2.23 Steering Wheel & Quick Release', cn: '2.23 方向盘与快拆机构' },
+    article: { ru: 'Статья 25. Рулевое управление', en: 'Article 25. Steering System', cn: '第25条 转向系统' },
+    desc: { ru: 'Руль: замкнутый обод (не деревянный), быстросъём с жёлтым кольцом', en: 'Closed rim (no wood), quick-release with yellow anodized ring', cn: '闭口轮圈（严禁木质），快拆带有黄色释放环' },
     rule: {
-      ru: 'Руль с замкнутым ободом. Быстросъемный механизм руля должен быть без люфтов и иметь фиксирующую муфту желтого цвета.',
-      en: 'Steering wheel must have continuous outer rim (wood forbidden). Quick release hub must have zero play with yellow anodized release collar.',
-      cn: '方向盘必须为封闭外圈（严禁木质）。快拆底座必须锁止紧固无旷量间隙，解锁外套环必须为黄色或具黄色标识。'
+      ru: 'Разрешается установка любого руля с замкнутым ободом (круглый, овальный), кроме изготовленных из дерева. Допускается быстросъёмное крепление рулевого колеса. Механизм быстрого разъединения должен включать кольцо под рулевым колесом, анодированное жёлтым цветом. Разъединение осуществляется перемещением кольца в сторону руля. Замок зажигания удален.',
+      en: 'Any closed-rim wheel (round, oval) is allowed; wheels made of wood are prohibited. Quick-release mechanism must include a ring concentrically mounted under the wheel, anodized yellow. Mechanical steering lock mechanism must be removed.',
+      cn: '允许任何闭口轮圈（圆形、椭圆形）；禁止使用木质方向盘。允许快拆机构，必须包含一个同心安装于转向柱下方、阳极氧化为黄色的环形释放件。必须拆除机械式转向锁机构。'
     },
     action: { ru: 'Устранить люфт быстросъема и нанести желтую маркировку на кольцо.', en: 'Eliminate hub play and mark release collar with yellow coating.', cn: '消除快拆旷量并在快拆外环上涂覆黄色警示标。' }
   },
   {
     code: '2.24',
-    title: { ru: 'Регулировка рулевой колонки', en: 'Steering Column Locking', cn: '转向柱调节锁死' },
-    article: { ru: 'Статья 17. Фиксация регулировки рулевой колонки', en: 'Article 17. Steering Column Lock', cn: '第17条 转向柱防晃动机械锁定' },
-    desc: { ru: 'Механизм регулировки рулевой колонки заблокирован и затянут инструментом (болтом)', en: 'Steering column adjustment mechanism mechanically locked with bolts/tool', cn: '原车手动快扳角度调节手柄已使用紧固螺栓机械彻底锁死' },
+    title: { ru: '2.24 Регулировка рулевой колонки', en: '2.24 Steering Column Locking', cn: '2.24 转向柱调节锁止' },
+    article: { ru: 'Статья 25. Рулевое управление (Фиксация колонки)', en: 'Article 25. Steering System (Column Lock)', cn: '第25条 转向系统（调节锁止）' },
+    desc: { ru: 'Механизм регулировки положения рулевого вала заблокирован инструментом', en: 'Steering column position adjustment mechanism must be locked with a tool', cn: '任何转向柱位置调节机构必须可用工具锁止' },
     rule: {
-      ru: 'Штатный рычаг быстрой регулировки рулевой колонки должен быть заменен на болт и затянут инструментом, исключая случайное смещение колонки.',
-      en: 'OEM quick-lever steering column adjustment must be mechanically locked with bolts requiring tools, eliminating inadvertent movement while driving.',
-      cn: '原厂转向柱手动快拆扳手式调节机构必须使用螺栓彻底锁死，杜绝赛车在剧烈漂移中发生转向柱意外位移。'
+      ru: 'Вертикальный угол установки рулевой колонки может быть изменён. Механизм регулировки положения рулевого вала должен быть заблокирован с помощью инструмента.',
+      en: 'The steering column vertical angle may be adjusted. Any steering column position adjustment mechanism must be lockable with a tool.',
+      cn: '转向柱垂直角度可调整。任何转向柱位置调节机构必须可用工具锁止。'
     },
     action: { ru: 'Заменить ручной фиксатор рулевой колонки на затяжной болт под ключ.', en: 'Replace quick lever with bolted locking hardware on steering column.', cn: '拆除手动快拆手柄，换装高强度紧固螺栓将转向柱角度机械锁死。' }
   },
   {
     code: '2.25',
-    title: { ru: 'Вентиляция картера (Catch-can)', en: 'Crankcase Catch-Can', cn: '曲轴箱油气回收透气壶' },
-    article: { ru: 'Статья 6. Вентиляция картера и маслоуловитель', en: 'Article 6. Catch-Can / Breathers', cn: '第6条 曲轴箱油气分离回收壶' },
-    desc: { ru: 'Ёмкость маслоуловителя ≥2 л с уровнемером в моторном отсеке; экраны на магистралях в ногах', en: 'Catch-tank capacity >=2L with sight glass, in engine bay; line shields', cn: '机舱内透气回收壶容量≥2升，具备液位观察窗；座舱管路加装防护罩' },
+    title: { ru: '2.25 Вентиляция картера (Catch-can)', en: '2.25 Crankcase Ventilation (Catch-can)', cn: '2.25 曲轴箱通风及油气回收' },
+    article: { ru: 'Статья 18. Система смазки и вентиляции картера', en: 'Article 18. Lubrication and Crankcase Ventilation Systems', cn: '第18条 润滑系统及曲轴箱通风' },
+    desc: { ru: 'Ёмкость маслоуловителя ≥2 л с прозрачной панелью в моторном отсеке', en: 'Catch can capacity >=2L with transparent sight panel in engine bay', cn: '机油透气壶容量≥2升，半透明或带观察窗，牢固安装于机舱' },
     rule: {
-      ru: 'Система вентиляции картера выводится в маслоуловитель объемом ≥2 л с уровнемерной трубкой. Трубопроводы в ногах водителя закрыты защитным металлическим экраном.',
-      en: 'Engine breather vented into catch tank with min 2 liter capacity, featuring sight level gauge. Lines inside cockpit enclosed under metal shield.',
-      cn: '曲轴箱通风必须配备容量不小于2升的机油透气回收壶，具备透明液位视管。座舱脚部管线必须覆盖金属保护罩。'
+      ru: 'Все газы открытой вентиляции картера должны отводиться через ёмкость объёмом не менее 2-х литров, исключающей утечку жидкости при любом положении автомобиля, выполненную из полупрозрачной пластмассы или включающую прозрачную панель для контроля за наполнением, надёжно закреплённую в моторном отсеке на удалении от элементов выпуска.',
+      en: 'All gases must be vented through a catch can with a minimum capacity of 2 liters, designed to prevent fluid leakage in any car attitude. The container must be made of translucent plastic or include a transparent inspection panel and be securely mounted in the engine bay.',
+      cn: '所有气体必须经容量≥2升的油气分离罐导出，罐体设计须确保车辆任意姿态下无液体泄漏。容器必须为半透明塑料或带透明观察窗，并牢固安装于发动机舱内，避开高温排气管。'
     },
     action: { ru: 'Установить маслоуловитель объемом от 2 литров со смотровой трубкой уровня.', en: 'Install regulation min 2L catch-can with fluid level sight gauge.', cn: '换装容量≥2升并具备透明液位视管的标准机油回收壶。' }
   }
