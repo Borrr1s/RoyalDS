@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ROYAL DS — Scrutineering v2.2</title>
+<title>ROYAL DS — Scrutineering</title>
 <meta name="theme-color" content="#090d16">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 
 <style>
 :root {
@@ -21,7 +23,7 @@
   --text-main: #f1f5f9;
   --text-sub: #94a3b8;
   --input-bg: #0b111c;
-  --radius-lg: 14px;
+  --radius-lg: 16px;
   --radius-md: 10px;
 }
 
@@ -30,70 +32,87 @@ body { background: var(--bg-color); color: var(--text-main); padding: 12px; padd
 
 header {
   display: flex; align-items: center; justify-content: space-between;
-  background: #111827; padding: 12px 14px; border-radius: var(--radius-lg);
-  border: 1px solid var(--card-border); margin-bottom: 12px; flex-wrap: wrap; gap: 8px;
+  background: #111827; padding: 12px 16px; border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border); margin-bottom: 12px; gap: 8px; flex-wrap: wrap;
 }
 .logo-area { display: flex; align-items: center; gap: 10px; }
-.logo-crown { background: var(--gold-gradient); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; color: #000; font-weight: bold; }
-h1 { font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; }
+.logo-crown { background: var(--gold-gradient); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #000; font-weight: bold; }
+h1 { font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
 h1 span { color: var(--gold-bright); }
 .subtitle { font-size: 11px; color: var(--text-sub); }
 
-.header-badges { display: flex; align-items: center; gap: 6px; }
-.user-role-badge { font-size: 11px; padding: 5px 10px; border-radius: 20px; background: #1e293b; color: var(--gold-bright); border: 1px solid var(--gold-dark); cursor: pointer; font-weight: bold; }
-.sync-badge { font-size: 11px; padding: 5px 10px; border-radius: 20px; background: #1a2233; color: #94a3b8; border: 1px solid #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; }
+.sync-badge {
+  font-size: 11px; padding: 6px 12px; border-radius: 20px;
+  background: #1a2233; color: #94a3b8; border: 1px solid #334155;
+  display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;
+}
 .sync-badge.online { background: #064e3b; border-color: #10b981; color: #6ee7b7; }
 .sync-badge.offline { background: #1e293b; border-color: #475569; color: #94a3b8; }
 .sync-badge.syncing { background: #78350f; border-color: #f59e0b; color: #fef08a; }
 
 .view-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.nav-tab { padding: 12px; text-align: center; background: #111827; border: 1px solid var(--card-border); border-radius: 10px; color: var(--text-sub); font-size: 13px; font-weight: 700; cursor: pointer; }
+.nav-tab { padding: 13px; text-align: center; background: #111827; border: 1px solid var(--card-border); border-radius: 12px; color: var(--text-sub); font-size: 14px; font-weight: 700; cursor: pointer; }
 .nav-tab.active { background: #1e293b; color: var(--gold-bright); border-color: var(--gold-primary); }
 
-.card { background: var(--card-bg); padding: 14px; border-radius: var(--radius-lg); border: 1px solid var(--card-border); margin-bottom: 12px; }
+.card { background: var(--card-bg); padding: 15px; border-radius: var(--radius-lg); border: 1px solid var(--card-border); margin-bottom: 12px; }
 .card-title { font-size: 13px; font-weight: 700; color: var(--gold-bright); text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f293d; padding-bottom: 8px; }
 
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
 .form-group.full { grid-column: span 2; }
 label { font-size: 12px; font-weight: 600; color: #cbd5e1; }
-input, select { background: var(--input-bg); border: 1px solid var(--card-border); color: #fff; padding: 12px; border-radius: var(--radius-md); font-size: 15px; outline: none; width: 100%; }
-input:focus, select:focus { border-color: var(--gold-primary); }
+input, select { background: var(--input-bg); border: 1px solid var(--card-border); color: #fff; padding: 12px 14px; border-radius: var(--radius-md); font-size: 15px; outline: none; width: 100%; }
+input:focus, select:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
 
 .autocomplete-wrapper { position: relative; }
 .suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #131c2b; border: 1px solid var(--gold-primary); border-radius: var(--radius-md); max-height: 220px; overflow-y: auto; z-index: 100; margin-top: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); display: none; }
-.suggestion-item { padding: 11px 14px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.suggestion-item { padding: 12px 14px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
 .suggestion-item:hover { background: #1e293b; }
 
-.btn { width: 100%; padding: 13px; border-radius: 10px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+.btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
 .btn-gold { background: var(--gold-gradient); color: #000; }
 .btn-outline-gold { background: #182030; border: 1px solid var(--gold-primary); color: var(--gold-bright); }
 .btn-secondary { background: #1f293b; color: #f1f5f9; border: 1px solid var(--card-border); }
 
+/* Таблица */
 .log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .log-table th { text-align: left; padding: 8px; color: var(--gold-bright); border-bottom: 1px solid var(--card-border); font-size: 11px; text-transform: uppercase; }
-.log-table td { padding: 10px 8px; border-bottom: 1px solid #1a2333; vertical-align: middle; }
-
+.log-table td { padding: 11px 8px; border-bottom: 1px solid #1a2333; vertical-align: middle; }
 .badge-status { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
 .badge-ok { background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
 .badge-warn { background: #78350f; color: #fef08a; border: 1px solid #f59e0b; }
 .badge-fail { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
-.badge-pending { background: #451a03; color: #fde047; border: 1px dashed #f59e0b; animation: pulse 1.5s infinite; }
-@keyframes pulse { 0% { opacity: 0.7; } 50% { opacity: 1; } 100% { opacity: 0.7; } }
 
-/* Modals */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px; }
+/* Кабинет комиссара */
+.steward-controls { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.steward-filter-btn { background: #111827; border: 1px solid var(--card-border); color: #cbd5e1; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.steward-filter-btn.active { background: var(--gold-primary); color: #000; border-color: var(--gold-bright); }
+
+.participant-card-item { background: #111827; border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.participant-card-item.selected { border-color: var(--gold-primary); background: #1a2233; }
+
+.steward-inspector-view { background: #0f172a; border: 1px solid var(--gold-primary); border-radius: 14px; padding: 16px; margin-top: 12px; display: none; }
+.driver-num-huge { font-size: 28px; font-weight: 900; color: var(--gold-bright); background: #1e293b; padding: 4px 12px; border-radius: 8px; border: 1px solid #475569; display: inline-block; }
+
+.defect-badge-clickable { display: inline-flex; align-items: center; background: #78350f; color: #fef08a; border: 1px solid var(--gold-primary); padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-right: 6px; margin-bottom: 6px; cursor: pointer; }
+.rule-citation-box { background: #0b0f17; border: 1px solid var(--gold-primary); border-left: 4px solid var(--gold-bright); padding: 14px; border-radius: 10px; margin-top: 14px; display: none; }
+.rule-title { font-size: 14px; font-weight: 800; color: var(--gold-bright); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.rule-text { font-size: 13px; line-height: 1.5; color: #e2e8f0; margin-bottom: 10px; }
+.rule-action-needed { background: #271406; border: 1px dashed var(--gold-primary); color: #fef08a; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; }
+
+/* Чеклист Модалка */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
 .modal-overlay.open { display: flex; }
-.modal-box { background: #111827; border: 1px solid var(--gold-dark); border-radius: 16px; width: 100%; max-width: 440px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.9); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #1f2937; padding-bottom: 10px; }
-.modal-title { font-size: 16px; font-weight: 800; color: var(--gold-bright); }
+.checklist-modal-box { background: #111827; border: 1px solid var(--gold-dark); border-top-left-radius: 20px; border-top-right-radius: 20px; width: 100%; max-width: 860px; max-height: 90vh; display: flex; flex-direction: column; }
 
-/* Checklist Modal */
-.checklist-box { max-width: 860px; max-height: 90vh; display: flex; flex-direction: column; padding: 0; overflow: hidden; }
+.section-big-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 14px; background: #0b0f17; border-bottom: 1px solid #1f2937; }
+.section-big-btn { padding: 14px 8px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: var(--text-sub); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
+.section-big-btn.active { background: var(--gold-gradient); color: #000; border-color: var(--gold-bright); box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
+
 .checklist-scroll { padding: 14px; overflow-y: auto; flex: 1; }
 .chk-row { background: #1a2233; border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
 .chk-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
-.chk-btn { padding: 8px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer; text-align: center; }
+.chk-btn { padding: 9px 4px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer; text-align: center; }
 .chk-btn.active-ok { background: #064e3b; border-color: #10b981; color: #6ee7b7; }
 .chk-btn.active-warn { background: #78350f; border-color: #f59e0b; color: #fef08a; }
 .chk-btn.active-fail { background: #7f1d1d; border-color: #ef4444; color: #fca5a5; }
@@ -105,15 +124,12 @@ input:focus, select:focus { border-color: var(--gold-primary); }
   <div class="logo-area">
     <div class="logo-crown">👑</div>
     <div>
-      <h1>ROYAL <span>DS</span></h1>
+      <h1>ROYAL <span>DRIFT SERIES</span></h1>
       <div class="subtitle">Техническая Инспекция (Scrutineering)</div>
     </div>
   </div>
-  <div class="header-badges">
-    <div id="userRoleBadge" class="user-role-badge" onclick="openLoginModal()">Вход...</div>
-    <div id="syncStatus" class="sync-badge" onclick="triggerManualSync()">
-      <span id="syncIcon">●</span> <span id="syncText">Проверка...</span>
-    </div>
+  <div id="syncStatus" class="sync-badge" onclick="triggerManualSync()">
+    <span id="syncIcon">●</span> <span id="syncText">Проверка...</span>
   </div>
 </header>
 
@@ -122,12 +138,12 @@ input:focus, select:focus { border-color: var(--gold-primary); }
   <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">💻 Кабинет Комиссара</div>
 </div>
 
-<!-- ================= 1. ФОРМА ТИ ================= -->
+<!-- ================= 1. ВХОДНОЙ КОНТРОЛЬ ================= -->
 <div id="viewScrutineer">
   <div class="card">
     <div class="card-title">
       <span>Этап Чемпионата</span>
-      <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit?gid=124353273#gid=124353273" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
+      <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit?gid=653894810#gid=653894810" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
     </div>
     <div class="form-group full">
       <select id="stageSelect" onchange="onStageChanged()">
@@ -140,7 +156,7 @@ input:focus, select:focus { border-color: var(--gold-primary); }
     </div>
   </div>
 
-  <div class="card">
+  <div class="card" id="entryFormCard">
     <div class="card-title">
       <span id="formTitleText">📋 Регистрация автомобиля</span>
       <span id="editModeIndicator" style="display:none; color:var(--gold-bright); font-size:11px;">✏️ Редактирование</span>
@@ -148,7 +164,7 @@ input:focus, select:focus { border-color: var(--gold-primary); }
 
     <!-- Автокомплит автомобиля -->
     <div class="form-group full autocomplete-wrapper">
-      <label>Марка и модель автомобиля (поиск/транслит: супра, чайзер, S15...):</label>
+      <label>Марка и модель автомобиля (RU, EN, транслит: Supra, Чайзер, S15...):</label>
       <input type="text" id="carInput" placeholder="Напр: Nissan Silvia S15, Toyota Chaser, Supra..." autocomplete="off">
       <div id="suggestions" class="suggestions-list"></div>
     </div>
@@ -163,43 +179,37 @@ input:focus, select:focus { border-color: var(--gold-primary); }
         <input type="text" id="numberInput" placeholder="66" autocomplete="off">
       </div>
       <div class="form-group">
-        <label>№ Каркаса <span style="color:var(--gold-bright); font-size:10px;">(6 цифр)</span>:</label>
+        <label>№ Каркаса <span style="color:var(--gold-bright); font-size:10px;">(ровно 6 цифр)</span>:</label>
         <input type="text" id="cageInput" placeholder="123456" maxlength="6" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)" style="font-family:monospace; font-weight:bold;">
       </div>
       <div class="form-group">
         <label>Цвет автомобиля:</label>
         <input type="text" id="colorInput" placeholder="Черный / Золотой">
       </div>
-      <div class="form-group">
+      <div class="form-group full">
         <label>№ Бокса (Pit Box):</label>
         <input type="text" id="boxInput" placeholder="Бокс 12">
       </div>
-      <div class="form-group">
-        <label>Зачетная группа:</label>
-        <select id="groupSelect">
-          <option value="PRO" selected>PRO</option>
-          <option value="SEMI-PRO">SEMI-PRO</option>
-          <option value="DC1">DC1</option>
-        </select>
-      </div>
       <div class="form-group full">
         <label>Замечания ТИ (Remarks):</label>
-        <input type="text" id="notesInput" placeholder="Без замечаний">
+        <input type="text" id="notesInput" placeholder="Без замечаний (заполняется вручную или через чеклист)">
       </div>
     </div>
 
+    <!-- Кнопки управления -->
     <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+      <button type="button" class="btn btn-outline-gold" onclick="openChecklistModal()" style="padding:15px; font-size:15px;">
+        📑 Пройти чеклист ТИ (41 пункт)
+      </button>
+
       <div style="display:flex; gap:8px;">
-        <button id="quickSubmitBtn" class="btn btn-gold" onclick="submitQuickInspection()" style="flex:1;">
-          ⚡ Выдать ТИ (Без замечаний)
+        <button id="directSubmitBtn" class="btn btn-gold" onclick="submitDirectInspection()" style="flex:1;">
+          ➕ Внести автомобиль в протокол
         </button>
         <button id="cancelEditBtn" class="btn btn-secondary" style="display:none; width:auto; padding:0 16px;" onclick="cancelEditing()">
           Отмена
         </button>
       </div>
-      <button type="button" class="btn btn-outline-gold" onclick="openChecklistModal()">
-        📑 Открыть регламентный чеклист (41 пункт)
-      </button>
     </div>
   </div>
 
@@ -213,11 +223,11 @@ input:focus, select:focus { border-color: var(--gold-primary); }
         <thead>
           <tr>
             <th>№</th>
-            <th>Авто / Пилот</th>
+            <th>Автомобиль / Пилот</th>
             <th>СТ№</th>
             <th>Каркас</th>
             <th>Статус</th>
-            <th style="text-align: right;">Действие</th>
+            <th style="text-align:right;">Действия</th>
           </tr>
         </thead>
         <tbody id="logTableBody">
@@ -232,52 +242,95 @@ input:focus, select:focus { border-color: var(--gold-primary); }
 <div id="viewSteward" style="display:none;">
   <div class="card">
     <div class="card-title">
-      <span>Кабинет Главного Комиссара ТИ</span>
+      <span>Кабинет Главного Комиссара / Управление замечаниями</span>
       <span id="stewardStageMeta" style="color:var(--gold-bright); font-size:11px;">Stage 1</span>
     </div>
 
-    <div style="display:flex; gap:6px; margin-bottom:12px; flex-wrap:wrap;">
-      <button class="btn btn-secondary" style="width:auto; padding:8px 12px; font-size:12px;" onclick="setStewardFilter('all')">Все (<span id="cntAll">0</span>)</button>
-      <button class="btn btn-secondary" style="width:auto; padding:8px 12px; font-size:12px; border-color:var(--gold-primary);" onclick="setStewardFilter('pending')">⏳ На утверждении (<span id="cntPending">0</span>)</button>
-      <button class="btn btn-secondary" style="width:auto; padding:8px 12px; font-size:12px;" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntRemarks">0</span>)</button>
+    <div class="steward-controls">
+      <button class="steward-filter-btn active" id="filter_all" onclick="setStewardFilter('all')">Все авто (<span id="cntStewardAll">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_remarks" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntStewardRemarks">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_ok" onclick="setStewardFilter('ok')">✅ Без замечаний (<span id="cntStewardOk">0</span>)</button>
+      <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск (№, пилот, авто, каркас)..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:8px 12px; font-size:12px;">
     </div>
 
-    <div id="stewardListContainer"></div>
+    <!-- Фокус на выбранном участнике -->
+    <div id="stewardInspectorView" class="steward-inspector-view">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="color:var(--gold-primary); font-size:11px; font-weight:bold; text-transform:uppercase;">Фокус на участнике • Participant Detail</span>
+        <button onclick="closeStewardDetail()" style="background:#222; border:1px solid #444; color:#fff; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px;">✕ Показать всех</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #2a2a2a; padding-bottom:12px; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="driver-num-huge" id="dtlNumber">№--</div>
+          <div>
+            <h2 style="font-size:19px; color:#fff;" id="dtlDriver">Пилот</h2>
+            <div style="color:var(--text-sub); font-size:13px;" id="dtlCar">Марка Модель</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div id="dtlStatusBadge" class="badge-status">Статус</div>
+          <div style="font-size:11px; color:#9ca3af; margin-top:4px;">Бокс: <strong id="dtlBox">—</strong> | Каркас: <strong id="dtlCage" style="font-family:monospace; color:var(--gold-bright);">—</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px;">
+        <label style="display:block; margin-bottom:6px; color:var(--gold-primary); font-weight:bold;">Нажмите на замечание, чтобы показать официальный пункт регламента участнику:</label>
+        <div id="dtlDefectsContainer"></div>
+      </div>
+
+      <div id="ruleCitationBox" class="rule-citation-box">
+        <div class="rule-title">
+          <span id="ruleCitationHeading">Статья Регламента Royal DS</span>
+          <a href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Официальные документы Royal DS ↗</a>
+        </div>
+        <div class="rule-text" id="ruleCitationText">...</div>
+        <div class="rule-action-needed" id="ruleActionNeeded">...</div>
+      </div>
+    </div>
+
+    <!-- Список всех участников (Замечания скрыты до нажатия) -->
+    <div id="stewardListContainer" style="margin-top:12px;"></div>
   </div>
 </div>
 
-<!-- ================= 3. МОДАЛКА АВТОРИЗАЦИИ / ВХОДА ================= -->
-<div id="loginModal" class="modal-overlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <div class="modal-title">🔐 Вход в систему ТИ RDS</div>
-    </div>
-    <p style="font-size:13px; color:var(--text-sub); margin-bottom:14px;">
-      Для работы введите ваш персональный код доступа:
-    </p>
-    <div class="form-group">
-      <label>ПИН-код доступа:</label>
-      <input type="password" id="pinInput" placeholder="Введите PIN (1337 или 0852)" maxlength="4" inputmode="numeric" style="font-size:22px; text-align:center; letter-spacing:6px;">
-    </div>
-    <div style="font-size:11px; color:#94a3b8; margin-bottom:14px; line-height:1.5;">
-      • <strong>1337</strong> — Контролер ТИ (Ввод данных, правки требуют подтверждения)<br>
-      • <strong>0852</strong> — Главный техкомиссар (Полный доступ, удаление, утверждение)
-    </div>
-    <button class="btn btn-gold" onclick="submitLoginPin()">Войти</button>
-  </div>
-</div>
-
-<!-- ================= 4. РЕГЛАМЕНТНЫЙ ЧЕКЛИСТ ================= -->
+<!-- ================= 3. ЧЕКЛИСТ ТИ С БОЛЬШИМИ КНОПКАМИ ================= -->
 <div id="checklistModal" class="modal-overlay">
-  <div class="modal-box checklist-box">
-    <div class="modal-header" style="padding:14px; margin-bottom:0; background:#0f172a;">
-      <div class="modal-title">Регламентный чеклист ТИ (41 пункт)</div>
+  <div class="checklist-modal-box">
+    <div style="padding:14px 16px; background:#0f172a; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center;">
+      <strong style="color:var(--gold-bright); font-size:15px;">Чеклист Технической Инспекции (41 пункт)</strong>
       <button onclick="closeChecklistModal()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer;">✕</button>
     </div>
-    <div class="checklist-scroll" id="checklistScrollContainer"></div>
-    <div style="padding:12px; background:#0f172a; border-top:1px solid #1f2937; display:flex; gap:10px;">
-      <button class="btn btn-secondary" onclick="closeChecklistModal()" style="flex:1;">Отмена</button>
-      <button class="btn btn-gold" onclick="applyChecklistResults()" style="flex:2;">Применить к автомобилю</button>
+
+    <!-- Большие кнопки разделов -->
+    <div class="section-big-tabs">
+      <button id="tabBtnExt" class="section-big-btn active" onclick="switchChecklistSection('ext')">
+        🚗 ВНЕШНИЙ ОСМОТР (16 п.)
+      </button>
+      <button id="tabBtnInt" class="section-big-btn" onclick="switchChecklistSection('int')">
+        🏎️ ВНУТРЕННИЙ ОСМОТР (25 п.)
+      </button>
+    </div>
+
+    <!-- Панель быстрых действий -->
+    <div style="padding:8px 14px; background:#0b0f17; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:12px; color:var(--text-sub);" id="checklistCounter">Итог: 41 ОК</span>
+      <button type="button" style="background:#064e3b; border:1px solid #10b981; color:#6ee7b7; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="setAllSectionOk()">
+        ✅ Отметить все ОК в этом разделе
+      </button>
+    </div>
+
+    <div class="checklist-scroll">
+      <div id="containerExt"></div>
+      <div id="containerInt" style="display:none;"></div>
+    </div>
+
+    <!-- Кнопка добавления / сохранения -->
+    <div style="padding:14px 16px; background:#0f172a; border-top:1px solid #1f2937; display:flex; gap:10px;">
+      <button class="btn btn-secondary" onclick="closeChecklistModal()" style="flex:1;">✕ Отмена</button>
+      <button id="checklistApplyAndSaveBtn" class="btn btn-gold" onclick="applyChecklistAndSave()" style="flex:2;">
+        ✅ Завершить проверку и добавить авто
+      </button>
     </div>
   </div>
 </div>
@@ -287,19 +340,67 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-
 const STEWARD_PIN = "0852";
 const CONTROLLER_PIN = "1337";
 
+/* --- 16 ВНЕШНИХ ПУНКТОВ --- */
+const CHECKLIST_EXT = [
+  { code: '1.1', title: '1.1 Бамперы', desc: 'Бамперы установлены, закрывают кузов, надёжно закреплены (не на хомутах/скотче)', article: 'Пункт 3. Кузов и наружные элементы', rule: 'Передний и задний бамперы должны быть установлены, надежно закреплены и полностью закрывать силовые элементы кузова. Крепление исключительно на пластиковые хомуты или скотч строго запрещено.', action: 'Установить бамперы на штатные или спортивные быстросъемные крепления.' },
+  { code: '1.2', title: '1.2 Капот и багажник', desc: '4 точки крепления + ≥2 внешних фиксатора, штатные замки удалены', article: 'Пункт 4. Замки капота и багажника', rule: 'Капот и крышка багажника должны иметь не менее 4 точек крепления и быть оборудованы минимум 2 внешними спортивными замками (Aerocatch, шпильки). Штатные тросы и замки должны быть демонтированы.', action: 'Установить внешние замки капота/багажника и снять штатный трос.' },
+  { code: '1.3', title: '1.3 Буксировочные стропы', desc: 'Нейлон/трос ∅10 мм, выступ 15–25 см, маркировка стрелкой ≥12 см', article: 'Пункт 5. Буксировочные проушины и стропы', rule: 'Автомобиль должен иметь буксировочную проушину или стропу спереди и сзади (нейлон или трос ∅10 мм) с выступом 15–25 см. Точки крепления четко обозначены световозвращающей стрелкой длиной не менее 12 см.', action: 'Установить буксировочные петли спереди и сзади и нанести стрелки маркировки.' },
+  { code: '1.4', title: '1.4 Башбары (Bash-bars)', desc: 'Стальная труба ∅25–44 мм, стенка 1,6–3,2 мм, болты 4×М10 8.8 или сварка', article: 'Пункт 6. Защитные балки (Башбары)', rule: 'Трубчатые защитные балки изготавливаются из бесшовной стальной трубы ∅25–44 мм со стенкой 1.6–3.2 мм. Крепление к лонжеронам болтами не менее 4×М10 (класс 8.8) с пластинами толщиной от 3 мм либо качественной сваркой.', action: 'Усилить крепление башбаров болтами М10 класса 8.8 с пластинами ≥3 мм.' },
+  { code: '1.5', title: '1.5 Крылья и арки', desc: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)', article: 'Пункт 7. Крылья и колесные арки', rule: 'Крылья и расширители должны полностью закрывать колесо сверху. Выступание протектора шины за внешнюю кромку крыла допускается не более чем на 20% ширины шины при виде сверху.', action: 'Установить расширители арок (фендеры) либо отрегулировать вылет и развал колес.' },
+  { code: '1.6', title: '1.6 Лобовое стекло', desc: 'Многослойное/поликарбонат ≥5 мм, прозрачный обзор без трещин в зоне дворника', article: 'Пункт 8. Остекление лобовое', rule: 'Лобовое стекло — триплекс с маркировкой или поликарбонат ≥5 мм с устойчивым покрытием. Запрещены трещины в зоне работы водительского стеклоочистителя.', action: 'Заменить поврежденное лобовое стекло.' },
+  { code: '1.7', title: '1.7 Боковые стёкла', desc: 'Оригинальные с защитной плёнкой ≥100 мкм изнутри или поликарбонат 3–5 мм', article: 'Пункт 9. Боковое и заднее остекление', rule: 'Оригинальные закаленные боковые стекла должны быть оклеены изнутри защитной пленкой ≥100 мкм, либо заменены на поликарбонат 3–5 мм с надежной механической фиксацией.', action: 'Оклеить стекла пленкой ≥100 мкм или установить поликарбонат.' },
+  { code: '1.8', title: '1.8 Зеркала заднего вида', desc: '2 наружных зеркала, площадь отражающего элемента каждого ≥60 см²', article: 'Пункт 10. Зеркала заднего вида', rule: 'Автомобиль должен быть оборудован двумя внешними зеркалами (левым и правым). Площадь зеркального элемента каждого зеркала должна составлять не менее 60 см².', action: 'Установить зеркала требуемой площади (не менее 60 см²).' },
+  { code: '1.9', title: '1.9 Стоп-сигналы', desc: 'Исправны, светят красным при торможении (основные + светодиодный дублер)', article: 'Пункт 11. Световая сигнализация', rule: 'Обязательны исправные задние стоп-сигналы красного цвета и дополнительный верхний светодиодный дублер, срабатывающие строго синхронно с нажатием педали.', action: 'Восстановить проводку и обеспечить синхронную работу стоп-сигналов и дублера.' },
+  { code: '1.10', title: '1.10 Передние фары', desc: 'В штатных местах, обеспечивают видимость автомобиля с 50 м', article: 'Пункт 12. Головной свет', rule: 'Передняя оптика должна быть смонтирована в штатных местах. Фары или ходовые огни должны обеспечивать отчетливую видимость автомобиля с расстояния не менее 50 метров.', action: 'Закрепить фары и подключить надежное электропитание.' },
+  { code: '1.11', title: '1.11 Внешний выключатель массы', desc: 'Знак «красная Е» или молния в синем треугольнике ∅10–12 см, под стеклом', article: 'Пункт 13. Внешний аварийный выключатель массы', rule: 'Привод внешнего аварийного выключателя массы располагается в нижней части рамки лобового стекла или задней стойки. Обозначается знаком ∅10–12 см.', action: 'Установить привод выключателя массы наружу и нанести знак.' },
+  { code: '1.12', title: '1.12 Внешний привод пожаротушения', desc: 'Рядом с выключателем массы, наклейка «красная Е» ∅10 см', article: 'Пункт 14. Внешний привод СПТ', rule: 'Внешний спусковой механизм СПТ должен располагаться рядом с выключателем массы. Обозначается наклейкой ∅10 см с красной буквой «E».', action: 'Вывести трос СПТ наружу рядом с выключателем массы и нанести знак «Е».' },
+  { code: '1.13', title: '1.13 Выхлопная система', desc: 'Металл, 15–20 см от бака, направлен назад/вбок, выступ ≤10 мм', article: 'Пункт 15. Выхлопная система', rule: 'Выхлопная труба полностью металлическая, проходит на расстоянии не менее 15–20 см от бака/магистралей (или имеет термоэкран). Выступ за кузов — не более 10 мм.', action: 'Укоротить выхлоп по контуру кузова и установить термоэкран.' },
+  { code: '1.14', title: '1.14 Шины', desc: 'Дорожные с рисунком, без повреждений/корда, глубина ≥1.6 мм. Слики запрещены', article: 'Пункт 16. Требования к шинам серии', rule: 'Разрешены только дорожные радиальные шины с рисунком протектора с остатком не менее 1.6 мм. Слики (включая резаные) и химическая обработка запрещены.', action: 'Заменить шины на разрешенную серию регламента RDS.' },
+  { code: '1.15', title: '1.15 Диски и крепеж', desc: 'Металлические (магний запрещён), шпильки не выступают, все гайки на месте', article: 'Пункт 17. Колесные диски и крепеж', rule: 'Диски из алюминиевых или стальных сплавов (магний запрещен). Зацепление гайки шпилькой — не менее диаметра резьбы. Все гайки затянуты.', action: 'Установить полный комплект закрытых гаек и проверить затяжку.' },
+  { code: '1.16', title: '1.16 Обязательные наклейки на кузове', desc: 'Стартовые номера, баннер серии Royal DS, спонсоры, флаг, фамилия', article: 'Пункт 32. Обязательные наклейки на кузове', rule: 'Автомобиль обязан нести полную официальную оклейку чемпионата: стартовые номера на дверях и капоте, баннер Royal Drift Series на лобовом стекле, спонсоры серии, флаг и фамилия на стеклах.', action: 'Получить в штабе соревнований недостающие спонсорские наклейки и наклеить по схеме.' }
+];
+
+/* --- 25 ВНУТРЕННИХ ПУНКТОВ --- */
+const CHECKLIST_INT = [
+  { code: '2.1', title: '2.1 Каркас: основные дуги и номер', desc: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт', article: 'Пункт 8. Каркас безопасности (FIA App J Art 253)', rule: 'Главная и передняя дуги из бесшовной трубы ∅45×2.5 или ∅50×2.0 мм. Обязателен технический паспорт и четкий выбитый 6-значный номер.', action: 'Предъявить паспорт каркаса и зачистить выбитый 6-значный номер.' },
+  { code: '2.2', title: '2.2 Каркас: дверные брусья', desc: 'Боковые защитные кресты или продольные брусья в проемах дверей', article: 'Пункт 8. Каркас безопасности (Боковая защита)', rule: 'В дверных проемах со стороны пилота и пассажира должны быть вварены защитные кресты с усилительными косынками либо продольные брусья по ст. 253 FIA.', action: 'Вварить недостающие усилительные элементы в дверные проемы.' },
+  { code: '2.3', title: '2.3 Каркас: опорные пластины', desc: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥3 мм', article: 'Пункт 8. Каркас безопасности (Опорные пластины)', rule: 'Каждая опора дуги каркаса крепится к кузову через опорную пластину площадью не менее 120 см² и толщиной стали не менее 3 мм.', action: 'Усилить опорные пластины каркаса согласно регламенту.' },
+  { code: '2.4', title: '2.4 Каркас: диагонали на главной дуге', desc: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов', article: 'Пункт 8. Каркас безопасности (Диагонали главной дуги)', rule: 'Диагональные элементы главной дуги должны быть прямолинейными. Соединение диагонали с дугой — не далее 100 мм от угла или пластины опоры.', action: 'Переварить диагональ в пределы 100 мм от узла главной дуги.' },
+  { code: '2.5', title: '2.5 Каркас: защитные накладки', desc: 'Зоны контакта со шлемом/пилотом: негорючие накладки омологации FIA 8857-2001', article: 'Пункт 8. Каркас безопасности (Защитные накладки)', rule: 'Трубы каркаса в зонах возможного контакта со шлемом пилота должны быть закрыты сертифицированными накладками по стандарту FIA 8857-2001.', action: 'Установить энергопоглощающие накладки омологации FIA 8857-2001.' },
+  { code: '2.6', title: '2.6 Спортивное сиденье (ковш)', desc: 'Ковш FIA 8855-1999/8862-2009, 4 точки, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9', article: 'Пункт 18. Сиденье пилота и крепления', rule: 'Спортивное сиденье с омологацией FIA. Крепление на 4 болтах М8 класса не ниже 10.9 через стальные кронштейны ≥3 мм (или алюминиевые ≥5 мм) с шайбами пола ≥40 см².', action: 'Заменить болты сиденья на класс 10.9 и установить усилительные пластины пола.' },
+  { code: '2.7', title: '2.7 Ремни безопасности', desc: '5/6-точечные, действующая омологация FIA 8854/98 или 8853-2016, металл замки', article: 'Пункт 19. Ремни безопасности', rule: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8854/98 или 8853-2016. Металлические защелки без следов износа и повреждений.', action: 'Установить ремни безопасности с неистекшим сроком FIA.' },
+  { code: '2.8', title: '2.8 Точки крепления ремней', desc: 'К кузову (7/16-20 UNF, контрпластины ≥40 см²×3 мм) или harness bar (запрещено к сиденью!)', article: 'Пункт 19. Точки крепления ремней', rule: 'Поясные лямки крепятся только к усиленным точкам кузова с резьбой 7/16-20 UNF и пластинами ≥40 см² толщиной ≥3 мм. Плечевые — на harness bar каркаса. Крепить ремни к сиденью запрещено.', action: 'Перенести точки крепления ремней с салазок сиденья на кузов/каркас.' },
+  { code: '2.9', title: '2.9 Система HANS/FHR', desc: 'Обязательна во всех заездах, клипсы на шлеме и поводки стандарта FIA 8858-2010', article: 'Пункт 20. Система защиты шеи и головы HANS/FHR', rule: 'Применение системы защиты шеи HANS/FHR стандарта FIA 8858 обязательно. Клипсы на шлеме и поводки должны иметь маркировку FIA 8858-2010.', action: 'Предоставить омологированную систему HANS и шлем с клипсами FIA.' },
+  { code: '2.10', title: '2.10 Система пожаротушения (СПТ)', desc: 'Омологация FIA (лист №16/52), распылители: ≥2 в моторный отсек и ≥2 в ноги пилота', article: 'Пункт 21. Стационарная система пожаротушения', rule: 'Система пожаротушения FIA (лист 16 или 52). Не менее 2 сопел направлены в двигатель и не менее 2 сопел — в ноги водителя.', action: 'Развести сопла пожаротушения в ноги пилота и моторный отсек.' },
+  { code: '2.11', title: '2.11 Внутренний привод СПТ', desc: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями', article: 'Пункт 21. Органы управления СПТ', rule: 'Внутренняя ручка/кнопка СПТ должна располагаться в зоне прямой досягаемости руки пилота, пристегнутого ремнями в сиденье.', action: 'Перенести ручку привода СПТ ближе к пилоту.' },
+  { code: '2.12', title: '2.12 Срок поверки и давление СПТ', desc: 'Срок поверки баллона СПТ ≤2 лет, стрелка манометра строго в зеленой зоне', article: 'Пункт 21. Сроки поверки системы пожаротушения', rule: 'Баллон СПТ должен иметь читаемый стикер поверки с датой (интервал ≤2 лет). Стрелка манометра строго в зеленой зоне.', action: 'Пройти поверку баллона СПТ у дилера либо заменить баллон.' },
+  { code: '2.13', title: '2.13 Топливо и наклейка «ALCOHOL»', desc: 'Товарный бензин или этанол/E85. При спирте — наклейка «ALCOHOL» 10–12 см', article: 'Пункт 22. Топливо и идентификация', rule: 'При использовании биоэтанола/E85 на лобовое стекло и у горловины бака обязательно наносится крупная световозвращающая наклейка «ALCOHOL» 10–12 см.', action: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.' },
+  { code: '2.14', title: '2.14 Запрещенные газы (N2O)', desc: 'Запрещены пропан, метан, закись азота (N₂O). Баллоны и магистрали демонтированы', article: 'Пункт 22. Запрещенные вещества', rule: 'Категорически запрещено применение закиси азота (N2O), метанола и баллонов под давлением с окислителями. Баллоны и магистрали должны быть полностью сняты.', action: 'Полностью демонтировать баллон и электромагистрали закиси азота.' },
+  { code: '2.15', title: '2.15 Топливный бак', desc: 'Штатный или омологированный FIA FT3/FT5, в багажнике, клапан опрокидывания', article: 'Пункт 23. Топливный бак', rule: 'Штатный бак либо безопасный бак FIA FT3/FT5. Обязательны противоотливная губка, гравитационный клапан roll-over на вентиляции и крепление стальными лентами.', action: 'Установить клапан опрокидывания на вентиляцию бака.' },
+  { code: '2.16', title: '2.16 Огнестойкая перегородка бака', desc: 'Бак в багажнике герметично отделён от салона перегородкой (сталь ≥0.8 мм / алюм ≥1.2 мм)', article: 'Пункт 23. Огнестойкая перегородка', rule: 'Если бак или насосы расположены в багажнике, салон должен быть герметично изолирован сплошной несгораемой перегородкой со швами на огнестойком герметике.', action: 'Установить металлическую перегородку и загерметизировать отверстия.' },
+  { code: '2.17', title: '2.17 Магистрали в салоне', desc: 'В салоне только цельные шланги без соединений, защита PTFE/AN от перетирания и огня', article: 'Пункт 24. Трубопроводы топлива и масла', rule: 'Топливные и масляные магистрали, проходящие через салон, должны быть цельными без разъемов внутри кокпита и выполнены из армированных рукавов PTFE/AN.', action: 'Заменить составные шланги в салоне на цельные армированные рукава PTFE.' },
+  { code: '2.18', title: '2.18 Главный выключатель массы', desc: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ/зажигание; доступен пилоту + внешний привод', article: 'Пункт 25. Электрический размыкатель массы', rule: 'Выключатель массы должен мгновенно обесточивать АКБ, генератор, зажигание, насосы и глушить двигатель. Управляется из салона и снаружи.', action: 'Подключить генератор и зажигание к цепи размыкания выключателя массы.' },
+  { code: '2.19', title: '2.19 Электропроводка', desc: 'В защитной гофре, закреплена хомутами. Запрещено зажимать между каркасом и кузовом', article: 'Пункт 26. Электропроводка и жгуты', rule: 'Электропроводка должна быть в термостойкой гофре и надежно закреплена. Категорически запрещена прокладка жгутов проводов между трубами каркаса и кузовом.', action: 'Переложить жгут проводов из зазора между каркасом и кузовом в гофру.' },
+  { code: '2.20', title: '2.20 Аккумулятор (АКБ)', desc: 'При переносе: металлическое гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс', article: 'Пункт 27. Аккумуляторная батарея', rule: 'Перенесенный АКБ крепится к кузову двумя стальными лентами 20×0.8 мм на болтах М10. Жидкостный АКБ закрывается герметичным боксом с вентиляцией наружу.', action: 'Закрепить АКБ стальными лентами на болтах М10 и изолировать клеммы.' },
+  { code: '2.21', title: '2.21 Тормозная система', desc: '≥2 независимых контура от педали, исправная; магистрали в салоне металл/PTFE; жесткий ручник', article: 'Пункт 28. Тормозная система и гидроручник', rule: 'Минимум 2 независимых контура. Трубки в салоне — бесшовные металлические или тефлоновые армированные PTFE. Кронштейн гидроручника жестко закреплен.', action: 'Устранить люфты гидроручника и прокачать тормозную систему.' },
+  { code: '2.22', title: '2.22 Петля карданоуловителя', desc: '≤150 мм от переднего шарнира крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм', article: 'Пункт 29. Карданоуловитель (Driveshaft Safety Loop)', rule: 'Заднеприводные автомобили должны быть оснащены защитной петлей (сталь 50×5 мм или труба ∅20×1.5 мм) на расстоянии не далее 150 мм от переднего шарнира.', action: 'Установить стальную петлю карданоуловителя толщиной 5 мм.' },
+  { code: '2.23', title: '2.23 Рулевое колесо и быстросъем', desc: 'Руль: замкнутый обод (не деревянный), быстросъём без люфта с жёлтым кольцом фиксатора', article: 'Пункт 30. Рулевое управление и быстросъем', rule: 'Руль с замкнутым ободом. Быстросъемный механизм руля должен быть без люфтов и иметь фиксирующую муфту желтого цвета.', action: 'Устранить люфт быстросъема и нанести желтую маркировку на кольцо.' },
+  { code: '2.24', title: '2.24 Регулировка рулевой колонки', desc: 'Механизм регулировки рулевой колонки заблокирован и затянут инструментом (болтом)', article: 'Пункт 30. Фиксация рулевой колонки', rule: 'Штатный рычаг быстрой регулировки рулевой колонки должен быть заменен на болт и затянут инструментом, исключая случайное смещение колонки.', action: 'Заменить ручной фиксатор рулевой колонки на затяжной болт.' },
+  { code: '2.25', title: '2.25 Вентиляция картера (Catch-can)', desc: 'Ёмкость маслоуловителя ≥2 л с уровнемером в моторном отсеке; экраны на магистралях в ногах', article: 'Пункт 31. Вентиляция картера и защита магистралей', rule: 'Система вентиляции картера выводится в маслоуловитель объемом ≥2 л с уровнемерной трубкой. Трубопроводы в ногах водителя закрыты защитным металлическим экраном.', action: 'Установить маслоуловитель объемом от 2 литров со смотровой трубкой уровня.' }
+];
+
+const ALL_CHECKLIST = [...CHECKLIST_EXT, ...CHECKLIST_INT];
+
 /* --- БАЗА АВТОМОБИЛЕЙ И ТРАНСЛИТЕРАЦИЯ --- */
 const CAR_CATALOG = [
-  {"brand": "Nissan Silvia S15", "group": "PRO"}, {"brand": "Nissan Silvia S14", "group": "PRO"},
-  {"brand": "Nissan Silvia S13", "group": "SEMI-PRO"}, {"brand": "Nissan 180SX", "group": "SEMI-PRO"},
-  {"brand": "Nissan Skyline R34", "group": "PRO"}, {"brand": "Toyota Supra A90", "group": "PRO"},
-  {"brand": "Toyota Supra A80", "group": "PRO"}, {"brand": "Toyota GR86 Drift", "group": "PRO"},
-  {"brand": "Toyota GT86", "group": "SEMI-PRO"}, {"brand": "Toyota Chaser JZX100", "group": "PRO"},
-  {"brand": "Toyota Mark II JZX100", "group": "PRO"}, {"brand": "Toyota Cresta JZX100", "group": "PRO"},
-  {"brand": "Toyota Altezza / IS200", "group": "SEMI-PRO"}, {"brand": "BMW E92 Eurofighter", "group": "PRO"},
-  {"brand": "BMW E46 Drift", "group": "PRO"}, {"brand": "BMW E36 Drift", "group": "SEMI-PRO"},
-  {"brand": "BMW M2 Drift", "group": "PRO"}, {"brand": "BMW M4 Drift", "group": "PRO"},
-  {"brand": "Mazda RX-7 FD", "group": "PRO"}, {"brand": "Short Cut", "group": "DC1"},
-  {"brand": "GT4 AMG", "group": "PRO"}, {"brand": "Porsche 911 GT3", "group": "PRO"}
+  "Nissan Silvia S15", "Nissan Silvia S14", "Nissan Silvia S13", "Nissan 180SX",
+  "Nissan Skyline R34", "Nissan Skyline R33", "Nissan Skyline R32",
+  "Toyota Supra A90", "Toyota Supra A80", "Toyota GR86 Drift", "Toyota GT86",
+  "Toyota Chaser JZX100", "Toyota Mark II JZX100", "Toyota Mark II JZX90", "Toyota Cresta JZX100",
+  "Toyota Altezza / IS200", "Toyota Soarer JZZ30",
+  "BMW E92 Eurofighter", "BMW E46 Drift", "BMW E36 Drift", "BMW M2 Drift", "BMW M4 Drift",
+  "Mazda RX-7 FD", "Mazda RX-8", "Ford Mustang RTR", "Chevrolet Corvette C6",
+  "Subaru BRZ", "Short Cut", "GT4 AMG", "Porsche 911 GT3"
 ];
 
 const TRANSLIT_MAP = {
@@ -310,99 +411,512 @@ const TRANSLIT_MAP = {
   'марк':'mark','шорткат':'short cut'
 };
 
-/* --- ЧЕКЛИСТ 41 ПУНКТ --- */
-const CHECKLIST_ITEMS = [
-  { code: '1.1', title: '1.1 Бамперы', desc: 'Закрывают кузов, надёжно закреплены (не хомуты/скотч)' },
-  { code: '1.2', title: '1.2 Капот и багажник', desc: '4 точки крепления + внешние замки, штатные удалены' },
-  { code: '1.3', title: '1.3 Буксировочные стропы', desc: 'Нейлон/трос ∅10 мм, стрелка маркировки ≥12 см' },
-  { code: '1.4', title: '1.4 Башбары (Bash-bars)', desc: 'Труба ∅25–44 мм, стенка 1.6–3.2 мм, болты 4×М10 8.8' },
-  { code: '1.5', title: '1.5 Крылья и арки', desc: 'Закрывают колесо (выступ шины наружу ≤20%)' },
-  { code: '1.6', title: '1.6 Лобовое стекло', desc: 'Триплекс/поликарбонат ≥5 мм, без трещин в зоне водителя' },
-  { code: '1.7', title: '1.7 Боковые стёкла', desc: 'Плёнка ≥100 мкм изнутри или поликарбонат 3–5 мм' },
-  { code: '1.8', title: '1.8 Зеркала', desc: '2 наружных зеркала, площадь каждого ≥60 см²' },
-  { code: '1.9', title: '1.9 Стоп-сигналы', desc: 'Исправны, светят красным + светодиодный дублер' },
-  { code: '1.10', title: '1.10 Передние фары', desc: 'Штатные места, видимость с расстояния 50 м' },
-  { code: '1.11', title: '1.11 Внешний выключатель массы', desc: 'Знак «молния» / «Е» ∅10–12 см у лобового стекла' },
-  { code: '1.12', title: '1.12 Внешний привод СПТ', desc: 'Рядом с выключателем массы, наклейка «красная Е»' },
-  { code: '1.13', title: '1.13 Выхлопная система', desc: 'Металл, 15–20 см от бака/магистралей, выступ ≤10 мм' },
-  { code: '1.14', title: '1.14 Шины', desc: 'Дорожный рисунок, остаток ≥1.6 мм, слики запрещены' },
-  { code: '1.15', title: '1.15 Диски и крепеж', desc: 'Металл (магний запрещен), все гайки затянуты' },
-  { code: '1.16', title: '1.16 Наклейки RDS', desc: 'Номера, баннер лобового стекла, спонсоры серии' },
-  { code: '2.1', title: '2.1 Каркас: основные дуги', desc: 'Труба ∅45×2.5 или ∅50×2.0 мм, 6-значный номер' },
-  { code: '2.2', title: '2.2 Каркас: диагонали', desc: 'Прямые, сопряжение ≤100 мм от опор/углов' },
-  { code: '2.3', title: '2.3 Накладки каркаса', desc: 'В зоне шлема негорючие накладки FIA 8857-2001' },
-  { code: '2.4', title: '2.4 Сиденье (ковш)', desc: 'FIA 8855/8862, кронштейны сталь ≥3 мм, болты М8 10.9' },
-  { code: '2.5', title: '2.5 Ремни безопасности', desc: '5/6-точечные FIA 8853/8854, не просрочены' },
-  { code: '2.6', title: '2.6 Точки крепления ремней', desc: 'К кузову/каркасу (строго запрещено к салазкам сиденья!)' },
-  { code: '2.7', title: '2.7 Система HANS/FHR', desc: 'Обязательна, клипсы на шлеме FIA 8858-2010' },
-  { code: '2.8', title: '2.8 Система пожаротушения', desc: 'Омологация FIA, сопла: ≥2 в моторный отсек, ≥2 в ноги' },
-  { code: '2.9', title: '2.9 Привод СПТ в салоне', desc: 'Доступен пилоту в боевой позе с затянутыми ремнями' },
-  { code: '2.10', title: '2.10 Срок СПТ', desc: 'Поверка ≤2 лет, манометр строго в зеленой зоне' },
-  { code: '2.11', title: '2.11 Топливо / ALCOHOL', desc: 'При этаноле/E85 наклейка «ALCOHOL» 10–12 см' },
-  { code: '2.12', title: '2.12 Запрет N2O', desc: 'Закись азота и газовые баллоны демонтированы' },
-  { code: '2.13', title: '2.13 Топливный бак', desc: 'Штатный или FIA FT3/FT5, клапан roll-over' },
-  { code: '2.14', title: '2.14 Перегородка бака', desc: 'Герметичный экран (сталь ≥0.8 мм / алюм ≥1.2 мм)' },
-  { code: '2.15', title: '2.15 Магистрали в салоне', desc: 'Цельные без стыков в салоне, армированные PTFE/AN' },
-  { code: '2.16', title: '2.16 Выключатель массы', desc: 'Мгновенно глушит двигатель и обесточивает генератор' },
-  { code: '2.17', title: '2.17 Проводка', desc: 'В гофре, запрещено зажимать между каркасом и кузовом' },
-  { code: '2.18', title: '2.18 Крепление АКБ', desc: 'Металл-гнездо, 2 ленты 20×0.8 мм, болты М10' },
-  { code: '2.19', title: '2.19 Тормозная система', desc: '≥2 независимых контура, жесткий крепеж гидроручника' },
-  { code: '2.20', title: '2.20 Карданоуловитель', desc: '≤150 мм от переднего шарнира, полоса 50×5 мм' },
-  { code: '2.21', title: '2.21 Руль и быстросъем', desc: 'Замкнутый обод, быстросъем без люфта с желтым кольцом' },
-  { code: '2.22', title: '2.22 Рулевая колонка', desc: 'Регулировка заблокирована болтом под инструмент' },
-  { code: '2.23', title: '2.23 Маслоуловитель (Catch-can)', desc: 'Объем ≥2 л со смотровой трубкой уровня' },
-  { code: '2.24', title: '2.24 Экраны магистралей', desc: 'Металлические экраны на трубках в зоне ног пилота' }
-];
-
 let dailyLog = [];
 let checklistState = {};
 let editingId = null;
-let currentFilter = 'all';
+let currentStewardFilter = 'all';
+let stewardSelectedEntry = null;
+let activeChecklistSection = 'ext';
 let isSyncing = false;
 
-/* --- АВТОРИЗАЦИЯ И РОЛИ --- */
-function checkAuth() {
-  const pin = localStorage.getItem('ti_app_pin');
-  if (!pin) {
-    openLoginModal();
-  } else {
-    updateUserRoleUI(pin);
+/* --- ИНИЦИАЛИЗАЦИЯ И РАЗДЕЛЫ ЧЕКЛИСТА --- */
+function initChecklist() {
+  const extContainer = document.getElementById('containerExt');
+  const intContainer = document.getElementById('containerInt');
+  if (!extContainer || !intContainer) return;
+
+  extContainer.innerHTML = '';
+  intContainer.innerHTML = '';
+
+  const renderRow = (item, target) => {
+    if (!checklistState[item.code]) checklistState[item.code] = 'ok';
+    const row = document.createElement('div');
+    row.className = 'chk-row';
+    row.innerHTML = `
+      <div style="font-size:13px; font-weight:bold; color:#fff;">${item.title}</div>
+      <div style="font-size:11px; color:#94a3b8; margin-top:2px;">${item.desc}</div>
+      <div class="chk-btns">
+        <button type="button" class="chk-btn ${checklistState[item.code] === 'ok' ? 'active-ok' : ''}" id="btn_ok_${item.code}" onclick="setChecklistItemState('${item.code}','ok')">✅ ОК</button>
+        <button type="button" class="chk-btn ${checklistState[item.code] === 'warn' ? 'active-warn' : ''}" id="btn_warn_${item.code}" onclick="setChecklistItemState('${item.code}','warn')">⚠️ Зам.</button>
+        <button type="button" class="chk-btn ${checklistState[item.code] === 'fail' ? 'active-fail' : ''}" id="btn_fail_${item.code}" onclick="setChecklistItemState('${item.code}','fail')">❌ Отказ</button>
+      </div>
+    `;
+    target.appendChild(row);
+  };
+
+  CHECKLIST_EXT.forEach(it => renderRow(it, extContainer));
+  CHECKLIST_INT.forEach(it => renderRow(it, intContainer));
+  updateChecklistSummary();
+}
+
+function setChecklistItemState(code, state) {
+  checklistState[code] = state;
+  ['ok', 'warn', 'fail'].forEach(s => {
+    const btn = document.getElementById(`btn_${s}_${code}`);
+    if (btn) btn.className = 'chk-btn' + (state === s ? ` active-${s}` : '');
+  });
+  updateChecklistSummary();
+}
+
+function switchChecklistSection(section) {
+  activeChecklistSection = section;
+  document.getElementById('tabBtnExt').classList.toggle('active', section === 'ext');
+  document.getElementById('tabBtnInt').classList.toggle('active', section === 'int');
+  document.getElementById('containerExt').style.display = (section === 'ext') ? 'block' : 'none';
+  document.getElementById('containerInt').style.display = (section === 'int') ? 'block' : 'none';
+}
+
+function setAllSectionOk() {
+  const currentList = (activeChecklistSection === 'ext') ? CHECKLIST_EXT : CHECKLIST_INT;
+  currentList.forEach(it => setChecklistItemState(it.code, 'ok'));
+}
+
+function setAllChecklistOk() {
+  ALL_CHECKLIST.forEach(it => setChecklistItemState(it.code, 'ok'));
+}
+
+function updateChecklistSummary() {
+  let okCount = 0, warnCount = 0, failCount = 0;
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code] || 'ok';
+    if (s === 'ok') okCount++;
+    else if (s === 'warn') warnCount++;
+    else if (s === 'fail') failCount++;
+  });
+  document.getElementById('checklistCounter').textContent = `Итог: ${okCount} ОК (${warnCount} Зам., ${failCount} Отказ)`;
+}
+
+function openChecklistModal() {
+  document.getElementById('checklistModal').classList.add('open');
+}
+
+function closeChecklistModal() {
+  document.getElementById('checklistModal').classList.remove('open');
+}
+
+/* --- ПРИМЕНИТЬ ЧЕКЛИСТ И СРАЗУ ДОБАВИТЬ В СПИСОК --- */
+function applyChecklistAndSave() {
+  const car = document.getElementById('carInput').value.trim();
+  if (!car) {
+    alert('Пожалуйста, сначала укажите марку и модель автомобиля!');
+    closeChecklistModal();
+    document.getElementById('carInput').focus();
+    return;
+  }
+
+  let remarks = [];
+  let status = 'ok';
+
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code];
+    if (s === 'warn') {
+      remarks.push(`[${it.code}] ${it.title}`);
+      if (status !== 'fail') status = 'warn';
+    } else if (s === 'fail') {
+      remarks.push(`ОТКАЗ: [${it.code}] ${it.title}`);
+      status = 'fail';
+    }
+  });
+
+  const notesText = remarks.length ? remarks.join(', ') : 'Без замечаний';
+  document.getElementById('notesInput').value = notesText;
+  closeChecklistModal();
+
+  // Сохраняем автомобиль в журнал сразу
+  saveCarRecord(status);
+}
+
+function submitDirectInspection() {
+  saveCarRecord();
+}
+
+function saveCarRecord(forcedStatus = null) {
+  const car = document.getElementById('carInput').value.trim();
+  const driver = document.getElementById('driverInput').value.trim();
+  const number = document.getElementById('numberInput').value.trim();
+  const cage = document.getElementById('cageInput').value.trim();
+  const color = document.getElementById('colorInput').value.trim();
+  const box = document.getElementById('boxInput').value.trim();
+  const notes = document.getElementById('notesInput').value.trim() || 'Без замечаний';
+  const stage = document.getElementById('stageSelect').value;
+
+  if (!car) {
+    alert('Укажите марку автомобиля!');
+    document.getElementById('carInput').focus();
+    return;
+  }
+
+  if (cage && cage.length !== 6) {
+    alert('Номер каркаса безопасности должен состоять ровно из 6 цифр!');
+    document.getElementById('cageInput').focus();
+    return;
+  }
+
+  let status = forcedStatus;
+  if (!status) {
+    if (notes.toLowerCase().includes('отказ')) status = 'fail';
+    else if (notes && notes.toLowerCase() !== 'без замечаний') status = 'warn';
+    else status = 'ok';
+  }
+
+  // РЕДАКТИРОВАНИЕ СУЩЕСТВУЮЩЕЙ ЗАПИСИ
+  if (editingId) {
+    const item = dailyLog.find(x => String(x.id) === String(editingId));
+    if (item) {
+      item.car = car;
+      item.driver = driver;
+      item.number = number;
+      item.cage = cage;
+      item.color = color;
+      item.box = box;
+      item.notes = notes;
+      item.status = status;
+      item.timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+      saveLocalLog();
+      renderTable();
+      renderStewardList();
+      enqueueSync('update_entry', { date: stage, data: item });
+      cancelEditing();
+      return;
+    }
+  }
+
+  // НОВАЯ ЗАПИСЬ
+  const newItem = {
+    id: 'RDS_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+    date: stage,
+    car: car,
+    driver: driver,
+    number: number,
+    cage: cage,
+    color: color,
+    box: box,
+    notes: notes,
+    status: status,
+    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+  };
+
+  dailyLog.push(newItem);
+  saveLocalLog();
+  renderTable();
+  renderStewardList();
+  clearInputs();
+  setAllChecklistOk();
+  enqueueSync('add_entry', newItem);
+}
+
+/* --- РЕДАКТИРОВАНИЕ С ПАРОЛЕМ --- */
+function startEditingWithPin(id) {
+  const pin = prompt('Введите пароль для редактирования:');
+  if (pin !== CONTROLLER_PIN && pin !== STEWARD_PIN && pin !== "0000") {
+    alert('Неверный пароль. Редактирование отклонено.');
+    return;
+  }
+
+  const item = dailyLog.find(x => String(x.id) === String(id));
+  if (!item) return;
+
+  editingId = item.id;
+  document.getElementById('carInput').value = item.car || '';
+  document.getElementById('driverInput').value = item.driver || '';
+  document.getElementById('numberInput').value = item.number || '';
+  document.getElementById('cageInput').value = item.cage || '';
+  document.getElementById('colorInput').value = item.color || '';
+  document.getElementById('boxInput').value = item.box || '';
+  document.getElementById('notesInput').value = item.notes || '';
+
+  document.getElementById('formTitleText').textContent = '✏️ Редактирование: №' + (item.number || 'б/н');
+  document.getElementById('editModeIndicator').style.display = 'inline';
+  document.getElementById('cancelEditBtn').style.display = 'block';
+  document.getElementById('directSubmitBtn').textContent = '💾 Сохранить изменения';
+  document.getElementById('checklistApplyAndSaveBtn').textContent = '💾 Применить и сохранить изменения';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEditing() {
+  editingId = null;
+  clearInputs();
+  document.getElementById('formTitleText').textContent = '📋 Регистрация автомобиля';
+  document.getElementById('editModeIndicator').style.display = 'none';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('directSubmitBtn').textContent = '➕ Внести автомобиль в протокол';
+  document.getElementById('checklistApplyAndSaveBtn').textContent = '✅ Завершить проверку и добавить авто';
+}
+
+function clearInputs() {
+  ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+/* --- УДАЛЕНИЕ С ПАРОЛЕМ ГЛАВНОГО КОМИССАРА --- */
+function deleteCarRecordWithPin(id) {
+  const pin = prompt('Внимание! Удаление записи из протокола.\nВведите пароль Главного комиссара:');
+  if (pin !== STEWARD_PIN) {
+    alert('Неверный пароль. Удаление разрешено только Главному комиссару.');
+    return;
+  }
+
+  const item = dailyLog.find(x => String(x.id) === String(id));
+  if (!item) return;
+
+  if (confirm(`Удалить ${item.car} (№${item.number || 'б/н'}) из протокола?`)) {
+    dailyLog = dailyLog.filter(x => String(x.id) !== String(id));
+    saveLocalLog();
+    renderTable();
+    renderStewardList();
+    if (stewardSelectedEntry && String(stewardSelectedEntry.id) === String(id)) {
+      closeStewardDetail();
+    }
+    enqueueSync('delete_entry', { date: item.date || document.getElementById('stageSelect').value, id: item.id, number: item.number });
   }
 }
 
-function openLoginModal() {
-  document.getElementById('pinInput').value = '';
-  document.getElementById('loginModal').classList.add('open');
+/* --- ТАБЛИЦА ВХОДНОГО КОНТРОЛЯ --- */
+function renderTable() {
+  const tbody = document.getElementById('logTableBody');
+  document.getElementById('totalCarsCount').textContent = dailyLog.length;
+
+  if (!dailyLog.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-sub);">Список пуст. Проведите проверку первого автомобиля.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = dailyLog.map((item, idx) => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <tr>
+        <td><strong>${idx + 1}</strong></td>
+        <td>
+          <strong style="color:#fff;">${escapeHtml(item.car)}</strong>
+          <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(item.driver || '—')} ${item.color ? '• ' + escapeHtml(item.color) : ''}</div>
+          ${item.notes && item.notes !== 'Без замечаний' ? `<div style="font-size:10px; color:var(--gold-bright); margin-top:2px;">📝 ${escapeHtml(item.notes)}</div>` : ''}
+        </td>
+        <td><span style="background:#1e293b; padding:3px 7px; border-radius:5px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
+        <td><span style="font-family:monospace; font-weight:bold; color:var(--gold-bright);">${escapeHtml(item.cage || '—')}</span></td>
+        <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+        <td style="text-align:right; white-space:nowrap;">
+          <button style="background:none; border:none; cursor:pointer; font-size:15px; margin-right:8px;" onclick="viewInStewardDashboard('${item.id}')" title="Открыть в кабинете комиссара">🔍</button>
+          <button style="background:none; border:none; cursor:pointer; font-size:15px; margin-right:8px;" onclick="startEditingWithPin('${item.id}')" title="Редактировать">✏️</button>
+          <button style="background:none; border:none; cursor:pointer; font-size:15px;" onclick="deleteCarRecordWithPin('${item.id}')" title="Удалить">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
 }
 
-function submitLoginPin() {
-  const pin = document.getElementById('pinInput').value.trim();
-  if (pin === STEWARD_PIN || pin === CONTROLLER_PIN || pin === "0000") {
-    localStorage.setItem('ti_app_pin', pin);
-    document.getElementById('loginModal').classList.remove('open');
-    updateUserRoleUI(pin);
-    fetchLogs(true);
+function viewInStewardDashboard(itemId) {
+  switchMainView('steward');
+  selectStewardParticipant(itemId);
+}
+
+/* --- КАБИНЕТ КОМИССАРА --- */
+function setStewardFilter(filter) {
+  currentStewardFilter = filter;
+  ['all', 'remarks', 'ok'].forEach(f => {
+    document.getElementById(`filter_${f}`).classList.toggle('active', f === filter);
+  });
+  renderStewardList();
+}
+
+function renderStewardList() {
+  const container = document.getElementById('stewardListContainer');
+  if (!container) return;
+
+  const searchVal = (document.getElementById('stewardSearchInput').value || '').trim().toLowerCase();
+  let cntAll = dailyLog.length, cntRemarks = 0, cntOk = 0;
+
+  dailyLog.forEach(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (hasRemarks) cntRemarks++;
+    else cntOk++;
+  });
+
+  document.getElementById('cntStewardAll').textContent = cntAll;
+  document.getElementById('cntStewardRemarks').textContent = cntRemarks;
+  document.getElementById('cntStewardOk').textContent = cntOk;
+
+  const filtered = dailyLog.filter(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (currentStewardFilter === 'remarks' && !hasRemarks) return false;
+    if (currentStewardFilter === 'ok' && hasRemarks) return false;
+
+    if (searchVal) {
+      const match = (item.number && item.number.toString().toLowerCase().includes(searchVal)) ||
+                    (item.car && item.car.toLowerCase().includes(searchVal)) ||
+                    (item.driver && item.driver.toLowerCase().includes(searchVal)) ||
+                    (item.cage && item.cage.toLowerCase().includes(searchVal));
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:25px; color:var(--text-sub);">Нет записей по заданному фильтру</div>`;
+    return;
+  }
+
+  // В списке замечания скрыты до клика на пилота
+  container.innerHTML = filtered.map(item => {
+    const isSelected = stewardSelectedEntry && String(stewardSelectedEntry.id) === String(item.id);
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <div class="participant-card-item ${isSelected ? 'selected' : ''}" onclick="selectStewardParticipant('${item.id}')">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:16px; font-weight:900; color:var(--gold-bright); background:#1e293b; padding:4px 10px; border-radius:6px;">№${escapeHtml(item.number || 'б/н')}</span>
+          <div>
+            <strong style="font-size:14px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
+            <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(item.car)} | Каркас: <span style="font-family:monospace; color:var(--gold-bright);">${escapeHtml(item.cage || '—')}</span></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge-status ${statusClass}">${statusText}</span>
+          <div style="font-size:10px; color:var(--gold-primary); margin-top:3px;">Открыть дело ↗</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectStewardParticipant(itemId) {
+  const item = dailyLog.find(x => String(x.id) === String(itemId));
+  if (!item) return;
+  stewardSelectedEntry = item;
+  renderStewardDetail(item);
+  renderStewardList();
+  document.getElementById('stewardInspectorView').scrollIntoView({ behavior: 'smooth' });
+}
+
+function closeStewardDetail() {
+  stewardSelectedEntry = null;
+  document.getElementById('stewardInspectorView').style.display = 'none';
+  renderStewardList();
+}
+
+function renderStewardDetail(item) {
+  const view = document.getElementById('stewardInspectorView');
+  view.style.display = 'block';
+
+  document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
+  document.getElementById('dtlDriver').textContent = item.driver || 'Не указан';
+  document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''}`;
+  document.getElementById('dtlBox').textContent = item.box || '—';
+  document.getElementById('dtlCage').textContent = item.cage || 'Не внесен';
+
+  const badge = document.getElementById('dtlStatusBadge');
+  const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+
+  if (item.status === 'fail') {
+    badge.className = 'badge-status badge-fail';
+    badge.textContent = '❌ ОТКАЗ В ДОПУСКЕ';
+  } else if (hasRemarks) {
+    badge.className = 'badge-status badge-warn';
+    badge.textContent = '⚠️ ВЫЯВЛЕНЫ ЗАМЕЧАНИЯ';
   } else {
-    alert('Неверный код доступа! Введите 1337 (Контролер) или 0852 (Комиссар).');
+    badge.className = 'badge-status badge-ok';
+    badge.textContent = '✅ ТИ ПРОЙДЕН';
+  }
+
+  const defectsContainer = document.getElementById('dtlDefectsContainer');
+  defectsContainer.innerHTML = '';
+  document.getElementById('ruleCitationBox').style.display = 'none';
+
+  if (!item.notes || item.notes.toLowerCase() === 'без замечаний') {
+    defectsContainer.innerHTML = `<div style="color:var(--accent-green); font-size:13px; padding:6px 0;">Замечаний нет. Автомобиль полностью соответствует регламенту.</div>`;
+    return;
+  }
+
+  const rawNotes = item.notes.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+  rawNotes.forEach(defect => {
+    let matchedRule = ALL_CHECKLIST[0];
+    const lower = defect.toLowerCase();
+
+    for (let r of ALL_CHECKLIST) {
+      if (lower.includes(r.code) || lower.includes(r.title.toLowerCase())) {
+        matchedRule = r;
+        break;
+      }
+    }
+
+    const badgeEl = document.createElement('div');
+    badgeEl.className = 'defect-badge-clickable';
+    badgeEl.innerHTML = `⚠️ ${escapeHtml(defect)} <span style="font-size:10px; margin-left:6px; opacity:0.8;">[Регламент ↗]</span>`;
+    badgeEl.onclick = () => showRuleCitation(matchedRule);
+    defectsContainer.appendChild(badgeEl);
+  });
+
+  if (defectsContainer.children.length > 0) {
+    defectsContainer.children[0].click();
   }
 }
 
-function updateUserRoleUI(pin) {
-  const badge = document.getElementById('userRoleBadge');
-  if (pin === STEWARD_PIN) {
-    badge.textContent = '👑 Главный Комиссар';
-    badge.style.borderColor = '#fbbf24';
-  } else {
-    badge.textContent = '📋 Контролер ТИ';
-    badge.style.borderColor = '#38bdf8';
+function showRuleCitation(rule) {
+  const box = document.getElementById('ruleCitationBox');
+  box.style.display = 'block';
+  document.getElementById('ruleCitationHeading').textContent = `${rule.article} (${rule.title})`;
+  document.getElementById('ruleCitationText').textContent = rule.rule;
+  document.getElementById('ruleActionNeeded').innerHTML = `<strong>⚠️ Предписание комиссара:</strong> ${rule.action}`;
+}
+
+function switchMainView(view) {
+  document.getElementById('tabScrutineer').classList.toggle('active', view === 'scrutineer');
+  document.getElementById('tabSteward').classList.toggle('active', view === 'steward');
+  document.getElementById('viewScrutineer').style.display = (view === 'scrutineer') ? 'block' : 'none';
+  document.getElementById('viewSteward').style.display = (view === 'steward') ? 'block' : 'none';
+  if (view === 'steward') renderStewardList();
+}
+
+/* --- АВТОКОМПЛИТ АВТОМОБИЛЯ С ТРАНСЛИТОМ --- */
+function setupAutocomplete() {
+  const input = document.getElementById('carInput');
+  const list = document.getElementById('suggestions');
+
+  function normalize(str) {
+    let s = (str || '').toLowerCase().trim();
+    for (let k in TRANSLIT_MAP) s = s.replace(new RegExp(k, 'g'), TRANSLIT_MAP[k]);
+    return s.replace(/[^a-z0-9]/g, '');
   }
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val.length < 1) { list.style.display = 'none'; return; }
+
+    const norm = normalize(val);
+    const filtered = CAR_CATALOG.filter(c => c.toLowerCase().includes(val.toLowerCase()) || normalize(c).includes(norm));
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="suggestion-item" onclick="selectCar('${escapeHtml(val)}')">➕ Использовать "${escapeHtml(val)}"</div>`;
+      list.style.display = 'block';
+      return;
+    }
+
+    list.innerHTML = filtered.map(c => `
+      <div class="suggestion-item" onclick="selectCar('${escapeHtml(c)}')">
+        <strong>${c}</strong>
+      </div>
+    `).join('');
+    list.style.display = 'block';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !list.contains(e.target)) list.style.display = 'none';
+  });
 }
 
-function getUserPin() {
-  return localStorage.getItem('ti_app_pin') || '0000';
+function selectCar(brand) {
+  document.getElementById('carInput').value = brand;
+  document.getElementById('suggestions').style.display = 'none';
 }
 
-/* --- ТАЙМАУТ И СИНХРОНИЗАЦИЯ С ТАБЛИЦЕЙ --- */
+/* --- ОФЛАЙН-СИНХРОНИЗАЦИЯ С ТАЙМАУТОМ --- */
 function updateSyncBadge(status, text) {
   const badge = document.getElementById('syncStatus');
   const txt = document.getElementById('syncText');
@@ -410,7 +924,6 @@ function updateSyncBadge(status, text) {
   txt.textContent = text;
 }
 
-// Fetch с принудительным таймаутом 4.5 секунды
 async function fetchWithTimeout(url, options = {}, timeout = 4500) {
   const controller = new AbortController();
   const id = setTimeout(() => controller.abort(), timeout);
@@ -451,10 +964,9 @@ async function triggerManualSync() {
   isSyncing = true;
   updateSyncBadge('syncing', 'Синхронизация...');
 
-  // 1. Отправляем локальную очередь
   while (q.length > 0) {
     const task = q[0];
-    const body = { pin: getUserPin(), action: task.action };
+    const body = { action: task.action, pin: STEWARD_PIN };
     if (task.action === 'add_entry') body.data = task.payload;
     else if (task.action === 'update_entry') { body.date = task.payload.date; body.data = task.payload.data; body.id = task.payload.data.id; }
     else if (task.action === 'delete_entry') { body.date = task.payload.date; body.id = task.payload.id; body.number = task.payload.number; }
@@ -473,7 +985,6 @@ async function triggerManualSync() {
         break;
       }
     } catch (e) {
-      console.warn('Sync offline fallback:', e);
       break;
     }
   }
@@ -497,10 +1008,9 @@ async function fetchLogs(silent = false) {
   if (!silent) updateSyncBadge('syncing', 'Загрузка...');
 
   try {
-    const res = await fetchWithTimeout(`${GAS_URL}?action=get_ti_logs&date=${encodeURIComponent(stage)}&pin=${getUserPin()}`, {}, 4500);
+    const res = await fetchWithTimeout(`${GAS_URL}?action=get_ti_logs&date=${encodeURIComponent(stage)}`, {}, 4500);
     const json = await res.json();
     if (json && json.status === 'success' && json.entries) {
-      // Умное объединение: не стираем локальные записи из очереди
       mergeIncomingEntries(json.entries);
       updateSyncBadge('online', 'Онлайн (Таблица)');
     } else {
@@ -515,12 +1025,11 @@ function mergeIncomingEntries(remoteEntries) {
   const pendingQueue = getSyncQueue();
   const pendingIds = pendingQueue.map(t => t.payload.id || (t.payload.data && t.payload.data.id));
 
-  // Оставляем локальные, которые еще ждут отправки
+  // Оставляем локальные записи из очереди
   const unsyncedLocal = dailyLog.filter(item => pendingIds.includes(item.id));
-  
-  // Добавляем удаленные
+
   remoteEntries.forEach(re => {
-    if (!unsyncedLocal.some(loc => loc.id === re.id || (loc.number && loc.number === re.number))) {
+    if (!unsyncedLocal.some(loc => String(loc.id) === String(re.id) || (loc.number && String(loc.number) === String(re.number)))) {
       unsyncedLocal.push(re);
     }
   });
@@ -528,7 +1037,7 @@ function mergeIncomingEntries(remoteEntries) {
   dailyLog = unsyncedLocal;
   saveLocalLog();
   renderTable();
-  renderSteward();
+  renderStewardList();
 }
 
 function saveLocalLog() {
@@ -541,353 +1050,15 @@ function loadLocalLog() {
   const data = localStorage.getItem(`ti_log_${stage}`);
   dailyLog = data ? JSON.parse(data) : [];
   renderTable();
-  renderSteward();
+  renderStewardList();
 }
 
 function onStageChanged() {
+  const selectEl = document.getElementById('stageSelect');
+  const stageMeta = selectEl.options[selectEl.selectedIndex].textContent;
+  document.getElementById('stewardStageMeta').textContent = stageMeta;
   loadLocalLog();
   fetchLogs(true);
-}
-
-/* --- АВТОЗАПОЛНЕНИЕ АВТОМОБИЛЯ С ТРАНСЛИТЕРАЦИЕЙ --- */
-function setupAutocomplete() {
-  const input = document.getElementById('carInput');
-  const list = document.getElementById('suggestions');
-
-  function normalize(str) {
-    let s = (str || '').toLowerCase().trim();
-    for (let k in TRANSLIT_MAP) s = s.replace(new RegExp(k, 'g'), TRANSLIT_MAP[k]);
-    return s.replace(/[^a-z0-9]/g, '');
-  }
-
-  input.addEventListener('input', () => {
-    const val = input.value.trim();
-    if (val.length < 1) { list.style.display = 'none'; return; }
-
-    const norm = normalize(val);
-    const filtered = CAR_CATALOG.filter(c => c.brand.toLowerCase().includes(val.toLowerCase()) || normalize(c.brand).includes(norm));
-
-    if (!filtered.length) {
-      list.innerHTML = `<div class="suggestion-item" onclick="selectCar('${escapeHtml(val)}','PRO')">➕ Использовать "${escapeHtml(val)}"</div>`;
-      list.style.display = 'block';
-      return;
-    }
-
-    list.innerHTML = filtered.map(c => `
-      <div class="suggestion-item" onclick="selectCar('${escapeHtml(c.brand)}','${c.group}')">
-        <strong>${c.brand}</strong>
-        <span style="font-size:11px; background:#1e293b; padding:2px 6px; border-radius:4px; color:var(--gold-bright);">${c.group}</span>
-      </div>
-    `).join('');
-    list.style.display = 'block';
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !list.contains(e.target)) list.style.display = 'none';
-  });
-}
-
-function selectCar(brand, group) {
-  document.getElementById('carInput').value = brand;
-  document.getElementById('groupSelect').value = group || 'PRO';
-  document.getElementById('suggestions').style.display = 'none';
-}
-
-/* --- ДОБАВЛЕНИЕ И РЕДАКТИРОВАНИЕ --- */
-function submitQuickInspection() {
-  document.getElementById('notesInput').value = 'Без замечаний';
-  saveCarRecord('ok');
-}
-
-function saveCarRecord(status = 'ok') {
-  const car = document.getElementById('carInput').value.trim();
-  const driver = document.getElementById('driverInput').value.trim();
-  const number = document.getElementById('numberInput').value.trim();
-  const cage = document.getElementById('cageInput').value.trim();
-  const color = document.getElementById('colorInput').value.trim();
-  const box = document.getElementById('boxInput').value.trim();
-  const group = document.getElementById('groupSelect').value || 'PRO';
-  let notes = document.getElementById('notesInput').value.trim() || 'Без замечаний';
-  const stage = document.getElementById('stageSelect').value;
-  const pin = getUserPin();
-
-  if (!car) { alert('Укажите марку автомобиля!'); return; }
-  if (cage && cage.length !== 6) { alert('Номер каркаса должен быть ровно из 6 цифр!'); return; }
-
-  // Проверка статуса
-  if (notes.toLowerCase().includes('отказ')) status = 'fail';
-  else if (notes !== 'Без замечаний') status = 'warn';
-
-  // РЕДАКТИРОВАНИЕ СУЩЕСТВУЮЩЕЙ ЗАПИСИ
-  if (editingId) {
-    const item = dailyLog.find(x => x.id === editingId);
-    if (item) {
-      item.car = car;
-      item.driver = driver;
-      item.number = number;
-      item.cage = cage;
-      item.color = color;
-      item.box = box;
-      item.group = group;
-      item.notes = notes;
-      item.status = status;
-
-      // Если правит контролер (1337) — помечаем для Комиссара
-      if (pin === CONTROLLER_PIN) {
-        item.needs_approval = true;
-      }
-
-      saveLocalLog();
-      renderTable();
-      renderSteward();
-      enqueueSync('update_entry', { date: stage, data: item });
-      cancelEditing();
-      return;
-    }
-  }
-
-  // НОВАЯ ЗАПИСЬ
-  const newItem = {
-    id: 'RDS_' + Date.now() + '_' + Math.floor(Math.random()*1000),
-    date: stage,
-    car: car,
-    driver: driver,
-    number: number,
-    cage: cage,
-    color: color,
-    box: box,
-    group: group,
-    notes: notes,
-    status: status,
-    needs_approval: false,
-    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-  };
-
-  dailyLog.push(newItem);
-  saveLocalLog();
-  renderTable();
-  renderSteward();
-  clearInputs();
-  enqueueSync('add_entry', newItem);
-}
-
-function startEditing(id) {
-  const item = dailyLog.find(x => x.id === id);
-  if (!item) return;
-
-  editingId = item.id;
-  document.getElementById('carInput').value = item.car;
-  document.getElementById('driverInput').value = item.driver;
-  document.getElementById('numberInput').value = item.number;
-  document.getElementById('cageInput').value = item.cage;
-  document.getElementById('colorInput').value = item.color;
-  document.getElementById('boxInput').value = item.box;
-  document.getElementById('groupSelect').value = item.group || 'PRO';
-  document.getElementById('notesInput').value = item.notes;
-
-  document.getElementById('formTitleText').textContent = '✏️ Редактирование записи';
-  document.getElementById('editModeIndicator').style.display = 'inline';
-  document.getElementById('cancelEditBtn').style.display = 'block';
-  document.getElementById('quickSubmitBtn').textContent = '💾 Сохранить изменения';
-  document.getElementById('entryFormCard').scrollIntoView({ behavior: 'smooth' });
-}
-
-function cancelEditing() {
-  editingId = null;
-  clearInputs();
-  document.getElementById('formTitleText').textContent = '📋 Регистрация автомобиля';
-  document.getElementById('editModeIndicator').style.display = 'none';
-  document.getElementById('cancelEditBtn').style.display = 'none';
-  document.getElementById('quickSubmitBtn').textContent = '⚡ Выдать ТИ (Без замечаний)';
-}
-
-function clearInputs() {
-  ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-}
-
-/* --- УДАЛЕНИЕ ЗАПИСИ (СТРОГО 0852) --- */
-function deleteCarRecord(id) {
-  const item = dailyLog.find(x => x.id === id);
-  if (!item) return;
-
-  const currentPin = getUserPin();
-  let confirmPin = currentPin;
-
-  // Если контролер пытается удалить — требуем мастер-пароль 0852
-  if (currentPin !== STEWARD_PIN) {
-    confirmPin = prompt('🔒 Удаление разрешено ТОЛЬКО Главному техкомиссару.\nВведите пароль (0852):');
-    if (confirmPin !== STEWARD_PIN) {
-      alert('Отказ в доступе. Неверный пароль техкомиссара!');
-      return;
-    }
-  }
-
-  if (confirm(`Удалить ${item.car} (№${item.number || 'б/н'})?`)) {
-    dailyLog = dailyLog.filter(x => x.id !== id);
-    saveLocalLog();
-    renderTable();
-    renderSteward();
-    enqueueSync('delete_entry', { date: item.date || document.getElementById('stageSelect').value, id: item.id, number: item.number });
-  }
-}
-
-/* --- ТАБЛИЦА И ОТОБРАЖЕНИЕ --- */
-function renderTable() {
-  const tbody = document.getElementById('logTableBody');
-  document.getElementById('totalCarsCount').textContent = dailyLog.length;
-
-  if (!dailyLog.length) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-sub);">Список пуст. Проведите первый техком.</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = dailyLog.map((item, idx) => {
-    const isPending = item.needs_approval;
-    let badgeHtml = '';
-    if (isPending) {
-      badgeHtml = `<span class="badge-status badge-pending">⚠️ НА УТВЕРЖДЕНИИ</span>`;
-    } else if (item.status === 'fail') {
-      badgeHtml = `<span class="badge-status badge-fail">ОТКАЗ</span>`;
-    } else if (item.status === 'warn' || (item.notes && item.notes !== 'Без замечаний')) {
-      badgeHtml = `<span class="badge-status badge-warn">ЗАМЕЧАНИЯ</span>`;
-    } else {
-      badgeHtml = `<span class="badge-status badge-ok">ДОПУЩЕН</span>`;
-    }
-
-    return `
-      <tr>
-        <td><strong>${idx + 1}</strong></td>
-        <td>
-          <strong style="color:#fff;">${escapeHtml(item.car)}</strong>
-          <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(item.driver || '—')}</div>
-          ${item.notes && item.notes !== 'Без замечаний' ? `<div style="font-size:10px; color:var(--gold-bright);">📝 ${escapeHtml(item.notes)}</div>` : ''}
-        </td>
-        <td><span style="background:#1e293b; padding:2px 6px; border-radius:4px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
-        <td><span style="font-family:monospace; font-weight:bold; color:var(--gold-bright);">${escapeHtml(item.cage || '—')}</span></td>
-        <td>${badgeHtml}</td>
-        <td style="text-align:right; white-space:nowrap;">
-          <button style="background:none; border:none; cursor:pointer; font-size:15px; margin-right:6px;" onclick="startEditing('${item.id}')" title="Редактировать">✏️</button>
-          <button style="background:none; border:none; cursor:pointer; font-size:15px;" onclick="deleteCarRecord('${item.id}')" title="Удалить">🗑️</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-/* --- КАБИНЕТ КОМИССАРА (УТВЕРЖДЕНИЕ) --- */
-function setStewardFilter(f) {
-  currentFilter = f;
-  renderSteward();
-}
-
-function renderSteward() {
-  const container = document.getElementById('stewardListContainer');
-  if (!container) return;
-
-  const cntPending = dailyLog.filter(x => x.needs_approval).length;
-  const cntRemarks = dailyLog.filter(x => x.status === 'warn' || x.status === 'fail').length;
-  document.getElementById('cntAll').textContent = dailyLog.length;
-  document.getElementById('cntPending').textContent = cntPending;
-  document.getElementById('cntRemarks').textContent = cntRemarks;
-
-  let filtered = dailyLog;
-  if (currentFilter === 'pending') filtered = dailyLog.filter(x => x.needs_approval);
-  else if (currentFilter === 'remarks') filtered = dailyLog.filter(x => x.status === 'warn' || x.status === 'fail');
-
-  if (!filtered.length) {
-    container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-sub);">Нет записей в этой категории.</div>`;
-    return;
-  }
-
-  const isSteward = getUserPin() === STEWARD_PIN;
-
-  container.innerHTML = filtered.map(item => `
-    <div style="background:#111827; border:1px solid ${item.needs_approval ? 'var(--gold-primary)' : 'var(--card-border)'}; border-radius:12px; padding:12px; margin-bottom:8px;">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <span style="background:#1e293b; color:var(--gold-bright); padding:2px 8px; border-radius:6px; font-weight:bold;">№${escapeHtml(item.number || 'б/н')}</span>
-          <strong style="margin-left:8px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
-          <span style="font-size:12px; color:var(--text-sub);">(${escapeHtml(item.car)})</span>
-        </div>
-        <div>
-          ${item.needs_approval ? `<span class="badge-status badge-pending">ТРЕБУЕТ ПОДТВЕРЖДЕНИЯ</span>` : ''}
-        </div>
-      </div>
-      <div style="margin-top:6px; font-size:12px; color:#cbd5e1;">
-        Замечания: <strong>${escapeHtml(item.notes)}</strong> | Каркас: <strong>${escapeHtml(item.cage || '—')}</strong>
-      </div>
-      ${item.needs_approval ? `
-        <div style="margin-top:10px; display:flex; gap:8px;">
-          ${isSteward ? `<button class="btn btn-gold" style="padding:6px 12px; font-size:12px;" onclick="approveStewardEdit('${item.id}')">✅ Утвердить изменение</button>` : `<div style="font-size:11px; color:var(--gold-bright);">🔒 Требуется вход техкомиссара (0852)</div>`}
-        </div>
-      ` : ''}
-    </div>
-  `).join('');
-}
-
-function approveStewardEdit(id) {
-  const item = dailyLog.find(x => x.id === id);
-  if (!item) return;
-
-  item.needs_approval = false;
-  saveLocalLog();
-  renderTable();
-  renderSteward();
-  enqueueSync('update_entry', { date: item.date || document.getElementById('stageSelect').value, data: item });
-  alert('Изменения успешно утверждены Главным комиссаром!');
-}
-
-function switchMainView(v) {
-  document.getElementById('tabScrutineer').classList.toggle('active', v === 'scrutineer');
-  document.getElementById('tabSteward').classList.toggle('active', v === 'steward');
-  document.getElementById('viewScrutineer').style.display = v === 'scrutineer' ? 'block' : 'none';
-  document.getElementById('viewSteward').style.display = v === 'steward' ? 'block' : 'none';
-  if (v === 'steward') renderSteward();
-}
-
-/* --- ЧЕКЛИСТ --- */
-function initChecklist() {
-  const container = document.getElementById('checklistScrollContainer');
-  container.innerHTML = CHECKLIST_ITEMS.map(it => `
-    <div class="chk-row">
-      <div style="font-size:13px; font-weight:bold; color:#fff;">${it.title}</div>
-      <div style="font-size:11px; color:#94a3b8;">${it.desc}</div>
-      <div class="chk-btns">
-        <button class="chk-btn active-ok" id="chk_ok_${it.code}" onclick="setChk('${it.code}','ok')">✅ ОК</button>
-        <button class="chk-btn" id="chk_warn_${it.code}" onclick="setChk('${it.code}','warn')">⚠️ Зам.</button>
-        <button class="chk-btn" id="chk_fail_${it.code}" onclick="setChk('${it.code}','fail')">❌ Отказ</button>
-      </div>
-    </div>
-  `).join('');
-}
-
-function setChk(code, val) {
-  checklistState[code] = val;
-  ['ok', 'warn', 'fail'].forEach(s => {
-    const b = document.getElementById(`chk_${s}_${code}`);
-    if (b) b.className = 'chk-btn' + (s === val ? ` active-${s}` : '');
-  });
-}
-
-function openChecklistModal() {
-  document.getElementById('checklistModal').classList.add('open');
-}
-
-function closeChecklistModal() {
-  document.getElementById('checklistModal').classList.remove('open');
-}
-
-function applyChecklistResults() {
-  let remarks = [];
-  CHECKLIST_ITEMS.forEach(it => {
-    const s = checklistState[it.code];
-    if (s === 'warn') remarks.push(`[${it.code}] ${it.title}`);
-    else if (s === 'fail') remarks.push(`ОТКАЗ: [${it.code}] ${it.title}`);
-  });
-  document.getElementById('notesInput').value = remarks.length ? remarks.join(', ') : 'Без замечаний';
-  closeChecklistModal();
 }
 
 function escapeHtml(s) {
@@ -897,8 +1068,7 @@ function escapeHtml(s) {
 document.addEventListener('DOMContentLoaded', () => {
   setupAutocomplete();
   initChecklist();
-  checkAuth();
-  loadLocalLog();
+  onStageChanged();
 
   window.addEventListener('online', () => {
     updateSyncBadge('online', 'Онлайн');
