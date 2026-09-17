@@ -1,1698 +1,1863 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROYAL DS — Scrutineering & Steward Portal</title>
-    <meta name="theme-color" content="#0a0a0a">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ROYAL%20DS%20Scrutineering%22%2C%22short_name%22%3A%22RDS%20TI%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%7D">
-    
-    <style>
-        :root {
-            --bg-color: #0c0c0c;
-            --card-bg: #151515;
-            --card-border: #262626;
-            --gold-primary: #d4af37;
-            --gold-bright: #ffd700;
-            --gold-dark: #997a15;
-            --gold-gradient: linear-gradient(135deg, #f3cc65 0%, #d4af37 50%, #997a15 100%);
-            --accent-green: #22c55e;
-            --accent-orange: #f59e0b;
-            --accent-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-sub: #9ca3af;
-            --input-bg: #101010;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ROYAL DS — Техническая Инспекция (v2.0)</title>
+<meta name="theme-color" content="#0b0f17">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+<style>
+:root {
+  --bg-color: #090d16;
+  --card-bg: #131b28;
+  --card-border: #222f44;
+  --card-hover: #1a2436;
+  --gold-primary: #f59e0b;
+  --gold-bright: #fbbf24;
+  --gold-dark: #b45309;
+  --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  --accent-green: #10b981;
+  --accent-green-dark: #064e3b;
+  --accent-orange: #f59e0b;
+  --accent-orange-dark: #78350f;
+  --accent-red: #ef4444;
+  --accent-red-dark: #7f1d1d;
+  --text-main: #f1f5f9;
+  --text-sub: #94a3b8;
+  --text-muted: #64748b;
+  --input-bg: #0b111c;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --radius-sm: 6px;
+}
 
-        body {
-            background-color: var(--bg-color);
-            background-image: 
-                radial-gradient(circle at 50% 0%, #1c1c1c 0%, #0c0c0c 100%),
-                linear-gradient(45deg, #141414 25%, transparent 25%), 
-                linear-gradient(-45deg, #141414 25%, transparent 25%), 
-                linear-gradient(45deg, transparent 75%, #141414 75%), 
-                linear-gradient(-45deg, transparent 75%, #141414 75%);
-            background-size: 100% 100%, 8px 8px, 8px 8px, 8px 8px, 8px 8px;
-            color: var(--text-main);
-            padding: 12px;
-            padding-bottom: 80px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
 
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: linear-gradient(180deg, #1f1f1f 0%, #141414 100%);
-            padding: 12px 16px;
-            border-radius: 16px;
-            border: 1px solid var(--gold-dark);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px rgba(212, 175, 55, 0.15);
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+body {
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  padding: 12px;
+  padding-bottom: 90px;
+  max-width: 860px;
+  margin: 0 auto;
+  font-size: 15px;
+  line-height: 1.4;
+}
 
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #111827;
+  padding: 14px 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-        .logo-crown {
-            background: var(--gold-gradient);
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            box-shadow: 0 2px 10px rgba(212, 175, 55, 0.4);
-        }
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
 
-        h1 {
-            font-size: 16px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
+.logo-crown {
+  background: var(--gold-gradient);
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #000;
+  font-weight: bold;
+}
 
-        h1 span {
-            color: var(--gold-bright);
-        }
+h1 {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
 
-        .lang-switch-group {
-            display: flex;
-            gap: 4px;
-            background: #111;
-            padding: 3px;
-            border-radius: 10px;
-            border: 1px solid #333;
-        }
+h1 span {
+  color: var(--gold-bright);
+}
 
-        .lang-btn {
-            background: none;
-            border: none;
-            color: var(--text-sub);
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+.subtitle {
+  font-size: 12px;
+  color: var(--text-sub);
+}
 
-        .lang-btn.active {
-            background: var(--gold-gradient);
-            color: #000;
-        }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 
-        .view-nav {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-bottom: 14px;
-        }
+.sync-badge {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #1a2233;
+  color: #94a3b8;
+  border: 1px solid #334155;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
 
-        .nav-tab {
-            padding: 12px;
-            text-align: center;
-            background: #151515;
-            border: 1px solid #262626;
-            border-radius: 12px;
-            color: var(--text-sub);
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
+.sync-badge.online {
+  background: #064e3b;
+  border-color: #10b981;
+  color: #6ee7b7;
+}
 
-        .nav-tab.active {
-            background: linear-gradient(135deg, #242424 0%, #151515 100%);
-            color: var(--gold-bright);
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
-        }
+.sync-badge.syncing {
+  background: #78350f;
+  border-color: #f59e0b;
+  color: #fef08a;
+}
 
-        .sync-badge {
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: #1a1a1a;
-            color: #9ca3af;
-            border: 1px solid #333333;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-        }
+.sync-badge.offline {
+  background: #1e293b;
+  border-color: #475569;
+  color: #94a3b8;
+}
 
-        .queue-badge {
-            font-size: 10px;
-            padding: 4px 10px;
-            border-radius: 14px;
-            background: #78350f;
-            color: #fef08a;
-            border: 1px solid var(--gold-primary);
-            display: none;
-            cursor: pointer;
-            font-weight: bold;
-        }
+.queue-badge {
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: 14px;
+  background: #78350f;
+  color: #fef08a;
+  border: 1px solid var(--gold-primary);
+  display: none;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-        .card {
-            background: var(--card-bg);
-            padding: 16px;
-            border-radius: 16px;
-            border: 1px solid var(--card-border);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            margin-bottom: 14px;
-        }
+/* Nav Tabs */
+.view-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
 
-        .card-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--gold-primary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #222222;
-            padding-bottom: 8px;
-        }
+.nav-tab {
+  padding: 14px;
+  text-align: center;
+  background: #111827;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  color: var(--text-sub);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+.nav-tab.active {
+  background: #1e293b;
+  color: var(--gold-bright);
+  border-color: var(--gold-primary);
+}
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            margin-bottom: 10px;
-            position: relative;
-        }
+/* Cards */
+.card {
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  margin-bottom: 14px;
+}
 
-        .form-group.full {
-            grid-column: span 2;
-        }
+.card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1f293d;
+  padding-bottom: 10px;
+}
 
-        label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #d1d5db;
-        }
+.card-title a {
+  color: var(--gold-primary);
+  font-size: 12px;
+  text-decoration: underline;
+  text-transform: none;
+}
 
-        input, select {
-            background: var(--input-bg);
-            border: 1px solid var(--card-border);
-            color: var(--text-main);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-            width: 100%;
-            transition: border-color 0.2s;
-        }
+/* Forms */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
 
-        input:focus, select:focus {
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
-        }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 8px;
+}
 
-        .autocomplete-wrapper {
-            position: relative;
-        }
+.form-group.full {
+  grid-column: span 2;
+}
 
-        .suggestions-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: #181818;
-            border: 1px solid var(--gold-primary);
-            border-radius: 10px;
-            max-height: 220px;
-            overflow-y: auto;
-            z-index: 100;
-            margin-top: 4px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
-            display: none;
-        }
+label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
 
-        .suggestion-item {
-            padding: 12px 14px;
-            border-bottom: 1px solid #262626;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.label-hint {
+  font-size: 11px;
+  color: var(--gold-bright);
+  font-weight: normal;
+}
 
-        .group-tag {
-            font-size: 10px;
-            font-weight: 700;
-            padding: 4px 8px;
-            border-radius: 6px;
-            text-transform: uppercase;
-            background: #222222;
-            color: var(--gold-bright);
-            border: 1px solid var(--gold-dark);
-        }
+input, select {
+  background: var(--input-bg);
+  border: 1px solid var(--card-border);
+  color: #fff;
+  padding: 13px 14px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  outline: none;
+  width: 100%;
+}
 
-        .chips-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-top: 4px;
-        }
+input:focus, select:focus {
+  border-color: var(--gold-primary);
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+}
 
-        .group-chip {
-            background: #111111;
-            border: 1px solid #2d2d2d;
-            color: var(--text-sub);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            user-select: none;
-        }
+.autocomplete-wrapper {
+  position: relative;
+}
 
-        .group-chip.active {
-            background: linear-gradient(135deg, #262626 0%, #171717 100%);
-            color: var(--gold-bright);
-            border-color: var(--gold-primary);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.25);
-        }
+.suggestions-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #131c2b;
+  border: 1px solid var(--gold-primary);
+  border-radius: var(--radius-md);
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 100;
+  margin-top: 4px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.9);
+  display: none;
+}
 
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
-            font-size: 14px;
-            font-weight: 800;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+.suggestion-item {
+  padding: 12px 14px;
+  border-bottom: 1px solid #1e293b;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
-        .btn-gold {
-            background: var(--gold-gradient);
-            color: #000000;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
-        }
+.suggestion-item:hover {
+  background: #1e293b;
+}
 
-        .btn-checklist-toggle {
-            background: #111111;
-            border: 1px solid var(--gold-dark);
-            color: var(--gold-primary);
-            margin-top: 10px;
-        }
+.group-tag {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: #1f2937;
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dark);
+}
 
-        .btn-checklist-submit {
-            background: linear-gradient(135deg, #16a34a, #15803d);
-            color: white;
-            box-shadow: 0 4px 14px rgba(22, 163, 74, 0.3);
-            margin-top: 14px;
-        }
+/* Buttons */
+.btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  user-select: none;
+}
 
-        .checklist-panel {
-            background: #0d0d0d;
-            border: 1px solid var(--gold-dark);
-            border-radius: 14px;
-            padding: 14px;
-            margin-top: 14px;
-            display: none;
-        }
+.btn-gold {
+  background: var(--gold-gradient);
+  color: #000000;
+}
 
-        .checklist-panel.open {
-            display: block;
-            animation: fadeIn 0.2s ease-in-out;
-        }
+.btn-secondary {
+  background: #1f293b;
+  color: #f1f5f9;
+  border: 1px solid var(--card-border);
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+.btn-outline-gold {
+  background: #182030;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-bright);
+}
 
-        .checklist-item {
-            background: #171717;
-            border: 1px solid #262626;
-            border-radius: 10px;
-            padding: 10px 12px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
+.btn-green {
+  background: #10b981;
+  color: #000;
+}
 
-        .checklist-item-info {
-            flex: 1;
-            min-width: 200px;
-        }
+.btn-cancel {
+  background: #334155;
+  color: #fff;
+  width: auto;
+  padding: 0 20px;
+}
 
-        .chk-btn {
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #333333;
-            background: #0f0f0f;
-            color: var(--text-sub);
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+/* Log Table */
+.log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
 
-        .chk-btn.active-ok { background: #15803d; border-color: #22c55e; color: #ffffff; }
-        .chk-btn.active-warn { background: #b45309; border-color: #f59e0b; color: #ffffff; }
-        .chk-btn.active-fail { background: #b91c1c; border-color: #ef4444; color: #ffffff; }
+.log-table th {
+  text-align: left;
+  padding: 10px 8px;
+  color: var(--gold-bright);
+  border-bottom: 1px solid var(--card-border);
+  font-size: 12px;
+  text-transform: uppercase;
+}
 
-        .log-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 8px;
-            font-size: 13px;
-        }
+.log-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #1a2333;
+  vertical-align: middle;
+}
 
-        .log-table th {
-            text-align: left;
-            padding: 10px 8px;
-            color: var(--gold-primary);
-            border-bottom: 1px solid #262626;
-            font-size: 11px;
-            text-transform: uppercase;
-        }
+.badge-status {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+.badge-ok { background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
+.badge-warn { background: #78350f; color: #fef08a; border: 1px solid #f59e0b; }
+.badge-fail { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
 
-        .log-table td {
-            padding: 10px 8px;
-            border-bottom: 1px solid #1f1f1f;
-            vertical-align: middle;
-        }
+.cage-code {
+  font-family: monospace;
+  letter-spacing: 1px;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
 
-        .status-badge {
-            display: inline-block;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            margin-right: 6px;
-        }
-        .status-ok { background-color: var(--accent-green); box-shadow: 0 0 6px rgba(34,197,94,0.6); }
-        .status-warn { background-color: #eab308; box-shadow: 0 0 6px rgba(234,179,8,0.6); }
-        .status-fail { background-color: var(--accent-red); box-shadow: 0 0 6px rgba(239,68,68,0.6); }
+/* ================= MODAL CHECKLIST (CLEAN DRAWER) ================= */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
 
-        .badge-count {
-            background: var(--gold-primary);
-            color: #000000;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: bold;
-        }
+.modal-overlay.open {
+  display: flex;
+}
 
-        /* --- STEWARD COMMISSIONER DASHBOARD STYLES --- */
-        .steward-controls {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
+.checklist-modal-box {
+  background: #111827;
+  border: 1px solid var(--gold-dark);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  width: 100%;
+  max-width: 860px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+}
 
-        .steward-filter-btn {
-            background: #171717;
-            border: 1px solid #333;
-            color: #ccc;
-            padding: 8px 14px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-        }
+.modal-header {
+  padding: 16px;
+  border-bottom: 1px solid #1f2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #0f172a;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
 
-        .steward-filter-btn.active {
-            background: var(--gold-primary);
-            color: #000;
-            border-color: var(--gold-bright);
-        }
+.modal-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--gold-bright);
+}
 
-        .participant-card-item {
-            background: #161616;
-            border: 1px solid #262626;
-            border-radius: 12px;
-            padding: 12px 14px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.checklist-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #0b0f17;
+  padding: 6px;
+  gap: 6px;
+  border-bottom: 1px solid #1f2937;
+}
 
-        .participant-card-item:hover, .participant-card-item.selected {
-            border-color: var(--gold-primary);
-            background: #1c1c1c;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-        }
+.ch-tab-btn {
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: var(--text-sub);
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
 
-        .steward-inspector-view {
-            background: #121212;
-            border: 1px solid var(--gold-primary);
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: 14px;
-            display: none;
-        }
+.ch-tab-btn.active {
+  background: var(--gold-gradient);
+  color: #000;
+  border-color: var(--gold-bright);
+}
 
-        .steward-driver-banner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #2a2a2a;
-            padding-bottom: 12px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+.checklist-scroll-area {
+  padding: 14px;
+  overflow-y: auto;
+  flex: 1;
+}
 
-        .driver-num-huge {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--gold-bright);
-            background: #222;
-            padding: 4px 14px;
-            border-radius: 8px;
-            border: 1px solid #444;
-            display: inline-block;
-        }
+.checklist-row {
+  background: #1a2233;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-        .defect-badge-clickable {
-            display: inline-flex;
-            align-items: center;
-            background: #331500;
-            color: #fbbf24;
-            border: 1px solid #b45309;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            margin-right: 6px;
-            margin-bottom: 6px;
-            cursor: pointer;
-            transition: transform 0.1s;
-        }
+.chk-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
 
-        .defect-badge-clickable:hover {
-            transform: scale(1.02);
-            border-color: var(--gold-bright);
-        }
+.chk-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+}
 
-        .rule-citation-box {
-            background: #090909;
-            border: 1px solid var(--gold-primary);
-            border-left: 4px solid var(--gold-bright);
-            padding: 16px;
-            border-radius: 10px;
-            margin-top: 16px;
-            display: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-        }
+.chk-desc {
+  font-size: 12px;
+  color: #94a3b8;
+  margin-top: 2px;
+}
 
-        .rule-title {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--gold-bright);
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.chk-buttons-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  margin-top: 4px;
+}
 
-        .rule-text {
-            font-size: 13px;
-            line-height: 1.6;
-            color: #e2e8f0;
-            margin-bottom: 10px;
-        }
+.chk-action-btn {
+  padding: 10px 4px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: #94a3b8;
+  cursor: pointer;
+  text-align: center;
+}
 
-        .rule-action-needed {
-            background: #271406;
-            border: 1px dashed #f59e0b;
-            color: #fef08a;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+.chk-action-btn.active-ok {
+  background: #064e3b;
+  border-color: #10b981;
+  color: #6ee7b7;
+}
 
-        .draft-banner {
-            background: #451a03;
-            color: #fef08a;
-            border: 1px solid var(--gold-dark);
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 12px;
-            margin-bottom: 10px;
-            display: none;
-            justify-content: space-between;
-            align-items: center;
-        }
-    </style>
+.chk-action-btn.active-warn {
+  background: #78350f;
+  border-color: #f59e0b;
+  color: #fef08a;
+}
+
+.chk-action-btn.active-fail {
+  background: #7f1d1d;
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+.modal-footer {
+  padding: 14px 16px;
+  background: #0f172a;
+  border-top: 1px solid #1f2937;
+  display: flex;
+  gap: 10px;
+}
+
+/* ================= STEWARD VIEW ================= */
+.steward-controls {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.steward-filter-btn {
+  background: #111827;
+  border: 1px solid var(--card-border);
+  color: #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.steward-filter-btn.active {
+  background: var(--gold-primary);
+  color: #000;
+  border-color: var(--gold-bright);
+}
+
+.participant-card-item {
+  background: #111827;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.participant-card-item.selected {
+  border-color: var(--gold-primary);
+  background: #1a2233;
+}
+
+.steward-inspector-view {
+  background: #0f172a;
+  border: 1px solid var(--gold-primary);
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 14px;
+  display: none;
+}
+
+.driver-num-huge {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--gold-bright);
+  background: #1e293b;
+  padding: 4px 14px;
+  border-radius: 8px;
+  border: 1px solid #475569;
+}
+
+.defect-badge-clickable {
+  display: inline-flex;
+  align-items: center;
+  background: #78350f;
+  color: #fef08a;
+  border: 1px solid var(--gold-primary);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.rule-citation-box {
+  background: #0b0f17;
+  border: 1px solid var(--gold-primary);
+  border-left: 5px solid var(--gold-bright);
+  padding: 16px;
+  border-radius: 10px;
+  margin-top: 14px;
+  display: none;
+}
+
+.rule-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--gold-bright);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.rule-action-needed {
+  background: #271406;
+  border: 1px dashed var(--gold-primary);
+  color: #fef08a;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-area">
-            <div class="logo-crown">👑</div>
-            <div>
-                <h1>ROYAL <span>DS</span></h1>
-                <div class="subtitle" id="headerSubtitle">Scrutineering & Steward Portal</div>
-            </div>
-        </div>
+<header>
+  <div class="logo-area">
+    <div class="logo-crown">👑</div>
+    <div>
+      <h1>ROYAL <span>DRIFT SERIES</span></h1>
+      <div class="subtitle">Техническая Инспекция (Scrutineering)</div>
+    </div>
+  </div>
 
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <!-- Language Switcher -->
-            <div class="lang-switch-group">
-                <button class="lang-btn active" id="btn_lang_ru" onclick="setAppLanguage('ru')">RU</button>
-                <button class="lang-btn" id="btn_lang_en" onclick="setAppLanguage('en')">EN</button>
-                <button class="lang-btn" id="btn_lang_cn" onclick="setAppLanguage('cn')">中文</button>
-            </div>
+  <div class="header-right">
+    <div id="syncStatus" class="sync-badge" onclick="processSyncQueue(true)">
+      <span id="syncIcon">●</span> <span id="syncText">Проверка...</span>
+    </div>
+    <div id="queueStatus" class="queue-badge" onclick="processSyncQueue(true)">
+      ⏳ <span id="queueCount">0</span>
+    </div>
+  </div>
+</header>
 
-            <div id="syncStatus" class="sync-badge" onclick="resetPinAndConnect()">
-                <span id="syncIcon">●</span> <span id="syncText">Связь</span>
-            </div>
-            <div id="queueStatus" class="queue-badge" onclick="processSyncQueue(true)">
-                ⏳ <span id="queueCount">0</span>
-            </div>
-        </div>
-    </header>
+<!-- View Navigation -->
+<div class="view-nav">
+  <div class="nav-tab active" id="tabScrutineer" onclick="switchMainView('scrutineer')">
+    📋 Входной контроль ТИ
+  </div>
+  <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">
+    💻 Кабинет Комиссара
+  </div>
+</div>
 
-    <!-- Top Navigation Tabs (Mobile Inspector vs Laptop Steward Dashboard) -->
-    <div class="view-nav">
-        <div class="nav-tab active" id="tabScrutineer" onclick="switchMainView('scrutineer')">
-            <span>📋</span> <span id="tabScrutineerLabel">Входной контроль ТИ</span>
-        </div>
-        <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">
-            <span>💻</span> <span id="tabStewardLabel">Кабинет Комиссара</span>
-        </div>
+<!-- ================= VIEW 1: INSPECTION ================= -->
+<div id="viewScrutineer">
+  <!-- Stage Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>Этап Чемпионата</span>
+      <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit?gid=124353273#gid=124353273" target="_blank">Google Таблица ↗</a>
     </div>
 
-    <!-- ================= VIEW 1: MOBILE INSPECTOR ================= -->
-    <div id="viewScrutineer">
-        <!-- Event & Date -->
-        <div class="card">
-            <div class="card-title">
-                <span id="lblEventInfo">Мероприятие и дата</span>
-                <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
-            </div>
+    <div class="form-group full">
+      <select id="stageSelect" onchange="onStageChanged()">
+        <option value="Stage 1" data-date="2026-06-06" selected>Stage 1 — Шанхай (Tianma Circuit) • 06–07.06</option>
+        <option value="Stage 2" data-date="2026-07-04">Stage 2 — Тяньцзинь (V1 Auto World) • 04–05.07</option>
+        <option value="Stage 3" data-date="2026-09-05">Stage 3 — Нинбо (Ningbo Speedway) • 05–06.09</option>
+        <option value="Stage 4" data-date="2026-10-08">Stage 4 — Чжэнчжоу (Zhengzhou Autodrome) • 08–11.10</option>
+        <option value="Stage 5" data-date="2026-11-07">Stage 5 — Финал (Grand Final) • 07–08.11</option>
+      </select>
+    </div>
+  </div>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label id="lblEventType">Режим работы:</label>
-                    <select id="eventType" onchange="onEventTypeChanged()">
-                        <option value="Дрифт" selected>Дрифт (RDS China)</option>
-                        <option value="Трек день">Трек день</option>
-                        <option value="Кольцо">Кольцо</option>
-                        <option value="Ралли-кросс">Ралли-кросс</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label id="lblEventDate">Дата проведения:</label>
-                    <input type="date" id="eventDate" onchange="onDateChanged()">
-                </div>
-            </div>
-        </div>
-
-        <!-- Form Card -->
-        <div class="card" id="entryFormCard">
-            <div class="card-title">
-                <span id="lblFormTitle">📋 Прохождение ТИ</span>
-                <span id="editModeIndicator" style="display: none;" class="edit-badge-editing">✏️ Редактирование</span>
-            </div>
-
-            <div id="draftBanner" class="draft-banner">
-                <span>💾 Восстановлен несохраненный черновик (Crash-Save)</span>
-                <button onclick="discardDraft()" style="background:none; border:none; color:#ffd700; cursor:pointer; text-decoration:underline;">Сбросить</button>
-            </div>
-
-            <div class="form-group full autocomplete-wrapper">
-                <label id="lblCarModel">Марка / модель автомобиля:</label>
-                <input type="text" id="carInput" placeholder="Nissan Silvia, Toyota GR86, BMW E92..." autocomplete="off">
-                <div id="suggestions" class="suggestions-list"></div>
-            </div>
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label id="lblDriver">Пилот (Фамилия Имя):</label>
-                    <input type="text" id="driverInput" placeholder="Фамилия Имя">
-                </div>
-                <div class="form-group" style="position: relative;">
-                    <label id="lblRaceNumber">Стартовый № (СТ№):</label>
-                    <input type="text" id="numberInput" placeholder="66" autocomplete="off">
-                    <div id="yesterdaySuggestions" class="suggestions-list"></div>
-                </div>
-
-                <div class="form-group">
-                    <label id="lblCageNumber">№ Каркаса безопасности:</label>
-                    <input type="text" id="cageInput" placeholder="RDS-2026-042">
-                </div>
-                <div class="form-group">
-                    <label id="lblCarColor">Цвет авто:</label>
-                    <input type="text" id="colorInput" placeholder="Черный">
-                </div>
-
-                <div class="form-group">
-                    <label id="lblPitBox">№ Бокса (если есть):</label>
-                    <input type="text" id="boxInput" placeholder="15 бокс">
-                </div>
-                
-                <div class="form-group full">
-                    <label id="lblSelectedGroups">Группа ТИ:</label>
-                    <div id="groupChipsContainer" class="chips-container"></div>
-                </div>
-
-                <div class="form-group full">
-                    <label id="lblRemarks">Замечания ТИ:</label>
-                    <input type="text" id="notesInput" placeholder="СПТ, каркас, ремни безопасности">
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button id="quickSubmitBtn" class="btn btn-gold" onclick="addCarToLog('unverified')" style="flex: 1;">
-                    ⚡ Выдать ТИ (быстро)
-                </button>
-                <button id="cancelEditBtn" class="btn" style="display: none; width: auto; background: #333; color:#fff;" onclick="cancelEditing()">
-                    Отмена
-                </button>
-            </div>
-
-            <button type="button" class="btn btn-checklist-toggle" onclick="toggleChecklistPanel()">
-                📑 Чеклист ТИ: <span id="checklistTypeLabel" style="font-weight: bold; margin-left: 4px;">Дрифт</span>
-            </button>
-
-            <div id="checklistPanel" class="checklist-panel">
-                <div style="font-size: 13px; font-weight: 700; color: var(--gold-bright); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
-                    <span>Пункты инспекции:</span>
-                    <span style="font-size: 12px; cursor: pointer; color: var(--gold-primary);" onclick="setAllChecklistOk()">✅ Отметить все [ОК]</span>
-                </div>
-                <div id="checklistItemsContainer"></div>
-                <button id="checklistSubmitBtn" class="btn btn-checklist-submit" onclick="submitChecklistAndLog()">
-                    ✅ Завершить ТИ по чеклисту
-                </button>
-            </div>
-        </div>
-
-        <!-- Table Card -->
-        <div class="card">
-            <div class="card-title">
-                <span id="lblDailyLogTitle">📊 Список участников ТИ</span>
-                <span class="badge-count" id="totalCarsCount">0</span>
-            </div>
-
-            <div style="overflow-x: auto;">
-                <table class="log-table">
-                    <thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Авто / Пилот</th>
-                            <th>СТ№</th>
-                            <th>№ Каркаса</th>
-                            <th>Группа</th>
-                            <th>Действие</th>
-                        </tr>
-                    </thead>
-                    <tbody id="logTableBody">
-                        <tr><td colspan="6" style="text-align: center; color: var(--text-sub); padding: 20px;">Загрузка...</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- Entry Form Card -->
+  <div class="card" id="entryFormCard">
+    <div class="card-title">
+      <span id="formTitleText">📋 Регистрация автомобиля</span>
+      <span id="editModeIndicator" style="display:none; color:var(--gold-bright); font-size:12px;">✏️ Редактирование</span>
     </div>
 
-    <!-- ================= VIEW 2: STEWARD COMMISSIONER DASHBOARD ================= -->
-    <div id="viewSteward" style="display: none;">
-        <div class="card">
-            <div class="card-title">
-                <span id="lblStewardTitle">Кабинет Главного Комиссара / Управление замечаниями</span>
-                <span style="font-size: 11px; color: var(--text-sub);" id="stewardDateMeta">Дата: --.--.----</span>
-            </div>
-
-            <!-- Filter Controls -->
-            <div class="steward-controls">
-                <button class="steward-filter-btn active" id="filter_all" onclick="setStewardFilter('all')">Все авто (<span id="cntStewardAll">0</span>)</button>
-                <button class="steward-filter-btn" id="filter_remarks" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntStewardRemarks">0</span>)</button>
-                <button class="steward-filter-btn" id="filter_ok" onclick="setStewardFilter('ok')">✅ Без замечаний (<span id="cntStewardOk">0</span>)</button>
-                
-                <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск (№, пилот, авто, каркас)..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:8px 12px; font-size:12px;">
-            </div>
-
-            <!-- Single Selected Participant Display (The requested Commissioner View) -->
-            <div id="stewardInspectorView" class="steward-inspector-view">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                    <span style="color: var(--gold-primary); font-size: 11px; font-weight: bold; text-transform: uppercase;">Фокус на участнике • Participant Detail</span>
-                    <button onclick="closeStewardDetail()" style="background:#222; border:1px solid #444; color:#fff; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px;">✕ Показать всех</button>
-                </div>
-
-                <div class="steward-driver-banner">
-                    <div style="display:flex; align-items:center; gap:14px;">
-                        <div class="driver-num-huge" id="dtlNumber">№--</div>
-                        <div>
-                            <h2 style="font-size: 20px; color:#fff;" id="dtlDriver">Пилот</h2>
-                            <div style="color:var(--text-sub); font-size:13px;" id="dtlCar">Марка Модель</div>
-                        </div>
-                    </div>
-                    <div style="text-align: right;">
-                        <div id="dtlStatusBadge" style="padding:4px 10px; border-radius:8px; font-weight:bold; font-size:12px; display:inline-block;">Статус</div>
-                        <div style="font-size:11px; color:#9ca3af; margin-top:4px;">Бокс: <strong id="dtlBox">—</strong> | Каркас: <strong id="dtlCage" style="font-family:monospace; color:var(--gold-bright);">—</strong></div>
-                    </div>
-                </div>
-
-                <div style="margin-bottom: 12px;">
-                    <label style="display:block; margin-bottom:6px; color:var(--gold-primary); font-weight:bold;" id="lblClickDefectNotice">Нажмите на замечание, чтобы показать официальный пункт регламента участнику:</label>
-                    <div id="dtlDefectsContainer"></div>
-                </div>
-
-                <!-- Regulation Clause Display Box -->
-                <div id="ruleCitationBox" class="rule-citation-box">
-                    <div class="rule-title">
-                        <span id="ruleCitationHeading">Статья Регламента RDS</span>
-                        <a id="ruleOfficialDocLink" href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Открыть регламент ↗</a>
-                    </div>
-                    <div class="rule-text" id="ruleCitationText">...</div>
-                    <div class="rule-action-needed" id="ruleActionNeeded">...</div>
-                </div>
-            </div>
-
-            <!-- List of all participants (Clickable) -->
-            <div id="stewardListContainer" style="margin-top: 14px;"></div>
-        </div>
+    <div class="form-group full autocomplete-wrapper">
+      <label>Марка и модель автомобиля:</label>
+      <input type="text" id="carInput" placeholder="Напр: Nissan Silvia S15, Toyota Supra, BMW E92..." autocomplete="off">
+      <div id="suggestions" class="suggestions-list"></div>
     </div>
 
-    <script>
-        const EMBEDDED_GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
-        const SPREADSHEET_ID = "1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY";
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Пилот (Фамилия Имя):</label>
+        <input type="text" id="driverInput" placeholder="Иванов И. / Zhang W.">
+      </div>
 
-        /* --- OFFICIAL RDS 2026 REGULATIONS KNOWLEDGE BASE (RU, EN, CN) --- */
-        const RDS_TECHNICAL_REGULATIONS_KB = {
-            "cage": {
-                name: { ru: "Каркас безопасности", en: "Safety Roll Cage", cn: "防滚架安全标准" },
-                article: { ru: "Статья 8. Каркас безопасности (КиТТ / Приложение J FIA ст. 253)", en: "Article 8. Safety Roll Cage (FIA App. J Art. 253)", cn: "第8条 赛车安全防滚架（FIA附录J第253条）" },
-                text: {
-                    ru: "Обязателен сертифицированный каркас безопасности (вварной или болтовой многоточечный). Наличие заводской таблички с серийным номером и стикера инспекции. Диаметр главной дуги не менее 45x2.5 мм или 50x2.0 мм (холоднотянутая бесшовная сталь CDS). Обязательны защитные боковые кресты в дверных проемах с обеих сторон (водитель и пассажир). Защитная негорючая набивка по стандарту FIA 8857-2001 в зоне контакта головы/шлема пилота.",
-                    en: "Certified safety roll cage (welded or multi-point bolted) is mandatory. Homologation serial plate and technical sticker must be intact. Main rollbar minimum specs: 45x2.5mm or 50x2.0mm CDS tubing. Dual lateral door protection bars (X or double-parallel) required on both sides. FIA 8857-2001 flame-retardant protective padding required in head/helmet strike zones.",
-                    cn: "必须配备认证赛车防滚架（焊接式或多点螺栓式）。必须具备防滚架制造铭牌编号及有效年检贴纸。主防滚架无缝冷拔钢管规格不得低于45x2.5mm或50x2.0mm。主副驾车门两侧必须具备双横梁或X形侧面防撞防撞梁。头部接触区域必须包覆FIA 8857-2001认证阻燃缓冲防撞棉。"
-                },
-                action: {
-                    ru: "Устранение: Проверить номер стикера, установить омологированную набивку FIA 8857-2001, ликвидировать дефекты крепежа до выезда на парад/квалификацию.",
-                    en: "Resolution: Verify serial plate, install FIA 8857-2001 padding, correct mounting hardware prior to qualification.",
-                    cn: "整改要求：核对防滚架编号贴纸，加装FIA 8857-2001认证缓冲防撞棉，排除固定隐患后方可放行参赛。"
-                }
-            },
-            "extinguisher": {
-                name: { ru: "СПТ / Выключатель массы", en: "Fire System & Master Switch", cn: "灭火系统与总断电开关" },
-                article: { ru: "Статья 9. Система пожаротушения и прерыватель цепи (FIA 8865-2015)", en: "Article 9. Fire Extinguisher System & Master Switch (FIA 8865-2015)", cn: "第9条 车载灭火系统与总断电开关（FIA 8865-2015）" },
-                text: {
-                    ru: "Обязательна действующая омологированная система пожаротушения FIA 8865-2015 или FIA Technical List 16. Манометр в зеленой зоне, срок переосвидетельствования не истек. Форсунки направлены в моторный отсек и ноги пилота. Внутренний и внешний тросовый/электронный активатор с наклейкой 'E'. Выключатель массы (внешний и внутренний) с символом '⚡' в синем треугольнике, отключающий зажигание, насосы и АКБ.",
-                    en: "Homologated system complying with FIA 8865-2015 or Technical List 16. Pressure gauge in the green zone, valid inspection tag. Nozzles directed to engine and footwell. External trigger marked with 'E'. Master cut-off switch with '⚡' in blue triangle shutting down engine, fuel pumps, and electrical systems instantly.",
-                    cn: "必须配备符合FIA 8865-2015标准的有效车载灭火系统。压力表在绿色工作区，喷头分别对准发动机舱与驾驶舱下肢。配备内外双触发开关并附带标准“E”贴纸。总断电开关（蓝三角红闪电“⚡”标识）必须能瞬间切断全车电源、燃油泵并使发动机熄火。"
-                },
-                action: {
-                    ru: "Устранение: Переосвидетельствовать баллон, направить форсунки, наклеить знаки 'E' и '⚡' у внешних триггеров.",
-                    en: "Resolution: Re-certify bottle, reposition nozzles, apply external 'E' and '⚡' decals.",
-                    cn: "整改要求：重测灭火气瓶压力，校正喷头朝向，在车外控制开关处贴上标准“E”与断电闪电标识。"
-                }
-            },
-            "belts": {
-                name: { ru: "Ремни безопасности", en: "Safety Harness", cn: "赛用安全带" },
-                article: { ru: "Статья 6. Ремни безопасности (FIA 8853-2016)", en: "Article 6. Safety Belts (FIA 8853-2016)", cn: "第6条 赛车安全带标准（FIA 8853-2016）" },
-                text: {
-                    ru: "5- или 6-точечные ремни безопасности с омологацией FIA 8853-2016. Срок действия читаем на нашивках. Угол плечевых лямок назад: 0°–20° вниз к поперечине каркаса. Полная совместимость с системой HANS/Hybrid.",
-                    en: "5- or 6-point harness homologated under FIA 8853-2016. Expiry dates legible. Shoulder straps mounted between 0° and 20° downwards to roll cage harness bar. Fully compatible with HANS device.",
-                    cn: "必须配备符合FIA 8853-2016标准的5点式或6点式安全带。防伪认证刺绣标签清晰有效。肩带向后固定于防滚架专用横梁，夹角为向下0°至20°。与HANS头颈保护装置完全匹配。"
-                },
-                action: {
-                    ru: "Устранение: Заменить просроченные ремни, отрегулировать угол крепления к каркасу.",
-                    en: "Resolution: Replace expired straps, adjust mounting angle on roll cage harness bar.",
-                    cn: "整改要求：更换过期安全带，调整肩带固定角度以符合FIA规范。"
-                }
-            },
-            "seat": {
-                name: { ru: "Спортивное сидение", en: "Racing Seat", cn: "赛用桶椅" },
-                article: { ru: "Статья 5. Сидения пилота (FIA 8855-1999 / 8855-2021)", en: "Article 5. Racing Bucket Seats (FIA 8855-1999 / 8855-2021)", cn: "第5条 赛车座椅安装与认证（FIA 8855-1999 / 8855-2021）" },
-                text: {
-                    ru: "Анатомический ковш с омологацией FIA 8855-1999 или FIA 8855-2021. Крепление на стальные (толщиной не менее 3 мм) или алюминиевые (не менее 5 мм) кронштейны болтами 8.8 M8 с усилительными шайбами кузова площадью не менее 40 см². Люфт сидения недопустим.",
-                    en: "Bucket seat homologated under FIA 8855-1999 or 8855-2021. Mounted using steel (min 3mm) or aluminum (min 5mm) brackets, grade 8.8 M8 bolts, and underbody counter-plates of min 40 cm². Zero play.",
-                    cn: "必须使用具备FIA 8855-1999或8855-2021认证的桶椅。支架使用≥3mm钢制或≥5mm铝合金专用户板，底板采用8.8级M8螺栓及≥40平方厘米底板加强垫片刚性固定，严禁任何松动。"
-                },
-                action: {
-                    ru: "Устранение: Протянуть болты крепления 8.8, установить усилительные шайбы под кузов.",
-                    en: "Resolution: Torque 8.8 mounting bolts, verify backing plates under chassis.",
-                    cn: "整改要求：锁紧8.8级固定螺栓，补全车底加强防撕裂垫片。"
-                }
-            },
-            "firewall": {
-                name: { ru: "Моторный щит / Фаервол", en: "Firewall / Bulkhead", cn: "防火墙与隔离舱壁" },
-                article: { ru: "Статья 4. Перегородка и противопожарная изоляция", en: "Article 4. Engine & Rear Fuel Bulkhead Isolation", cn: "第4条 发动机与后部燃油系统防火隔离" },
-                text: {
-                    ru: "Герметичная изоляция салона от моторного отсека и багажника (при наличии бака/радиатора сзади). Все отверстия для проводки и магистралей должны быть закрыты негорючими герметичными уплотнителями.",
-                    en: "Fluid and fire-tight bulkhead separating driver cabin from engine compartment and fuel tank compartment. All pass-throughs must be sealed with fireproof grommets.",
-                    cn: "驾驶舱与发动机舱及后置副油箱/防爆油箱之间必须保持100%完全密封。所有过线孔必须配备阻燃耐高温密封塞。"
-                },
-                action: {
-                    ru: "Устранение: Заделать технологические отверстия в моторном щите термостойким герметиком/металлом.",
-                    en: "Resolution: Seal all bulkhead pass-through holes with metal/fire-resistant sealant.",
-                    cn: "整改要求：使用金属板或耐高温阻燃密封胶封闭防火墙破口。"
-                }
-            },
-            "battery": {
-                name: { ru: "Аккумуляторная батарея", en: "Battery Mount", cn: "蓄电池固定与绝缘" },
-                article: { ru: "Статья 10. Аккумуляторная батарея и вентиляция", en: "Article 10. Battery Box & Mountings", cn: "第10条 蓄电池安全箱与牢固安装" },
-                text: {
-                    ru: "При размещении в салоне — сухой/гелевый АКБ в герметичном пластиковом или алюминиевом коробе с выводом вентиляции на улицу. Механическое крепление шпильками М8 и планкой. Защита плюсовой клеммы изолятором.",
-                    en: "If mounted inside cabin, sealed dry-cell/gel battery enclosed in sealed box vented to outside. Fastened with M8 threaded rods and top clamp. Insulating boot on positive terminal.",
-                    cn: "舱内电池必须为密封干式/胶体电池，置于带排气导管至车外的绝缘密封箱内。使用M8螺栓与刚性压条锁死。正极端子必须配防短路绝缘护套。"
-                },
-                action: {
-                    ru: "Устранение: Закрыть короб АКБ, закрепить шпильками М8, изолировать плюсовую клемму.",
-                    en: "Resolution: Secure battery with M8 rods, fit cover, insulate positive terminal.",
-                    cn: "整改要求：盖严电池绝缘箱，加装M8固定杆，包裹正极端子。"
-                }
-            },
-            "light": {
-                name: { ru: "Свет и дублер стоп-сигнала", en: "Drift Dual Brake Light", cn: "前挡风高位刹车灯带" },
-                article: { ru: "Статья 7. Освещение и дублирующий стоп-сигнал", en: "Article 7. Lighting & Secondary Windshield Brake Strip", cn: "第7条 前挡高位刹车灯带与灯光系统" },
-                text: {
-                    ru: "Обязательны исправные габаритные огни и дублер стоп-сигнала (красная светодиодная лента длиной не менее 50 см вдоль верхнего края лобового стекла изнутри), синхронизированный с основными стопами.",
-                    en: "Working running lights and mandatory secondary LED brake light strip (minimum 50cm length mounted inside top of front windshield) operating synchronously with rear brake lights.",
-                    cn: "必须配备前挡风玻璃内侧顶部的红色高位辅助刹车灯带（长度≥50cm），且必须与主刹车灯完全同步点亮供裁判裁决。"
-                },
-                action: {
-                    ru: "Устранение: Подключить и закрепить верхнюю светодиодную полосу стоп-сигнала на лобовом стекле.",
-                    en: "Resolution: Connect and secure upper LED brake light strip on windshield.",
-                    cn: "整改要求：修复前挡内侧50cm高亮红色刹车灯带接线并固定牢靠。"
-                }
-            },
-            "tow": {
-                name: { ru: "Буксировочные петли", en: "Towing Straps / Hooks", cn: "前后拖车钩/拖车带" },
-                article: { ru: "Статья 12. Буксировочные проушины (КиТТ)", en: "Article 12. Front & Rear Tow Hooks", cn: "第12条 前后高强度拖车钩/织带" },
-                text: {
-                    ru: "Наличие жестко закрепленных к лонжеронам проушин или тканевых лент FIA спереди и сзади. Внутренний диаметр не менее 50 мм. Окрашены в яркий цвет (желтый, оранжевый, красный) со стрелкой.",
-                    en: "Front and rear heavy-duty tow hooks/FIA straps attached directly to chassis. Minimum 50mm internal opening. High-visibility bright color with directional arrow decal.",
-                    cn: "前后必须直接固定于车身纵梁的高强度拖车钩或FIA织带。内径≥50mm，必须为荧光黄/红等醒目颜色并贴有反光箭头指示贴纸。"
-                },
-                action: {
-                    ru: "Устранение: Установить буксировочную петлю спереди/сзади, нанести контрастную стрелку.",
-                    en: "Resolution: Mount front/rear tow hook, apply directional arrow decal.",
-                    cn: "整改要求：加装前后拖车带并张贴拖车指示箭头。"
-                }
-            }
-        };
+      <div class="form-group" style="position: relative;">
+        <label>Стартовый номер (СТ№):</label>
+        <input type="text" id="numberInput" placeholder="66" autocomplete="off">
+        <div id="yesterdaySuggestions" class="suggestions-list"></div>
+      </div>
 
-        const LOCALES = {
-            ru: {
-                subtitle: "Система Техконтроля • Royal Drift Series",
-                tabScrutineer: "📋 Входной контроль ТИ",
-                tabSteward: "💻 Кабинет Комиссара",
-                eventInfo: "Мероприятие и дата",
-                eventType: "Режим работы:",
-                eventDate: "Дата проведения:",
-                formTitle: "📋 Прохождение ТИ",
-                carModel: "Марка / модель автомобиля:",
-                driver: "Пилот (Фамилия Имя):",
-                raceNumber: "Стартовый № (СТ№):",
-                cageNumber: "№ Каркаса безопасности:",
-                carColor: "Цвет авто:",
-                pitBox: "№ Бокса (если есть):",
-                selectedGroups: "Группа ТИ:",
-                remarks: "Замечания ТИ:",
-                dailyLogTitle: "📊 Список участников ТИ",
-                stewardTitle: "Кабинет Главного Комиссара / Управление замечаниями",
-                clickDefectNotice: "Нажмите на замечание, чтобы показать официальный пункт регламента участнику:",
-                filterAll: "Все авто",
-                filterRemarks: "⚠️ С замечаниями",
-                filterOk: "✅ Без замечаний"
-            },
-            en: {
-                subtitle: "Scrutineering & Steward Portal • Royal Drift Series",
-                tabScrutineer: "📋 Scrutineer Entry",
-                tabSteward: "💻 Steward Dashboard",
-                eventInfo: "Event & Date",
-                eventType: "Event Mode:",
-                eventDate: "Inspection Date:",
-                formTitle: "📋 Technical Scrutineering",
-                carModel: "Car Make / Model:",
-                driver: "Driver Name:",
-                raceNumber: "Race Number (#):",
-                cageNumber: "Roll Cage Serial No:",
-                carColor: "Vehicle Color:",
-                pitBox: "Pit Garage (#):",
-                selectedGroups: "Competition Class:",
-                remarks: "Scrutineer Remarks:",
-                dailyLogTitle: "📊 Scrutineering Protocol",
-                stewardTitle: "Chief Steward Dashboard / Technical Infringements",
-                clickDefectNotice: "Click on an infringement below to display the official regulation clause to the driver/team:",
-                filterAll: "All Cars",
-                filterRemarks: "⚠️ With Remarks",
-                filterOk: "✅ Approved"
-            },
-            cn: {
-                subtitle: "车检与仲裁系统 • Royal Drift Series",
-                tabScrutineer: "📋 车检登记录入",
-                tabSteward: "💻 仲裁与车检主管视图",
-                eventInfo: "赛事与日期设置",
-                eventType: "赛事类型：",
-                eventDate: "车检日期：",
-                formTitle: "📋 赛车技术检验",
-                carModel: "赛车车型 / 品牌：",
-                driver: "车手姓名：",
-                raceNumber: "赛车编号 (车号)：",
-                cageNumber: "防滚架认证钢印号：",
-                carColor: "车身主色：",
-                pitBox: "P房 / 维修区编号：",
-                selectedGroups: "参赛组别：",
-                remarks: "车检整改意见：",
-                dailyLogTitle: "📊 车检合格名单",
-                stewardTitle: "技术主管仲裁台 / 技术规则宣贯",
-                clickDefectNotice: "点击下方整改项目，向车手/车队展示官方技术规则对应条款及整改要求：",
-                filterAll: "全部车辆",
-                filterRemarks: "⚠️ 待整改项",
-                filterOk: "✅ 合格放行"
-            }
-        };
+      <div class="form-group">
+        <label>№ Каркаса <span class="label-hint">(ровно 6 цифр)</span>:</label>
+        <input type="text" id="cageInput" placeholder="123456" maxlength="6" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)" style="font-family:monospace; font-weight:bold; letter-spacing:1px;">
+      </div>
 
-        let currentLang = 'ru';
-        let dailyLog = [];
-        let yesterdayLog = [];
-        let selectedFormGroups = [];
-        let gasScriptUrl = EMBEDDED_GAS_URL;
-        let checklistState = {};
-        let editingIndex = null;
-        let isProcessingQueue = false;
-        let stewardActiveFilter = 'all';
-        let stewardSelectedEntry = null;
+      <div class="form-group">
+        <label>Цвет автомобиля:</label>
+        <input type="text" id="colorInput" placeholder="Черный / Золотой">
+      </div>
 
-        function setAppLanguage(lang) {
-            currentLang = lang;
-            ['ru', 'en', 'cn'].forEach(l => {
-                document.getElementById(`btn_lang_${l}`).classList.toggle('active', l === lang);
-            });
+      <div class="form-group">
+        <label>№ Бокса (Pit Box):</label>
+        <input type="text" id="boxInput" placeholder="Бокс 12">
+      </div>
 
-            const loc = LOCALES[lang];
-            document.getElementById('headerSubtitle').textContent = loc.subtitle;
-            document.getElementById('tabScrutineerLabel').textContent = loc.tabScrutineer;
-            document.getElementById('tabStewardLabel').textContent = loc.tabSteward;
-            document.getElementById('lblEventInfo').textContent = loc.eventInfo;
-            document.getElementById('lblEventType').textContent = loc.eventType;
-            document.getElementById('lblEventDate').textContent = loc.eventDate;
-            document.getElementById('lblFormTitle').textContent = loc.formTitle;
-            document.getElementById('lblCarModel').textContent = loc.carModel;
-            document.getElementById('lblDriver').textContent = loc.driver;
-            document.getElementById('lblRaceNumber').textContent = loc.raceNumber;
-            document.getElementById('lblCageNumber').textContent = loc.cageNumber;
-            document.getElementById('lblCarColor').textContent = loc.carColor;
-            document.getElementById('lblPitBox').textContent = loc.pitBox;
-            document.getElementById('lblSelectedGroups').textContent = loc.selectedGroups;
-            document.getElementById('lblRemarks').textContent = loc.remarks;
-            document.getElementById('lblDailyLogTitle').textContent = loc.dailyLogTitle;
-            document.getElementById('lblStewardTitle').textContent = loc.stewardTitle;
-            document.getElementById('lblClickDefectNotice').textContent = loc.clickDefectNotice;
+      <div class="form-group">
+        <label>Зачетная группа:</label>
+        <select id="groupSelect">
+          <option value="PRO" selected>PRO</option>
+          <option value="SEMI-PRO">SEMI-PRO</option>
+          <option value="DC1">DC1</option>
+        </select>
+      </div>
 
-            renderLogTable();
-            renderStewardList();
-            if (stewardSelectedEntry) {
-                renderStewardDetail(stewardSelectedEntry);
-            }
+      <div class="form-group full">
+        <label>Замечания ТИ (Remarks):</label>
+        <input type="text" id="notesInput" placeholder="Без замечаний (или выберите пункты в чеклисте)">
+      </div>
+    </div>
+
+    <!-- Actions Area -->
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 14px;">
+      <div style="display: flex; gap: 10px;">
+        <button id="quickSubmitBtn" class="btn btn-gold" onclick="submitQuickInspection()" style="flex: 1;">
+          ⚡ Выдать ТИ (Без замечаний)
+        </button>
+        <button id="cancelEditBtn" class="btn btn-cancel" style="display:none;" onclick="cancelEditing()">
+          Отмена
+        </button>
+      </div>
+
+      <button type="button" class="btn btn-outline-gold" onclick="openChecklistModal()">
+        📑 Открыть подробный чеклист ТИ (41 пункт)
+      </button>
+    </div>
+  </div>
+
+  <!-- Log Table Card -->
+  <div class="card">
+    <div class="card-title">
+      <span>📊 Прошедшие инспекцию на этапе</span>
+      <span style="background:var(--gold-primary); color:#000; padding:2px 8px; border-radius:10px; font-weight:bold; font-size:12px;" id="totalCarsCount">0</span>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <table class="log-table">
+        <thead>
+          <tr>
+            <th>№</th>
+            <th>Авто / Пилот</th>
+            <th>СТ№</th>
+            <th>Каркас</th>
+            <th>Статус</th>
+            <th style="text-align: right;">Действие</th>
+          </tr>
+        </thead>
+        <tbody id="logTableBody">
+          <tr><td colspan="6" style="text-align:center; padding:20px; color:var(--text-sub);">Загрузка...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ================= VIEW 2: STEWARD DASHBOARD ================= -->
+<div id="viewSteward" style="display: none;">
+  <div class="card">
+    <div class="card-title">
+      <span>Кабинет Главного Комиссара ТИ</span>
+      <span id="stewardStageMeta" style="color:var(--gold-bright); font-size:12px;">Stage 1</span>
+    </div>
+
+    <div class="steward-controls">
+      <button class="steward-filter-btn active" id="filter_all" onclick="setStewardFilter('all')">Все (<span id="cntStewardAll">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_remarks" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntStewardRemarks">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_ok" onclick="setStewardFilter('ok')">✅ Без замечаний (<span id="cntStewardOk">0</span>)</button>
+      <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск по номеру, авто, пилоту..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:10px; font-size:13px;">
+    </div>
+
+    <!-- Inspector Focus View -->
+    <div id="stewardInspectorView" class="steward-inspector-view">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <span style="color:var(--gold-primary); font-size:12px; font-weight:bold;">КАРТОЧКА АВТОМОБИЛЯ</span>
+        <button onclick="closeStewardDetail()" style="background:#1e293b; border:1px solid #475569; color:#fff; border-radius:6px; padding:6px 12px; cursor:pointer;">✕ Закрыть</button>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #1e293b; padding-bottom:14px; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="driver-num-huge" id="dtlNumber">№--</div>
+          <div>
+            <h2 style="font-size:20px; color:#fff;" id="dtlDriver">Пилот</h2>
+            <div style="color:var(--text-sub); font-size:14px;" id="dtlCar">Марка Модель</div>
+          </div>
+        </div>
+        <div style="text-align: right;">
+          <div id="dtlStatusBadge" class="badge-status">Статус</div>
+          <div style="font-size:12px; color:var(--text-sub); margin-top:4px;">Бокс: <strong id="dtlBox">—</strong> | Каркас: <strong id="dtlCage" class="cage-code">—</strong></div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:12px;">
+        <label style="display:block; margin-bottom:8px; color:var(--gold-bright); font-weight:bold;">Выявленные несоответствия (нажмите для статьи регламента):</label>
+        <div id="dtlDefectsContainer"></div>
+      </div>
+
+      <div id="ruleCitationBox" class="rule-citation-box">
+        <div class="rule-title">
+          <span id="ruleCitationHeading">Статья Регламента</span>
+          <a href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:12px; text-decoration:underline;">Официальный регламент RDS ↗</a>
+        </div>
+        <div class="rule-text" id="ruleCitationText">...</div>
+        <div class="rule-action-needed" id="ruleActionNeeded">...</div>
+      </div>
+    </div>
+
+    <div id="stewardListContainer" style="margin-top:14px;"></div>
+  </div>
+</div>
+
+<!-- ================= FULL CHECKLIST MODAL ================= -->
+<div id="checklistModal" class="modal-overlay">
+  <div class="checklist-modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Чеклист Технической Инспекции (41 пункт)</div>
+      <button onclick="closeChecklistModal()" style="background:none; border:none; color:#fff; font-size:24px; cursor:pointer;">✕</button>
+    </div>
+
+    <div class="checklist-tabs">
+      <button id="tabBtnExt" class="ch-tab-btn active" onclick="switchChecklistTab('ext')">
+        🚗 Внешний осмотр (16 п.)
+      </button>
+      <button id="tabBtnInt" class="ch-tab-btn" onclick="switchChecklistTab('int')">
+        🏎️ Внутренний осмотр (25 п.)
+      </button>
+    </div>
+
+    <div style="padding:10px 14px; background:#0f172a; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:13px; color:var(--text-sub);" id="checklistSummaryCounter">Выбрано: 41 ОК</span>
+      <button type="button" style="background:#064e3b; border:1px solid #10b981; color:#6ee7b7; padding:6px 12px; border-radius:6px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="setAllChecklistOk()">
+        ✅ Отметить все [ОК]
+      </button>
+    </div>
+
+    <div class="checklist-scroll-area">
+      <div id="containerExt" class="checklist-tab-content"></div>
+      <div id="containerInt" class="checklist-tab-content" style="display: none;"></div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" style="flex:1;" onclick="closeChecklistModal()">Отмена</button>
+      <button class="btn btn-gold" style="flex:2;" onclick="applyChecklistResults()">✅ Применить к автомобилю</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Жестко зашитые параметры системы
+const SPREADSHEET_ID = "1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
+const APP_PIN = "0000";
+
+/* --- 16 ВНЕШНИХ ПУНКТОВ РЕГЛАМЕНТА --- */
+const CHECKLIST_EXT = [
+  {
+    code: '1.1',
+    title: '1.1 Бамперы',
+    desc: 'Бамперы установлены, закрывают кузов, надёжно закреплены (не на хомутах/скотче)',
+    article: 'Статья 3. Кузов и наружные элементы',
+    rule: 'Передний и задний бамперы должны быть установлены, надежно закреплены и полностью закрывать силовые элементы кузова. Крепление исключительно на пластиковые хомуты или скотч строго запрещено.',
+    action: 'Закрепить бамперы на штатные или спортивные быстросъемные крепления.'
+  },
+  {
+    code: '1.2',
+    title: '1.2 Капот и багажник',
+    desc: '4 точки крепления + ≥2 внешних фиксатора, штатные замки удалены',
+    article: 'Статья 4. Замки капота и крышки багажника',
+    rule: 'Капот и крышка багажника должны иметь не менее 4 точек крепления и быть оборудованы минимум 2 внешними спортивными замками (Aerocatch, шпильки). Штатные тросы и замки должны быть демонтированы.',
+    action: 'Установить внешние замки капота/багажника и снять штатный трос отпирания.'
+  },
+  {
+    code: '1.3',
+    title: '1.3 Буксировочные стропы',
+    desc: 'Нейлон/трос ∅10 мм, выступ 15–25 см, маркировка стрелкой ≥12 см',
+    article: 'Статья 5. Буксировочные проушины и стропы',
+    rule: 'Автомобиль должен иметь буксировочную проушину или стропу спереди и сзади (нейлон или трос ∅10 мм) с выступом 15–25 см. Точки крепления четко обозначены световозвращающей стрелкой длиной не менее 12 см.',
+    action: 'Установить буксировочные петли спереди и сзади и нанести стрелки маркировки ≥12 см.'
+  },
+  {
+    code: '1.4',
+    title: '1.4 Башбары (Bash-bars)',
+    desc: 'Стальная труба ∅25–44 мм, стенка 1,6–3,2 мм, болты 4×М10 8.8 или сварка',
+    article: 'Статья 6. Защитные балки кузова (Башбары)',
+    rule: 'Трубчатые защитные балки изготавливаются из бесшовной стальной трубы ∅25–44 мм со стенкой 1.6–3.2 мм. Крепление к лонжеронам болтами не менее 4×М10 (класс 8.8) с пластинами толщиной от 3 мм либо качественной сваркой.',
+    action: 'Усилить крепление башбаров болтами М10 класса 8.8 с пластинами толщиной ≥3 мм.'
+  },
+  {
+    code: '1.5',
+    title: '1.5 Крылья и арки',
+    desc: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)',
+    article: 'Статья 7. Крылья и колесные арки',
+    rule: 'Крылья и расширители должны полностью закрывать колесо сверху. Выступание протектора шины за внешнюю кромку крыла допускается не более чем на 20% ширины шины при виде сверху.',
+    action: 'Установить расширители арок (фендеры) либо отрегулировать вылет и развал колес.'
+  },
+  {
+    code: '1.6',
+    title: '1.6 Лобовое стекло',
+    desc: 'Многослойное/поликарбонат ≥5 мм, маркировка, прозрачный обзор без трещин в зоне дворника',
+    article: 'Статья 8. Остекление лобовое',
+    rule: 'Лобовое стекло — триплекс с маркировкой или поликарбонат ≥5 мм с устойчивым покрытием. Запрещены трещины в зоне работы водительского стеклоочистителя.',
+    action: 'Заменить поврежденное лобовое стекло.'
+  },
+  {
+    code: '1.7',
+    title: '1.7 Боковые стёкла',
+    desc: 'Оригинальные с защитной плёнкой ≥100 мкм изнутри или поликарбонат 3–5 мм',
+    article: 'Статья 9. Боковое и заднее остекление',
+    rule: 'Оригинальные закаленные боковые стекла должны быть оклеены изнутри защитной пленкой ≥100 мкм, либо заменены на поликарбонат 3–5 мм с надежным механическим креплением.',
+    action: 'Оклеить стекла пленкой ≥100 мкм или установить поликарбонат.'
+  },
+  {
+    code: '1.8',
+    title: '1.8 Зеркала заднего вида',
+    desc: '2 наружных зеркала, площадь отражающего элемента каждого ≥60 см²',
+    article: 'Статья 10. Зеркала заднего вида',
+    rule: 'Автомобиль должен быть оборудован двумя внешними зеркалами (левым и правым). Площадь зеркального элемента каждого зеркала должна составлять не менее 60 см².',
+    action: 'Установить зеркала требуемой площади (не менее 60 см²).'
+  },
+  {
+    code: '1.9',
+    title: '1.9 Стоп-сигналы',
+    desc: 'Исправны, светят красным при торможении (основные + светодиодный дублер)',
+    article: 'Статья 11. Световая сигнализация',
+    rule: 'Обязательны исправные задние стоп-сигналы красного цвета и дополнительный верхний светодиодный дублер, срабатывающие строго синхронно с нажатием педали.',
+    action: 'Восстановить проводку и обеспечить синхронную работу стоп-сигналов и дублера.'
+  },
+  {
+    code: '1.10',
+    title: '1.10 Передние фары',
+    desc: 'В штатных местах, обеспечивают видимость автомобиля с 50 м',
+    article: 'Статья 12. Головной свет',
+    rule: 'Передняя оптика должна быть смонтирована в штатных местах. Фары или ходовые огни должны обеспечивать отчетливую видимость автомобиля с расстояния не менее 50 метров.',
+    action: 'Закрепить фары и подключить надежное электропитание.'
+  },
+  {
+    code: '1.11',
+    title: '1.11 Внешний выключатель массы',
+    desc: 'Знак «красная Е» или молния в синем треугольнике ∅10–12 см, под лобовым/задним стеклом',
+    article: 'Статья 13. Внешний аварийный выключатель массы',
+    rule: 'Привод внешнего аварийного выключателя массы располагается в нижней части рамки лобового стекла или задней стойки. Обозначается контрастным знаком ∅10–12 см.',
+    action: 'Установить привод выключателя массы наружу и нанести официальный знак.'
+  },
+  {
+    code: '1.12',
+    title: '1.12 Внешний привод пожаротушения',
+    desc: 'Рядом с выключателем массы, наклейка «красная Е» ∅10 см',
+    article: 'Статья 14. Внешний привод СПТ',
+    rule: 'Внешний спусковой механизм СПТ должен располагаться рядом с выключателем массы. Обозначается круглой наклейкой ∅10 см с красной буквой «E» в белом круге с красной каймой.',
+    action: 'Вывести трос СПТ наружу рядом с выключателем массы и нанести знак «Е».'
+  },
+  {
+    code: '1.13',
+    title: '1.13 Выхлопная система',
+    desc: 'Металл, 15–20 см от бака/топливопроводов, направлен назад/вбок, выступ ≤10 мм',
+    article: 'Статья 15. Выхлопная система',
+    rule: 'Выхлопная труба полностью металлическая, проходит на расстоянии не менее 15–20 см от бака/магистралей (или имеет термоэкран). Выступ за кузов — не более 10 мм.',
+    action: 'Укоротить выхлоп по контуру кузова и установить термоэкран.'
+  },
+  {
+    code: '1.14',
+    title: '1.14 Шины',
+    desc: 'Дорожные с рисунком, без повреждений/корда, глубина ≥1.6 мм. Слики запрещены',
+    article: 'Статья 16. Требования к шинам серии',
+    rule: 'Разрешены только дорожные радиальные шины с рисунком протектора с остатком не менее 1.6 мм. Слики (включая резаные) и химическая обработка строго запрещены.',
+    action: 'Заменить шины на разрешенную серию регламента RDS.'
+  },
+  {
+    code: '1.15',
+    title: '1.15 Диски и крепеж',
+    desc: 'Металлические (магний запрещён), шпильки не выступают опасно, все гайки на месте',
+    article: 'Статья 17. Колесные диски и крепеж',
+    rule: 'Диски из алюминиевых или стальных сплавов (магний запрещен). Зацепление гайки шпилькой должно быть не менее диаметра резьбы. Все гайки должны быть затянуты.',
+    action: 'Установить полный комплект закрытых гаек и проверить затяжку.'
+  },
+  {
+    code: '1.16',
+    title: '1.16 Обязательные наклейки на кузове',
+    desc: 'Стартовые номера (двери, капот), баннер серии Royal DS, логотипы спонсоров, флаг, фамилия',
+    article: 'Статья 32. Обязательные наклейки на кузове (Приложение 4)',
+    rule: 'Автомобиль обязан нести полную официальную оклейку чемпионата: стартовые номера на дверях и капоте, баннер Royal Drift Series на лобовом стекле, спонсоры серии, флаг и фамилия на стеклах.',
+    action: 'Получить в штабе соревнований недостающие спонсорские наклейки и наклеить по схеме.'
+  }
+];
+
+/* --- 25 ВНУТРЕННИХ ПУНКТОВ РЕГЛАМЕНТА --- */
+const CHECKLIST_INT = [
+  {
+    code: '2.1',
+    title: '2.1 Каркас: основные дуги и номер',
+    desc: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт',
+    article: 'Статья 8. Каркас безопасности (FIA App J Art 253)',
+    rule: 'Главная и передняя дуги из бесшовной трубы ∅45×2.5 или ∅50×2.0 мм. Обязателен технический паспорт и четкий выбитый 6-значный номер.',
+    action: 'Предъявить паспорт каркаса и зачистить выбитый 6-значный номер.'
+  },
+  {
+    code: '2.2',
+    title: '2.2 Каркас: дверные брусья',
+    desc: 'Боковые защитные кресты или продольные брусья в проемах дверей',
+    article: 'Статья 8. Каркас безопасности (Боковая защита)',
+    rule: 'В дверных проемах со стороны пилота и пассажира должны быть вварены защитные кресты с усилительными косынками либо продольные брусья по ст. 253 FIA.',
+    action: 'Вварить недостающие усилительные элементы в дверные проемы.'
+  },
+  {
+    code: '2.3',
+    title: '2.3 Каркас: опорные пластины',
+    desc: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥3 мм',
+    article: 'Статья 8. Каркас безопасности (Опорные пластины)',
+    rule: 'Каждая опора дуги каркаса крепится к кузову через опорную пластину площадью не менее 120 см² и толщиной стали не менее 3 мм.',
+    action: 'Усилить опорные пластины каркаса согласно регламенту.'
+  },
+  {
+    code: '2.4',
+    title: '2.4 Каркас: диагонали на главной дуге',
+    desc: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов',
+    article: 'Статья 8. Каркас безопасности (Диагонали главной дуги)',
+    rule: 'Диагональные элементы главной дуги должны быть прямолинейными. Соединение диагонали с дугой — не далее 100 мм от угла или пластины опоры.',
+    action: 'Переварить диагональ в пределы 100 мм от узла главной дуги.'
+  },
+  {
+    code: '2.5',
+    title: '2.5 Каркас: защитные накладки',
+    desc: 'Зоны контакта со шлемом/пилотом: негорючие накладки омологации FIA 8857-2001',
+    article: 'Статья 8. Каркас безопасности (Защитные накладки)',
+    rule: 'Трубы каркаса в зонах возможного контакта со шлемом пилота должны быть закрыты сертифицированными накладками по стандарту FIA 8857-2001.',
+    action: 'Установить энергопоглощающие накладки омологации FIA 8857-2001.'
+  },
+  {
+    code: '2.6',
+    title: '2.6 Спортивное сиденье (ковш)',
+    desc: 'Ковш FIA 8855-1999/8862-2009, 4 точки, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9',
+    article: 'Статья 18. Сиденье пилота и крепления',
+    rule: 'Спортивное сиденье с омологацией FIA. Крепление на 4 болтах М8 класса не ниже 10.9 через стальные кронштейны ≥3 мм (или алюминиевые ≥5 мм) с шайбами пола ≥40 см².',
+    action: 'Заменить болты сиденья на класс 10.9 и установить усилительные пластины пола.'
+  },
+  {
+    code: '2.7',
+    title: '2.7 Ремни безопасности',
+    desc: '5/6-точечные, действующая омологация FIA 8854/98 или 8853-2016, металл замки',
+    article: 'Статья 19. Ремни безопасности',
+    rule: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8854/98 или 8853-2016. Металлические защелки без следов износа и повреждений.',
+    action: 'Установить ремни безопасности с неистекшим сроком FIA.'
+  },
+  {
+    code: '2.8',
+    title: '2.8 Точки крепления ремней',
+    desc: 'К кузову (7/16-20 UNF, контрпластины ≥40 см²×3 мм) или harness bar (запрещено к сиденью!)',
+    article: 'Статья 19. Точки крепления ремней',
+    rule: 'Поясные лямки крепятся только к усиленным точкам кузова с резьбой 7/16-20 UNF и пластинами ≥40 см² толщиной ≥3 мм. Плечевые — на harness bar каркаса. Крепить ремни к сиденью запрещено.',
+    action: 'Перенести точки крепления ремней с салазок сиденья на кузов/каркас.'
+  },
+  {
+    code: '2.9',
+    title: '2.9 Система HANS/FHR',
+    desc: 'Обязательна во всех заездах, клипсы на шлеме и поводки стандарта FIA 8858-2010',
+    article: 'Статья 20. Система защиты шеи и головы HANS/FHR',
+    rule: 'Применение системы защиты шеи HANS/FHR стандарта FIA 8858 строго обязательно. Клипсы на шлеме и поводки должны иметь маркировку FIA 8858-2010.',
+    action: 'Предоставить омологированную систему HANS и шлем с клипсами FIA.'
+  },
+  {
+    code: '2.10',
+    title: '2.10 Система пожаротушения (СПТ)',
+    desc: 'Омологация FIA (лист №16/52), распылители: ≥2 в моторный отсек и ≥2 в ноги пилота',
+    article: 'Статья 21. Стационарная система пожаротушения',
+    rule: 'Система пожаротушения FIA (лист 16 или 52). Не менее 2 сопел направлены в двигатель и не менее 2 сопел — в ноги водителя.',
+    action: 'Развести сопла пожаротушения в ноги пилота и моторный отсек.'
+  },
+  {
+    code: '2.11',
+    title: '2.11 Внутренний привод СПТ',
+    desc: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями',
+    article: 'Статья 21. Органы управления СПТ',
+    rule: 'Внутренняя ручка/кнопка СПТ должна располагаться в зоне прямой досягаемости руки пилота, пристегнутого ремнями в сиденье.',
+    action: 'Перенести ручку привода СПТ ближе к пилоту.'
+  },
+  {
+    code: '2.12',
+    title: '2.12 Срок поверки и давление СПТ',
+    desc: 'Срок поверки баллона СПТ ≤2 лет, стрелка манометра строго в зеленой зоне',
+    article: 'Статья 21. Сроки поверки системы пожаротушения',
+    rule: 'Баллон СПТ должен иметь читаемый стикер поверки с датой (интервал ≤2 лет). Стрелка манометра строго в зеленой зоне.',
+    action: 'Пройти поверку баллона СПТ у дилера либо заменить баллон.'
+  },
+  {
+    code: '2.13',
+    title: '2.13 Топливо и наклейка «ALCOHOL»',
+    desc: 'Товарный бензин или этанол/E85. При спирте — наклейка «ALCOHOL» 10–12 см',
+    article: 'Статья 22. Топливо и идентификация',
+    rule: 'При использовании биоэтанола/E85 на лобовое стекло и у горловины бака обязательно наносится крупная световозвращающая наклейка «ALCOHOL» 10–12 см.',
+    action: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.'
+  },
+  {
+    code: '2.14',
+    title: '2.14 Запрещенные газы (N2O)',
+    desc: 'Запрещены пропан, метан, закись азота (N₂O). Баллоны и магистрали демонтированы',
+    article: 'Статья 22. Запрещенные вещества',
+    rule: 'Категорически запрещено применение закиси азота (N2O), метанола и баллонов под давлением с окислителями. Баллоны и магистрали должны быть полностью сняты.',
+    action: 'Полностью демонтировать баллон и электромагистрали закиси азота.'
+  },
+  {
+    code: '2.15',
+    title: '2.15 Топливный бак',
+    desc: 'Штатный или омологированный FIA FT3/FT5, в багажнике, клапан опрокидывания (roll-over)',
+    article: 'Статья 23. Топливный бак',
+    rule: 'Штатный бак либо безопасный бак FIA FT3/FT5. Обязательны противоотливная губка, гравитационный клапан roll-over на вентиляции и крепление стальными лентами.',
+    action: 'Установить клапан опрокидывания на вентиляцию бака.'
+  },
+  {
+    code: '2.16',
+    title: '2.16 Огнестойкая перегородка бака',
+    desc: 'Бак в багажнике герметично отделён от салона перегородкой (сталь ≥0.8 мм / алюм ≥1.2 мм)',
+    article: 'Статья 23. Огнестойкая перегородка',
+    rule: 'Если бак или насосы расположены в багажнике, салон должен быть герметично изолирован сплошной несгораемой перегородкой со швами на огнестойком герметике.',
+    action: 'Установить металлическую перегородку и загерметизировать технологические отверстия.'
+  },
+  {
+    code: '2.17',
+    title: '2.17 Магистрали в салоне',
+    desc: 'В салоне только цельные шланги без соединений, защита PTFE/AN от перетирания и огня',
+    article: 'Статья 24. Трубопроводы топлива и масла',
+    rule: 'Топливные и масляные магистрали, проходящие через салон, должны быть цельными без разъемов внутри кокпита и выполнены из армированных рукавов PTFE/AN.',
+    action: 'Заменить составные шланги в салоне на цельные армированные рукава PTFE.'
+  },
+  {
+    code: '2.18',
+    title: '2.18 Главный выключатель массы',
+    desc: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ/зажигание; доступен пилоту + внешний привод',
+    article: 'Статья 25. Электрический размыкатель массы',
+    rule: 'Выключатель массы должен мгновенно обесточивать АКБ, генератор, зажигание, насосы и глушить двигатель. Управляется из салона и снаружи.',
+    action: 'Подключить генератор и зажигание к цепи размыкания выключателя массы.'
+  },
+  {
+    code: '2.19',
+    title: '2.19 Электропроводка',
+    desc: 'В защитной гофре, закреплена хомутами. Запрещено зажимать между каркасом и кузовом',
+    article: 'Статья 26. Электропроводка и жгуты',
+    rule: 'Электропроводка должна быть в термостойкой гофре и надежно закреплена. Категорически запрещена прокладка жгутов проводов между трубами каркаса и кузовом.',
+    action: 'Переложить жгут проводов из зазора между каркасом и кузовом в защитную гофру.'
+  },
+  {
+    code: '2.20',
+    title: '2.20 Аккумулятор (АКБ)',
+    desc: 'При переносе: металлическое гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс',
+    article: 'Статья 27. Аккумуляторная батарея',
+    rule: 'Перенесенный АКБ крепится к кузову двумя стальными лентами 20×0.8 мм на болтах М10. Жидкостный АКБ закрывается герметичным боксом с вентиляцией наружу.',
+    action: 'Закрепить АКБ стальными лентами на болтах М10 и изолировать клеммы.'
+  },
+  {
+    code: '2.21',
+    title: '2.21 Тормозная система',
+    desc: '≥2 независимых контура от педали, исправная; магистрали в салоне металл/PTFE; жесткий ручник',
+    article: 'Статья 28. Тормозная система и гидроручник',
+    rule: 'Минимум 2 независимых контура. Трубки в салоне — бесшовные металлические или тефлоновые армированные PTFE. Кронштейн гидроручника жестко закреплен.',
+    action: 'Устранить люфты гидроручника и прокачать тормозную систему.'
+  },
+  {
+    code: '2.22',
+    title: '2.22 Петля карданоуловителя',
+    desc: '≤150 мм от переднего шарнира крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм',
+    article: 'Статья 29. Карданоуловитель (Driveshaft Safety Loop)',
+    rule: 'Заднеприводные автомобили должны быть оснащены защитной петлей (сталь 50×5 мм или труба ∅20×1.5 мм) на расстоянии не далее 150 мм от переднего шарнира.',
+    action: 'Установить стальную петлю карданоуловителя толщиной 5 мм.'
+  },
+  {
+    code: '2.23',
+    title: '2.23 Рулевое колесо и быстросъем',
+    desc: 'Руль: замкнутый обод (не деревянный), быстросъём без люфта с жёлтым кольцом фиксатора',
+    article: 'Статья 30. Рулевое управление и быстросъем',
+    rule: 'Руль с замкнутым ободом. Быстросъемный механизм руля должен быть без люфтов и иметь фиксирующую муфту желтого цвета.',
+    action: 'Устранить люфт быстросъема и нанести желтую маркировку на кольцо.'
+  },
+  {
+    code: '2.24',
+    title: '2.24 Регулировка рулевой колонки',
+    desc: 'Механизм регулировки рулевой колонки заблокирован и затянут инструментом (болтом)',
+    article: 'Статья 30. Фиксация рулевой колонки',
+    rule: 'Штатный рычаг быстрой регулировки рулевой колонки должен быть заменен на болт и затянут инструментом, исключая случайное смещение колонки.',
+    action: 'Заменить ручной фиксатор рулевой колонки на затяжной болт под ключ.'
+  },
+  {
+    code: '2.25',
+    title: '2.25 Вентиляция картера (Catch-can)',
+    desc: 'Ёмкость маслоуловителя ≥2 л с уровнемером в моторном отсеке; экраны на магистралях в ногах',
+    article: 'Статья 31. Вентиляция картера и защита магистралей',
+    rule: 'Система вентиляции картера выводится в маслоуловитель объемом ≥2 л с уровнемерной трубкой. Трубопроводы в ногах водителя закрыты защитным металлическим экраном.',
+    action: 'Установить маслоуловитель объемом от 2 литров со смотровой трубкой уровня.'
+  }
+];
+
+const ALL_CHECKLIST = [...CHECKLIST_EXT, ...CHECKLIST_INT];
+
+// Состояние приложения
+let dailyLog = [];
+let yesterdayLog = [];
+let checklistState = {};
+let editingIndex = null;
+let isProcessingQueue = false;
+let stewardActiveFilter = 'all';
+let stewardSelectedEntry = null;
+
+/* --- ИНИЦИАЛИЗАЦИЯ И ЧЕКЛИСТ --- */
+function initChecklist() {
+  const extContainer = document.getElementById('containerExt');
+  const intContainer = document.getElementById('containerInt');
+  if (!extContainer || !intContainer) return;
+
+  extContainer.innerHTML = '';
+  intContainer.innerHTML = '';
+
+  const renderRow = (item, target) => {
+    if (!checklistState[item.code]) checklistState[item.code] = 'ok';
+    const row = document.createElement('div');
+    row.className = 'checklist-row';
+    row.innerHTML = `
+      <div class="chk-title-row">
+        <div>
+          <div class="chk-title">${item.title}</div>
+          <div class="chk-desc">${item.desc}</div>
+        </div>
+      </div>
+      <div class="chk-buttons-row">
+        <button type="button" class="chk-action-btn ${checklistState[item.code] === 'ok' ? 'active-ok' : ''}" id="btn_ok_${item.code}" onclick="setChecklistItemState('${item.code}','ok')">✅ ОК</button>
+        <button type="button" class="chk-action-btn ${checklistState[item.code] === 'warn' ? 'active-warn' : ''}" id="btn_warn_${item.code}" onclick="setChecklistItemState('${item.code}','warn')">⚠️ Зам.</button>
+        <button type="button" class="chk-action-btn ${checklistState[item.code] === 'fail' ? 'active-fail' : ''}" id="btn_fail_${item.code}" onclick="setChecklistItemState('${item.code}','fail')">❌ Отказ</button>
+      </div>
+    `;
+    target.appendChild(row);
+  };
+
+  CHECKLIST_EXT.forEach(it => renderRow(it, extContainer));
+  CHECKLIST_INT.forEach(it => renderRow(it, intContainer));
+  updateChecklistSummary();
+}
+
+function setChecklistItemState(code, state) {
+  checklistState[code] = state;
+  ['ok', 'warn', 'fail'].forEach(s => {
+    const btn = document.getElementById(`btn_${s}_${code}`);
+    if (btn) btn.className = 'chk-action-btn' + (state === s ? ` active-${s}` : '');
+  });
+  updateChecklistSummary();
+}
+
+function setAllChecklistOk() {
+  ALL_CHECKLIST.forEach(it => setChecklistItemState(it.code, 'ok'));
+}
+
+function updateChecklistSummary() {
+  let okCount = 0, warnCount = 0, failCount = 0;
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code] || 'ok';
+    if (s === 'ok') okCount++;
+    else if (s === 'warn') warnCount++;
+    else if (s === 'fail') failCount++;
+  });
+
+  const counterEl = document.getElementById('checklistSummaryCounter');
+  if (counterEl) {
+    counterEl.textContent = `Итог: ${okCount} ОК • ${warnCount} Зам. • ${failCount} Отказ`;
+  }
+}
+
+function openChecklistModal() {
+  document.getElementById('checklistModal').classList.add('open');
+}
+
+function closeChecklistModal() {
+  document.getElementById('checklistModal').classList.remove('open');
+}
+
+function switchChecklistTab(tab) {
+  document.getElementById('tabBtnExt').classList.toggle('active', tab === 'ext');
+  document.getElementById('tabBtnInt').classList.toggle('active', tab === 'int');
+  document.getElementById('containerExt').style.display = tab === 'ext' ? 'block' : 'none';
+  document.getElementById('containerInt').style.display = tab === 'int' ? 'block' : 'none';
+}
+
+function applyChecklistResults() {
+  let remarks = [];
+  let status = 'ok';
+
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code];
+    if (s === 'warn') {
+      remarks.push(`[${it.code}] ${it.title.split(' ')[1] || it.title}`);
+      if (status !== 'fail') status = 'warn';
+    } else if (s === 'fail') {
+      remarks.push(`ОТКАЗ: [${it.code}] ${it.title.split(' ')[1] || it.title}`);
+      status = 'fail';
+    }
+  });
+
+  document.getElementById('notesInput').value = remarks.length ? remarks.join(', ') : 'Без замечаний';
+  closeChecklistModal();
+}
+
+/* --- СОХРАНЕНИЕ И ДОБАВЛЕНИЕ В ЛОГ --- */
+function submitQuickInspection() {
+  document.getElementById('notesInput').value = 'Без замечаний';
+  setAllChecklistOk();
+  addCarToLog('ok');
+}
+
+function getCurrentStageKey() {
+  return document.getElementById('stageSelect').value || 'Stage 1';
+}
+
+function onStageChanged() {
+  const selectEl = document.getElementById('stageSelect');
+  const stageMeta = selectEl.options[selectEl.selectedIndex].textContent;
+  const metaEl = document.getElementById('stewardStageMeta');
+  if (metaEl) metaEl.textContent = stageMeta;
+
+  loadLocalLog();
+  if (navigator.onLine) fetchLogsFromGoogleSheet();
+}
+
+function addCarToLog(status = 'ok') {
+  const car = document.getElementById('carInput').value.trim();
+  const driver = document.getElementById('driverInput').value.trim();
+  const number = document.getElementById('numberInput').value.trim();
+  let cage = document.getElementById('cageInput').value.trim().replace(/\D/g, '').slice(0, 6);
+  const color = document.getElementById('colorInput').value.trim();
+  const box = document.getElementById('boxInput').value.trim();
+  const group = document.getElementById('groupSelect').value || 'PRO';
+  const notes = document.getElementById('notesInput').value.trim() || 'Без замечаний';
+  const stageKey = getCurrentStageKey();
+
+  if (!car) {
+    alert('Пожалуйста, укажите марку и модель автомобиля!');
+    document.getElementById('carInput').focus();
+    return;
+  }
+
+  if (cage && cage.length !== 6) {
+    alert('Номер каркаса безопасности должен состоять ровно из 6 цифр!');
+    document.getElementById('cageInput').focus();
+    return;
+  }
+
+  // Автоматический статус по тексту замечаний
+  if (notes.toLowerCase().includes('отказ')) status = 'fail';
+  else if (notes && notes.toLowerCase() !== 'без замечаний') status = 'warn';
+  else status = 'ok';
+
+  if (editingIndex !== null && editingIndex >= 0 && editingIndex < dailyLog.length) {
+    const targetItem = dailyLog[editingIndex];
+    targetItem.car = car;
+    targetItem.driver = driver;
+    targetItem.number = number;
+    targetItem.cage = cage;
+    targetItem.color = color;
+    targetItem.box = box;
+    targetItem.group = group;
+    targetItem.notes = notes;
+    targetItem.status = status;
+    targetItem.timestamp = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+    saveLocalLog();
+    renderLogTable();
+    renderStewardList();
+
+    if (targetItem.sheetRowIndex) {
+      enqueueTask('update_entry', {
+        date: targetItem.date || stageKey,
+        rowIndex: targetItem.sheetRowIndex,
+        data: targetItem
+      });
+    }
+    cancelEditing();
+    return;
+  }
+
+  const newItem = {
+    id: Date.now(),
+    date: stageKey,
+    car: car,
+    driver: driver,
+    number: number,
+    cage: cage,
+    color: color,
+    box: box,
+    group: group,
+    notes: notes,
+    status: status,
+    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+  };
+
+  dailyLog.push(newItem);
+  saveLocalLog();
+  renderLogTable();
+  renderStewardList();
+  clearInputs();
+  enqueueTask('add_entry', newItem);
+}
+
+function clearInputs() {
+  ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  localStorage.removeItem('ti_form_draft');
+}
+
+function cancelEditing() {
+  editingIndex = null;
+  clearInputs();
+  document.getElementById('editModeIndicator').style.display = 'none';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('quickSubmitBtn').textContent = '⚡ Выдать ТИ (Без замечаний)';
+  document.getElementById('formTitleText').textContent = '📋 Регистрация автомобиля';
+}
+
+function renderLogTable() {
+  const tbody = document.getElementById('logTableBody');
+  document.getElementById('totalCarsCount').textContent = dailyLog.length;
+
+  if (!dailyLog.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-sub); padding:20px;">Список пуст. Добавьте первый автомобиль.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = dailyLog.map((item, idx) => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <tr>
+        <td><strong>${idx + 1}</strong></td>
+        <td>
+          <strong style="color:#fff;">${escapeHtml(item.car)}</strong>
+          <div style="font-size:12px; color:var(--text-sub);">${escapeHtml(item.driver || '—')} ${item.color ? '• ' + escapeHtml(item.color) : ''}</div>
+          ${item.notes && item.notes !== 'Без замечаний' ? `<div style="font-size:11px; color:var(--gold-bright); margin-top:2px;">📝 ${escapeHtml(item.notes)}</div>` : ''}
+        </td>
+        <td><span style="background:#1e293b; padding:4px 8px; border-radius:6px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
+        <td><span class="cage-code">${escapeHtml(item.cage || '—')}</span></td>
+        <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+        <td style="text-align: right; white-space:nowrap;">
+          <button style="background:none; border:none; cursor:pointer; font-size:16px; margin-right:8px;" onclick="viewInStewardDashboard(${item.id})" title="Открыть дело">🔍</button>
+          <button style="background:none; border:none; cursor:pointer; font-size:16px;" onclick="deleteCar(${idx})" title="Удалить">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function deleteCar(idx) {
+  if (idx < 0 || idx >= dailyLog.length) return;
+  const item = dailyLog[idx];
+  if (confirm(`Удалить ${item.car} (№${item.number || 'б/н'})?`)) {
+    dailyLog.splice(idx, 1);
+    saveLocalLog();
+    renderLogTable();
+    renderStewardList();
+    if (item.sheetRowIndex) {
+      enqueueTask('delete_entry', { date: item.date || getCurrentStageKey(), rowIndex: item.sheetRowIndex });
+    }
+  }
+}
+
+function viewInStewardDashboard(itemId) {
+  switchMainView('steward');
+  selectStewardParticipant(itemId);
+}
+
+function switchMainView(view) {
+  const scrutTab = document.getElementById('tabScrutineer');
+  const stewardTab = document.getElementById('tabSteward');
+  const scrutView = document.getElementById('viewScrutineer');
+  const stewardView = document.getElementById('viewSteward');
+
+  if (view === 'scrutineer') {
+    scrutTab.classList.add('active');
+    stewardTab.classList.remove('active');
+    scrutView.style.display = 'block';
+    stewardView.style.display = 'none';
+  } else {
+    scrutTab.classList.remove('active');
+    stewardTab.classList.add('active');
+    scrutView.style.display = 'none';
+    stewardView.style.display = 'block';
+    renderStewardList();
+  }
+}
+
+/* --- СИНХРОНИЗАЦИЯ С GOOGLE ТАБЛИЦЕЙ (OFFLINE QUEUE) --- */
+function updateSyncStatus(status, text) {
+  const badge = document.getElementById('syncStatus');
+  const icon = document.getElementById('syncIcon');
+  const txt = document.getElementById('syncText');
+  badge.className = 'sync-badge ' + status;
+  txt.textContent = text;
+}
+
+function getSyncQueue() {
+  try { return JSON.parse(localStorage.getItem('ti_sync_queue') || '[]'); } catch (e) { return []; }
+}
+
+function saveSyncQueue(queue) {
+  localStorage.setItem('ti_sync_queue', JSON.stringify(queue));
+  const badge = document.getElementById('queueStatus');
+  const count = document.getElementById('queueCount');
+  if (queue.length > 0) {
+    badge.style.display = 'inline-flex';
+    count.textContent = queue.length;
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function enqueueTask(action, payload) {
+  const queue = getSyncQueue();
+  queue.push({
+    id: 'task_' + Date.now(),
+    action: action,
+    payload: payload
+  });
+  saveSyncQueue(queue);
+  if (navigator.onLine) processSyncQueue();
+}
+
+async function processSyncQueue(manualTrigger = false) {
+  if (isProcessingQueue) return;
+  const queue = getSyncQueue();
+
+  if (!navigator.onLine) {
+    updateSyncStatus('offline', `Автономно (${queue.length})`);
+    if (manualTrigger) alert('Режим без интернета (авиарежим). Данные сохранены в памяти смартфона и отправятся при появлении сети.');
+    return;
+  }
+
+  if (queue.length === 0) {
+    if (manualTrigger) {
+      updateSyncStatus('syncing', 'Проверка...');
+      testConnection();
+    }
+    return;
+  }
+
+  isProcessingQueue = true;
+  updateSyncStatus('syncing', `Отправка (${queue.length})...`);
+
+  while (queue.length > 0) {
+    const task = queue[0];
+    let bodyPayload = { pin: APP_PIN, action: task.action };
+
+    if (task.action === 'add_entry') bodyPayload.data = task.payload;
+    else if (task.action === 'update_entry') {
+      bodyPayload.date = task.payload.date;
+      bodyPayload.rowIndex = task.payload.rowIndex;
+      bodyPayload.data = task.payload.data;
+    } else if (task.action === 'delete_entry') {
+      bodyPayload.date = task.payload.date;
+      bodyPayload.rowIndex = task.payload.rowIndex;
+    }
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(bodyPayload)
+      });
+      const res = await response.json();
+      if (res && res.status === 'success') {
+        queue.shift();
+        saveSyncQueue(queue);
+      } else {
+        break;
+      }
+    } catch (err) {
+      console.warn('Sync network error:', err);
+      break;
+    }
+  }
+
+  isProcessingQueue = false;
+  if (queue.length === 0) {
+    updateSyncStatus('online', 'Онлайн (Таблица)');
+    fetchLogsFromGoogleSheet(true);
+  } else {
+    updateSyncStatus('offline', `В очереди: ${queue.length}`);
+  }
+}
+
+function testConnection() {
+  if (!navigator.onLine) {
+    updateSyncStatus('offline', 'Автономно');
+    return;
+  }
+  const stageKey = getCurrentStageKey();
+  updateSyncStatus('syncing', 'Связь...');
+
+  fetch(`${GAS_URL}?action=get_ti_logs&date=${encodeURIComponent(stageKey)}&pin=${APP_PIN}&ping=1`)
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.status === 'success') {
+        updateSyncStatus('online', 'Онлайн (Таблица)');
+        if (data.entries) {
+          dailyLog = data.entries;
+          saveLocalLog();
+          renderLogTable();
+          renderStewardList();
         }
-
-        function switchMainView(view) {
-            document.getElementById('tabScrutineer').classList.toggle('active', view === 'scrutineer');
-            document.getElementById('tabSteward').classList.toggle('active', view === 'steward');
-            document.getElementById('viewScrutineer').style.display = (view === 'scrutineer') ? 'block' : 'none';
-            document.getElementById('viewSteward').style.display = (view === 'steward') ? 'block' : 'none';
-
-            if (view === 'steward') {
-                renderStewardList();
-            }
-        }
-
-        /* --- STEWARD COMMISSIONER DASHBOARD LOGIC --- */
-        function setStewardFilter(filter) {
-            stewardActiveFilter = filter;
-            document.getElementById('filter_all').classList.toggle('active', filter === 'all');
-            document.getElementById('filter_remarks').classList.toggle('active', filter === 'remarks');
-            document.getElementById('filter_ok').classList.toggle('active', filter === 'ok');
-            renderStewardList();
-        }
-
-        function renderStewardList() {
-            const container = document.getElementById('stewardListContainer');
-            const searchVal = (document.getElementById('stewardSearchInput').value || '').trim().toLowerCase();
-
-            let cntAll = dailyLog.length;
-            let cntRemarks = 0;
-            let cntOk = 0;
-
-            dailyLog.forEach(item => {
-                if (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний')) {
-                    cntRemarks++;
-                } else {
-                    cntOk++;
-                }
-            });
-
-            document.getElementById('cntStewardAll').textContent = cntAll;
-            document.getElementById('cntStewardRemarks').textContent = cntRemarks;
-            document.getElementById('cntStewardOk').textContent = cntOk;
-            document.getElementById('stewardDateMeta').textContent = `Дата: ${document.getElementById('eventDate').value}`;
-
-            let filtered = dailyLog.filter(item => {
-                const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
-                if (stewardActiveFilter === 'remarks' && !hasRemarks) return false;
-                if (stewardActiveFilter === 'ok' && hasRemarks) return false;
-
-                if (searchVal) {
-                    const match = (item.number && item.number.toString().toLowerCase().includes(searchVal)) ||
-                                  (item.car && item.car.toLowerCase().includes(searchVal)) ||
-                                  (item.driver && item.driver.toLowerCase().includes(searchVal)) ||
-                                  (item.cage && item.cage.toLowerCase().includes(searchVal)) ||
-                                  (item.notes && item.notes.toLowerCase().includes(searchVal));
-                    if (!match) return false;
-                }
-                return true;
-            });
-
-            if (filtered.length === 0) {
-                container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub);">Нет записей по заданному фильтру</div>`;
-                return;
-            }
-
-            container.innerHTML = filtered.map(item => {
-                const isSelected = stewardSelectedEntry && stewardSelectedEntry.id === item.id;
-                const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
-                const statusColor = item.status === 'fail' ? '#ef4444' : (hasRemarks ? '#f59e0b' : '#22c55e');
-                const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
-
-                return `
-                    <div class="participant-card-item ${isSelected ? 'selected' : ''}" onclick="selectStewardParticipant(${item.id})">
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <span style="font-size:16px; font-weight:900; color:var(--gold-bright); background:#222; padding:3px 8px; border-radius:6px;">№${escapeHtml(item.number || 'б/н')}</span>
-                            <div>
-                                <strong style="font-size:14px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
-                                <div style="font-size:11px; color:#9ca3af;">${escapeHtml(item.car)} | Каркас: <span style="font-family:monospace; color:var(--gold-primary);">${escapeHtml(item.cage || '—')}</span></div>
-                            </div>
-                        </div>
-                        <div style="text-align:right;">
-                            <span style="font-size:11px; font-weight:bold; color:${statusColor}; background:${statusColor}18; border:1px solid ${statusColor}; padding:3px 8px; border-radius:6px;">${statusText}</span>
-                            <div style="font-size:10px; color:#9ca3af; margin-top:3px;">${escapeHtml(item.group || '—')}</div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function selectStewardParticipant(itemId) {
-            const item = dailyLog.find(x => x.id === itemId);
-            if (!item) return;
-            stewardSelectedEntry = item;
-            renderStewardDetail(item);
-            renderStewardList();
-            document.getElementById('stewardInspectorView').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function closeStewardDetail() {
-            stewardSelectedEntry = null;
-            document.getElementById('stewardInspectorView').style.display = 'none';
-            renderStewardList();
-        }
-
-        function renderStewardDetail(item) {
-            const view = document.getElementById('stewardInspectorView');
-            view.style.display = 'block';
-
-            document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
-            document.getElementById('dtlDriver').textContent = item.driver || 'Не указан';
-            document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''} (${item.group || '—'})`;
-            document.getElementById('dtlBox').textContent = item.box || '—';
-            document.getElementById('dtlCage').textContent = item.cage || 'Не внесен';
-
-            const badge = document.getElementById('dtlStatusBadge');
-            const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
-            if (item.status === 'fail') {
-                badge.style.background = '#7f1d1d';
-                badge.style.color = '#fca5a5';
-                badge.style.border = '1px solid #ef4444';
-                badge.textContent = '❌ ОТКАЗ В ДОПУСКЕ / REJECTED';
-            } else if (hasRemarks) {
-                badge.style.background = '#78350f';
-                badge.style.color = '#fef08a';
-                badge.style.border = '1px solid #f59e0b';
-                badge.textContent = '⚠️ ВЫЯВЛЕНЫ ЗАМЕЧАНИЯ / DEFECTS';
-            } else {
-                badge.style.background = '#14532d';
-                badge.style.color = '#86efac';
-                badge.style.border = '1px solid #22c55e';
-                badge.textContent = '✅ ТИ ПРОЙДЕН / PASSED';
-            }
-
-            // Defect tags
-            const defectsContainer = document.getElementById('dtlDefectsContainer');
-            defectsContainer.innerHTML = '';
-            document.getElementById('ruleCitationBox').style.display = 'none';
-
-            if (!item.notes || item.notes.toLowerCase() === 'без замечаний') {
-                defectsContainer.innerHTML = `<div style="color:var(--accent-green); font-size:13px; padding:6px 0;">Замечаний нет. Автомобиль полностью соответствует регламенту.</div>`;
-                return;
-            }
-
-            // Parse remarks
-            const rawNotes = item.notes.split(/[,;]/).map(s => s.trim()).filter(Boolean);
-            rawNotes.forEach(defect => {
-                let matchedKey = 'cage';
-                const lower = defect.toLowerCase();
-                if (lower.includes('спт') || lower.includes('огнетуш') || lower.includes('масс')) matchedKey = 'extinguisher';
-                else if (lower.includes('ремен') || lower.includes('belt') || lower.includes('hans')) matchedKey = 'belts';
-                else if (lower.includes('сиден') || lower.includes('ковш') || lower.includes('seat')) matchedKey = 'seat';
-                else if (lower.includes('щит') || lower.includes('фаервол') || lower.includes('firewall')) matchedKey = 'firewall';
-                else if (lower.includes('акб') || lower.includes('аккум') || lower.includes('battery')) matchedKey = 'battery';
-                else if (lower.includes('свет') || lower.includes('стоп') || lower.includes('light')) matchedKey = 'light';
-                else if (lower.includes('буксир') || lower.includes('петл') || lower.includes('tow')) matchedKey = 'tow';
-                else if (lower.includes('каркас') || lower.includes('cage')) matchedKey = 'cage';
-
-                const badgeEl = document.createElement('div');
-                badgeEl.className = 'defect-badge-clickable';
-                badgeEl.innerHTML = `⚠️ ${escapeHtml(defect)} <span style="font-size:10px; margin-left:6px; opacity:0.8;">[Регламент ↗]</span>`;
-                badgeEl.onclick = () => showRuleCitation(matchedKey, defect);
-                defectsContainer.appendChild(badgeEl);
-            });
-
-            // Show first citation by default
-            if (rawNotes.length > 0) {
-                defectsContainer.children[0].click();
-            }
-        }
-
-        function showRuleCitation(ruleKey, defectTitle) {
-            const rule = RDS_TECHNICAL_REGULATIONS_KB[ruleKey] || RDS_TECHNICAL_REGULATIONS_KB['cage'];
-            const box = document.getElementById('ruleCitationBox');
-            box.style.display = 'block';
-
-            document.getElementById('ruleCitationHeading').textContent = `${rule.article[currentLang]} (${rule.name[currentLang]})`;
-            document.getElementById('ruleCitationText').textContent = rule.text[currentLang];
-            document.getElementById('ruleActionNeeded').innerHTML = `<strong>⚠️ Предписание комиссара:</strong> ${rule.action[currentLang]}`;
-        }
-
-        /* --- OFFLINE SYNC QUEUE SYSTEM --- */
-        function getSyncQueue() {
-            try { return JSON.parse(localStorage.getItem('ti_sync_queue') || '[]'); } catch (e) { return []; }
-        }
-
-        function saveSyncQueue(queue) {
-            localStorage.setItem('ti_sync_queue', JSON.stringify(queue));
-            updateQueueStatusUI();
-        }
-
-        function enqueueTask(action, payload) {
-            const queue = getSyncQueue();
-            const task = {
-                id: 'task_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
-                action: action,
-                payload: payload,
-                createdAt: new Date().toISOString()
-            };
-            queue.push(task);
-            saveSyncQueue(queue);
-            if (navigator.onLine) processSyncQueue();
-        }
-
-        function updateQueueStatusUI() {
-            const queue = getSyncQueue();
-            const queueBadge = document.getElementById('queueStatus');
-            const queueCount = document.getElementById('queueCount');
-            if (queue.length > 0) {
-                queueBadge.style.display = 'inline-flex';
-                queueCount.textContent = queue.length;
-            } else {
-                queueBadge.style.display = 'none';
-            }
-        }
-
-        async function processSyncQueue(manualTrigger = false) {
-            if (isProcessingQueue) return;
-            const queue = getSyncQueue();
-            if (queue.length === 0) {
-                updateQueueStatusUI();
-                if (manualTrigger) alert('✅ Все данные синхронизированы с Google Таблицей.');
-                return;
-            }
-
-            if (!navigator.onLine) {
-                updateSyncStatus('offline', 'Офлайн (В очереди: ' + queue.length + ')');
-                if (manualTrigger) alert('⚠️ Нет интернета. Данные сохранены в памяти устройства.');
-                return;
-            }
-
-            const pin = getAppPin();
-            if (!pin) return;
-
-            isProcessingQueue = true;
-            updateSyncStatus('syncing', 'Синхронизация (' + queue.length + ')...');
-
-            while (true) {
-                const currentQueue = getSyncQueue();
-                if (currentQueue.length === 0) break;
-
-                const task = currentQueue[0];
-                let bodyPayload = { pin: pin, action: task.action };
-
-                if (task.action === 'add_entry') bodyPayload.data = task.payload;
-                else if (task.action === 'update_entry') {
-                    bodyPayload.date = task.payload.date;
-                    bodyPayload.rowIndex = task.payload.rowIndex;
-                    bodyPayload.data = task.payload.data;
-                } else if (task.action === 'delete_entry') {
-                    bodyPayload.date = task.payload.date;
-                    bodyPayload.rowIndex = task.payload.rowIndex;
-                } else if (task.action === 'add_car_to_catalog') {
-                    bodyPayload.brand = task.payload.brand;
-                    bodyPayload.track_group = task.payload.track_group;
-                    bodyPayload.comp_group = task.payload.comp_group;
-                }
-
-                try {
-                    const response = await fetch(gasScriptUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                        body: JSON.stringify(bodyPayload)
-                    });
-                    const result = await response.json();
-
-                    if (result && result.status === 'success') {
-                        // Очистка ТОЛЬКО при успехе
-                        currentQueue.shift();
-                        saveSyncQueue(currentQueue);
-                    } else {
-                        break;
-                    }
-                } catch (err) {
-                    console.warn('Sync queue net error:', err);
-                    break;
-                }
-            }
-
-            isProcessingQueue = false;
-            updateQueueStatusUI();
-
-            const remaining = getSyncQueue();
-            if (remaining.length === 0) {
-                updateSyncStatus('online', 'Онлайн (Таблица)');
-                fetchLogsFromGoogleSheet(true);
-            } else {
-                updateSyncStatus('offline', 'Очередь: ' + remaining.length);
-            }
-        }
-
-        /* --- DRAFT AUTOSAVE --- */
-        function setupDraftAutoSave() {
-            const fieldIds = ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'];
-            fieldIds.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('input', saveCurrentDraft);
-            });
-        }
-
-        function saveCurrentDraft() {
-            if (editingIndex !== null) return;
-            const draft = {
-                car: document.getElementById('carInput').value,
-                driver: document.getElementById('driverInput').value,
-                number: document.getElementById('numberInput').value,
-                cage: document.getElementById('cageInput').value,
-                color: document.getElementById('colorInput').value,
-                box: document.getElementById('boxInput').value,
-                notes: document.getElementById('notesInput').value,
-                groups: selectedFormGroups,
-                timestamp: Date.now()
-            };
-            if (draft.car || draft.driver || draft.number || draft.cage || draft.notes) {
-                localStorage.setItem('ti_form_draft', JSON.stringify(draft));
-            } else {
-                clearDraft();
-            }
-        }
-
-        function restoreDraftIfAny() {
-            const raw = localStorage.getItem('ti_form_draft');
-            if (!raw) return;
-            try {
-                const draft = JSON.parse(raw);
-                if (!draft) return;
-                document.getElementById('carInput').value = draft.car || '';
-                document.getElementById('driverInput').value = draft.driver || '';
-                document.getElementById('numberInput').value = draft.number || '';
-                document.getElementById('cageInput').value = draft.cage || '';
-                document.getElementById('colorInput').value = draft.color || '';
-                document.getElementById('boxInput').value = draft.box || '';
-                document.getElementById('notesInput').value = draft.notes || '';
-                if (draft.groups) setSelectedGroups(draft.groups);
-                if (draft.car || draft.driver || draft.number || draft.cage) {
-                    document.getElementById('draftBanner').style.display = 'flex';
-                }
-            } catch(e) {}
-        }
-
-        function clearDraft() {
-            localStorage.removeItem('ti_form_draft');
-            document.getElementById('draftBanner').style.display = 'none';
-        }
-
-        function discardDraft() {
-            clearDraft();
-            clearInputs();
-        }
-
-        function getAppPin() {
-            let pin = localStorage.getItem('ti_app_pin');
-            if (!pin) {
-                pin = prompt("🔐 Введите ПИН-код контролера ТИ:");
-                if (pin) {
-                    pin = pin.trim();
-                    localStorage.setItem('ti_app_pin', pin);
-                }
-            }
-            return pin ? pin.trim() : "";
-        }
-
-        function resetPinAndConnect() {
-            let newPin = prompt("🔐 Введите новый ПИН-код доступа:");
-            if (newPin) {
-                localStorage.setItem('ti_app_pin', newPin.trim());
-                testConnection();
-            }
-        }
-
-        function escapeHtml(val) {
-            return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        function updateSyncStatus(status, text) {
-            const badge = document.getElementById('syncStatus');
-            const icon = document.getElementById('syncIcon');
-            const txt = document.getElementById('syncText');
-            if (status === 'online') {
-                badge.style.background = '#14301d';
-                badge.style.borderColor = '#22c55e';
-                badge.style.color = '#4ade80';
-                icon.style.color = '#4ade80';
-                txt.textContent = text || 'Онлайн';
-            } else if (status === 'syncing') {
-                badge.style.background = '#3d2508';
-                badge.style.borderColor = '#d4af37';
-                badge.style.color = '#ffd700';
-                icon.style.color = '#ffd700';
-                txt.textContent = text || 'Связь...';
-            } else {
-                badge.style.background = '#1c1c1c';
-                badge.style.borderColor = '#333';
-                badge.style.color = '#9ca3af';
-                icon.style.color = '#9ca3af';
-                txt.textContent = text || 'Автономно';
-            }
-        }
-
-        function testConnection() {
-            if (!gasScriptUrl || !navigator.onLine) return;
-            const pin = getAppPin();
-            if (!pin) return;
-
-            const date = document.getElementById('eventDate').value;
-            fetch(`${gasScriptUrl}?date=${date}&pin=${encodeURIComponent(pin)}&ping=1`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.status === 'success') {
-                        updateSyncStatus('online', 'Онлайн (Таблица)');
-                        if (data.entries) {
-                            dailyLog = data.entries;
-                            saveLocalLog();
-                            renderLogTable();
-                            renderStewardList();
-                        }
-                    }
-                })
-                .catch(() => updateSyncStatus('offline', 'Ошибка связи'));
-        }
-
-        function fetchLogsFromGoogleSheet(silent = false) {
-            if (!gasScriptUrl || !navigator.onLine) return;
-            const pin = getAppPin();
-            if (!pin) return;
-
-            const date = document.getElementById('eventDate').value;
-            fetch(`${gasScriptUrl}?date=${date}&pin=${encodeURIComponent(pin)}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.status === 'success' && data.entries) {
-                        dailyLog = data.entries;
-                        saveLocalLog();
-                        renderLogTable();
-                        renderStewardList();
-                    }
-                });
-        }
-
-        function saveLocalLog() {
-            const date = document.getElementById('eventDate').value;
-            localStorage.setItem(`daily_ti_log_${date}`, JSON.stringify(dailyLog));
-        }
-
-        function loadLocalLog() {
-            const date = document.getElementById('eventDate').value;
-            const stored = localStorage.getItem(`daily_ti_log_${date}`);
-            if (stored) {
-                try { dailyLog = JSON.parse(stored); } catch(e) { dailyLog = []; }
-            } else {
-                dailyLog = [];
-            }
-            renderLogTable();
-            renderStewardList();
-        }
-
-        function onDateChanged() {
-            loadLocalLog();
-            if (navigator.onLine) fetchLogsFromGoogleSheet();
-        }
-
-        function onEventTypeChanged() {
-            const ev = document.getElementById('eventType').value;
-            const groups = ["PRO", "SEMI-PRO", "DC1", "DC2", "Все"];
-            const container = document.getElementById('groupChipsContainer');
-            container.innerHTML = '';
-            selectedFormGroups = [];
-
-            groups.forEach(g => {
-                const chip = document.createElement('div');
-                chip.className = 'group-chip';
-                chip.textContent = g;
-                chip.onclick = () => {
-                    chip.classList.toggle('active');
-                    if (chip.classList.contains('active')) selectedFormGroups.push(g);
-                    else selectedFormGroups = selectedFormGroups.filter(x => x !== g);
-                    saveCurrentDraft();
-                };
-                container.appendChild(chip);
-            });
-            initChecklist();
-        }
-
-        function setSelectedGroups(groups) {
-            selectedFormGroups = [...groups];
-            const chips = document.querySelectorAll('#groupChipsContainer .group-chip');
-            chips.forEach(c => {
-                c.classList.toggle('active', selectedFormGroups.includes(c.textContent.trim()));
-            });
-        }
-
-        function initChecklist() {
-            const container = document.getElementById('checklistItemsContainer');
-            container.innerHTML = '';
-            const items = [
-                { id: 'cage', title: '1. Каркас безопасности', desc: 'Болтовой/вварной, номер стикера, трубы' },
-                { id: 'extinguisher', title: '2. СПТ / Выключатель массы', desc: 'Давление, доступность, омологация' },
-                { id: 'belts', title: '3. Ремни безопасности', desc: 'FIA 8853-2016, угол установки, HANS' },
-                { id: 'seat', title: '4. Спортивное сидение', desc: 'Омологация, кронштейны, усилительные шайбы' },
-                { id: 'firewall', title: '5. Моторный щит / Фаервол', desc: 'Герметичность, изоляция салона' },
-                { id: 'battery', title: '6. Аккумулятор', desc: 'Короб в салоне, изоляция плюса' },
-                { id: 'light', title: '7. Свет / Дублер стоп-сигнала', desc: 'Светодиодная лента на лобовом стекле' },
-                { id: 'tow', title: '8. Буксировочные петли', desc: 'Спереди и сзади со стрелкой' }
-            ];
-
-            items.forEach(it => {
-                checklistState[it.id] = 'ok';
-                const d = document.createElement('div');
-                d.className = 'checklist-item';
-                d.innerHTML = `
-                    <div class="checklist-item-info">
-                        <div style="font-size:13px; font-weight:bold; color:#fff;">${it.title}</div>
-                        <div style="font-size:11px; color:#9ca3af;">${it.desc}</div>
-                    </div>
-                    <div style="display:flex; gap:4px;">
-                        <button type="button" class="chk-btn active-ok" id="btn_ok_${it.id}" onclick="setChecklistItemState('${it.id}','ok')">ОК</button>
-                        <button type="button" class="chk-btn" id="btn_warn_${it.id}" onclick="setChecklistItemState('${it.id}','warn')">Зам.</button>
-                        <button type="button" class="chk-btn" id="btn_fail_${it.id}" onclick="setChecklistItemState('${it.id}','fail')">Отказ</button>
-                    </div>
-                `;
-                container.appendChild(d);
-            });
-        }
-
-        function setChecklistItemState(id, st) {
-            checklistState[id] = st;
-            ['ok', 'warn', 'fail'].forEach(s => {
-                const btn = document.getElementById(`btn_${s}_${id}`);
-                if (btn) btn.className = 'chk-btn' + (st === s ? ` active-${s}` : '');
-            });
-        }
-
-        function setAllChecklistOk() {
-            Object.keys(checklistState).forEach(k => setChecklistItemState(k, 'ok'));
-        }
-
-        function toggleChecklistPanel() {
-            document.getElementById('checklistPanel').classList.toggle('open');
-        }
-
-        function submitChecklistAndLog() {
-            let remarks = [];
-            let status = 'ok';
-            Object.keys(checklistState).forEach(k => {
-                const s = checklistState[k];
-                if (s === 'warn') { remarks.push(RDS_TECHNICAL_REGULATIONS_KB[k]?.name[currentLang] || k); if (status !== 'fail') status = 'warn'; }
-                if (s === 'fail') { remarks.push('ОТКАЗ: ' + (RDS_TECHNICAL_REGULATIONS_KB[k]?.name[currentLang] || k)); status = 'fail'; }
-            });
-
-            document.getElementById('notesInput').value = remarks.length ? remarks.join(', ') : 'Без замечаний';
-            addCarToLog(status);
-            document.getElementById('checklistPanel').classList.remove('open');
-        }
-
-        function addCarToLog(status = 'unverified') {
-            const car = document.getElementById('carInput').value.trim();
-            const driver = document.getElementById('driverInput').value.trim();
-            const number = document.getElementById('numberInput').value.trim();
-            const cage = document.getElementById('cageInput').value.trim();
-            const color = document.getElementById('colorInput').value.trim();
-            const box = document.getElementById('boxInput').value.trim();
-            const notes = document.getElementById('notesInput').value.trim();
-            const date = document.getElementById('eventDate').value;
-
-            if (!car) { alert('Укажите марку автомобиля!'); return; }
-
-            const newItem = {
-                id: Date.now(),
-                date: date,
-                car: car,
-                driver: driver,
-                number: number,
-                cage: cage,
-                color: color,
-                box: box,
-                group: selectedFormGroups.join(', '),
-                notes: notes,
-                status: status,
-                timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
-            };
-
-            dailyLog.push(newItem);
-            saveLocalLog();
-            renderLogTable();
-            renderStewardList();
-            clearDraft();
-            clearInputs();
-            enqueueTask('add_entry', newItem);
-        }
-
-        function clearInputs() {
-            ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
-                document.getElementById(id).value = '';
-            });
-            setSelectedGroups([]);
-        }
-
-        function renderLogTable() {
-            const tbody = document.getElementById('logTableBody');
-            document.getElementById('totalCarsCount').textContent = dailyLog.length;
-
-            if (!dailyLog.length) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-sub); padding:20px;">Список пуст</td></tr>`;
-                return;
-            }
-
-            tbody.innerHTML = dailyLog.map((item, idx) => {
-                const statusColor = item.status === 'fail' ? '#ef4444' : (item.status === 'warn' ? '#f59e0b' : '#22c55e');
-                return `
-                    <tr>
-                        <td><strong>${idx + 1}</strong></td>
-                        <td>
-                            <span class="status-badge" style="background:${statusColor};"></span>
-                            <strong>${escapeHtml(item.car)}</strong>
-                            <div style="font-size:11px; color:#9ca3af;">${escapeHtml(item.driver || '—')} ${item.color ? '(' + escapeHtml(item.color) + ')' : ''}</div>
-                            ${item.notes ? `<small style="color:#f59e0b;">📝 ${escapeHtml(item.notes)}</small>` : ''}
-                        </td>
-                        <td><span style="background:#222; padding:2px 6px; border-radius:4px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
-                        <td><span style="font-family:monospace; font-size:11px; color:#cbd5e1;">${escapeHtml(item.cage || '—')}</span></td>
-                        <td><span class="group-tag">${escapeHtml(item.group || '—')}</span></td>
-                        <td>
-                            <button style="background:none; border:none; cursor:pointer; font-size:16px;" onclick="viewInStewardDashboard(${item.id})" title="Открыть в кабинете комиссара">🔍</button>
-                        </td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        function viewInStewardDashboard(itemId) {
-            switchMainView('steward');
-            selectStewardParticipant(itemId);
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('eventDate').value = new Date().toISOString().split('T')[0];
-            onEventTypeChanged();
-            loadLocalLog();
-            updateQueueStatusUI();
-            setupDraftAutoSave();
-            restoreDraftIfAny();
-            if (navigator.onLine) testConnection();
-            window.addEventListener('online', () => { updateSyncStatus('online', 'Онлайн'); processSyncQueue(); });
-        });
-    </script>
+      } else {
+        updateSyncStatus('offline', 'Ошибка PIN/Таблицы');
+      }
+    })
+    .catch(() => updateSyncStatus('offline', 'Автономно (Локально)'));
+}
+
+function fetchLogsFromGoogleSheet(silent = false) {
+  if (!navigator.onLine) return;
+  const stageKey = getCurrentStageKey();
+  if (!silent) updateSyncStatus('syncing', 'Загрузка...');
+
+  fetch(`${GAS_URL}?action=get_ti_logs&date=${encodeURIComponent(stageKey)}&pin=${APP_PIN}`)
+    .then(r => r.json())
+    .then(data => {
+      if (data && data.status === 'success' && data.entries) {
+        dailyLog = data.entries;
+        saveLocalLog();
+        renderLogTable();
+        renderStewardList();
+        updateSyncStatus('online', 'Онлайн (Таблица)');
+      }
+    })
+    .catch(() => {
+      if (!silent) updateSyncStatus('offline', 'Автономно (Локально)');
+    });
+}
+
+function saveLocalLog() {
+  localStorage.setItem(`ti_log_${getCurrentStageKey()}`, JSON.stringify(dailyLog));
+}
+
+function loadLocalLog() {
+  const stored = localStorage.getItem(`ti_log_${getCurrentStageKey()}`);
+  dailyLog = stored ? JSON.parse(stored) : [];
+  renderLogTable();
+  renderStewardList();
+}
+
+/* --- КАБИНЕТ КОМИССАРА (ПОКАЗ РЕГЛАМЕНТА) --- */
+function setStewardFilter(filter) {
+  stewardActiveFilter = filter;
+  ['all', 'remarks', 'ok'].forEach(f => {
+    document.getElementById(`filter_${f}`).classList.toggle('active', f === filter);
+  });
+  renderStewardList();
+}
+
+function renderStewardList() {
+  const container = document.getElementById('stewardListContainer');
+  if (!container) return;
+
+  const searchVal = (document.getElementById('stewardSearchInput').value || '').trim().toLowerCase();
+  let cntAll = dailyLog.length, cntRemarks = 0, cntOk = 0;
+
+  dailyLog.forEach(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (hasRemarks) cntRemarks++;
+    else cntOk++;
+  });
+
+  document.getElementById('cntStewardAll').textContent = cntAll;
+  document.getElementById('cntStewardRemarks').textContent = cntRemarks;
+  document.getElementById('cntStewardOk').textContent = cntOk;
+
+  const filtered = dailyLog.filter(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (stewardActiveFilter === 'remarks' && !hasRemarks) return false;
+    if (stewardActiveFilter === 'ok' && hasRemarks) return false;
+
+    if (searchVal) {
+      const match = (item.number && item.number.toString().toLowerCase().includes(searchVal)) ||
+                    (item.car && item.car.toLowerCase().includes(searchVal)) ||
+                    (item.driver && item.driver.toLowerCase().includes(searchVal));
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:30px; color:var(--text-sub);">Нет автомобилей в данной категории</div>`;
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => {
+    const isSelected = stewardSelectedEntry && stewardSelectedEntry.id === item.id;
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <div class="participant-card-item ${isSelected ? 'selected' : ''}" onclick="selectStewardParticipant(${item.id})">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:18px; font-weight:900; color:var(--gold-bright); background:#1e293b; padding:4px 10px; border-radius:6px;">№${escapeHtml(item.number || 'б/н')}</span>
+          <div>
+            <strong style="font-size:15px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
+            <div style="font-size:12px; color:var(--text-sub);">${escapeHtml(item.car)} | Каркас: <span class="cage-code">${escapeHtml(item.cage || '—')}</span></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge-status ${statusClass}">${statusText}</span>
+          <div style="font-size:11px; color:var(--gold-primary); margin-top:4px;">Подробнее ↗</div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectStewardParticipant(itemId) {
+  const item = dailyLog.find(x => x.id === itemId);
+  if (!item) return;
+  stewardSelectedEntry = item;
+  renderStewardDetail(item);
+  renderStewardList();
+  document.getElementById('stewardInspectorView').scrollIntoView({ behavior: 'smooth' });
+}
+
+function closeStewardDetail() {
+  stewardSelectedEntry = null;
+  document.getElementById('stewardInspectorView').style.display = 'none';
+  renderStewardList();
+}
+
+function renderStewardDetail(item) {
+  const view = document.getElementById('stewardInspectorView');
+  view.style.display = 'block';
+
+  document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
+  document.getElementById('dtlDriver').textContent = item.driver || 'Без имени';
+  document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''} (${item.group || 'PRO'})`;
+  document.getElementById('dtlBox').textContent = item.box || '—';
+  document.getElementById('dtlCage').textContent = item.cage || '—';
+
+  const badge = document.getElementById('dtlStatusBadge');
+  const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+
+  if (item.status === 'fail') {
+    badge.className = 'badge-status badge-fail';
+    badge.textContent = '❌ ОТКАЗ В ДОПУСКЕ';
+  } else if (hasRemarks) {
+    badge.className = 'badge-status badge-warn';
+    badge.textContent = '⚠️ ВЫЯВЛЕНЫ ЗАМЕЧАНИЯ';
+  } else {
+    badge.className = 'badge-status badge-ok';
+    badge.textContent = '✅ ТИ ПРОЙДЕН';
+  }
+
+  const defectsContainer = document.getElementById('dtlDefectsContainer');
+  defectsContainer.innerHTML = '';
+  document.getElementById('ruleCitationBox').style.display = 'none';
+
+  if (!item.notes || item.notes.toLowerCase() === 'без замечаний') {
+    defectsContainer.innerHTML = `<div style="color:var(--accent-green); font-weight:600; padding:6px 0;">Замечаний нет. Автомобиль полностью допущен.</div>`;
+    return;
+  }
+
+  const rawNotes = item.notes.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+  rawNotes.forEach(defectText => {
+    // Точный поиск пункта по коду вида [1.4] или ключевому слову
+    let matchedRule = ALL_CHECKLIST.find(r => {
+      const codeMatch = defectText.match(/\[(\d+\.\d+)\]/);
+      if (codeMatch && codeMatch[1] === r.code) return true;
+      return defectText.toLowerCase().includes(r.title.toLowerCase()) || defectText.toLowerCase().includes(r.code);
+    }) || ALL_CHECKLIST[0];
+
+    const badgeEl = document.createElement('div');
+    badgeEl.className = 'defect-badge-clickable';
+    badgeEl.innerHTML = `⚠️ ${escapeHtml(defectText)} <span style="font-size:11px; opacity:0.8; margin-left:6px;">[Статья ↗]</span>`;
+    badgeEl.onclick = () => showRuleCitation(matchedRule);
+    defectsContainer.appendChild(badgeEl);
+  });
+
+  if (defectsContainer.children.length > 0) {
+    defectsContainer.children[0].click();
+  }
+}
+
+function showRuleCitation(rule) {
+  const box = document.getElementById('ruleCitationBox');
+  box.style.display = 'block';
+  document.getElementById('ruleCitationHeading').textContent = `${rule.article} (${rule.title})`;
+  document.getElementById('ruleCitationText').textContent = rule.rule;
+  document.getElementById('ruleActionNeeded').innerHTML = `<strong>Что требуется устранить:</strong> ${rule.action}`;
+}
+
+/* --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ --- */
+function escapeHtml(val) {
+  return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  initChecklist();
+  onStageChanged();
+  testConnection();
+
+  window.addEventListener('online', () => {
+    updateSyncStatus('online', 'Онлайн');
+    processSyncQueue();
+  });
+  window.addEventListener('offline', () => {
+    updateSyncStatus('offline', 'Автономно');
+  });
+});
+</script>
 </body>
 </html>
