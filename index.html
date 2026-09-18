@@ -3,716 +3,334 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>ROYAL DS — Scrutineering & Steward Portal (v1.2 FastSync)</title>
-<meta name="theme-color" content="#0a0a0a">
+<title>ROYAL DS — Scrutineering</title>
+<meta name="theme-color" content="#090d16">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22ROYAL%20DS%20Scrutineering%22%2C%22short_name%22%3A%22Royal DS%20TI%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a0a%22%2C%22theme_color%22%3A%22%230a0a0a%22%7D">
 
 <style>
 :root {
-  --bg-color: #0c0c0c;
-  --card-bg: #151515;
-  --card-border: #262626;
-  --gold-primary: #d4af37;
-  --gold-bright: #ffd700;
-  --gold-dark: #8c7322;
-  --text-main: #f3f4f6;
-  --text-sub: #9ca3af;
-  --danger: #ef4444;
-  --warning: #f59e0b;
-  --success: #22c55e;
-  --input-bg: #1e1e1e;
-  --input-border: #333333;
+  --bg-color: #090d16;
+  --card-bg: #131b28;
+  --card-border: #222f44;
+  --gold-primary: #f59e0b;
+  --gold-bright: #fbbf24;
+  --gold-dark: #b45309;
+  --gold-gradient: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  --accent-green: #10b981;
+  --accent-orange: #f59e0b;
+  --accent-red: #ef4444;
+  --text-main: #f1f5f9;
+  --text-sub: #94a3b8;
+  --input-bg: #0b111c;
+  --radius-lg: 16px;
+  --radius-md: 10px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  -webkit-tap-highlight-color: transparent;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+body { background: var(--bg-color); color: var(--text-main); padding: 12px; padding-bottom: 90px; max-width: 860px; margin: 0 auto; font-size: 15px; }
 
-body {
-  background-color: var(--bg-color);
-  color: var(--text-main);
-  padding: 12px;
-  padding-bottom: 80px;
-  min-height: 100vh;
-}
-
-/* Header */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--card-border);
-  margin-bottom: 14px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: #111827; padding: 12px 16px; border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border); margin-bottom: 12px; gap: 8px; flex-wrap: wrap;
 }
+.logo-area { display: flex; align-items: center; gap: 10px; }
+.logo-crown { background: var(--gold-gradient); width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; color: #000; font-weight: bold; }
+h1 { font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
+h1 span { color: var(--gold-bright); }
+.subtitle { font-size: 11px; color: var(--text-sub); }
 
-.logo-group {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.crown-badge {
-  font-size: 26px;
-  line-height: 1;
-  filter: drop-shadow(0 0 6px rgba(212,175,55,0.4));
-}
-
-.title-box h1 {
-  font-size: 16px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  color: #ffffff;
-  text-transform: uppercase;
-}
-
-.title-box span {
-  color: var(--gold-bright);
-}
-
-.title-box .subtitle {
-  font-size: 11px;
-  color: var(--text-sub);
-  margin-top: 1px;
-}
-
-/* Lang switcher */
-.lang-switch-group {
-  display: flex;
-  gap: 3px;
-  background: #181818;
-  border: 1px solid #2e2e2e;
-  border-radius: 8px;
-  padding: 2px;
-}
-
-.lang-btn {
-  background: none;
-  border: none;
-  color: #777;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 4px 7px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.lang-btn.active {
-  background: var(--gold-primary);
-  color: #000;
-}
-
-/* Sync status & queue badge */
 .sync-badge {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  font-weight: 600;
-  padding: 5px 9px;
-  border-radius: 20px;
-  background: #1c1c1c;
-  border: 1px solid #333;
-  color: var(--text-sub);
-  cursor: pointer;
+  font-size: 11px; padding: 6px 12px; border-radius: 20px;
+  background: #1a2233; color: #94a3b8; border: 1px solid #334155;
+  display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600;
+  transition: all 0.2s;
 }
+.sync-badge.online { background: #064e3b; border-color: #10b981; color: #6ee7b7; }
+.sync-badge.offline { background: #1e293b; border-color: #475569; color: #94a3b8; }
+.sync-badge.syncing { background: #78350f; border-color: #f59e0b; color: #fef08a; }
 
-.queue-badge {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  padding: 5px 9px;
-  border-radius: 20px;
-  background: #251a05;
-  border: 1px solid var(--gold-dark);
-  color: var(--gold-bright);
-  cursor: pointer;
-}
+.view-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+.nav-tab { padding: 13px; text-align: center; background: #111827; border: 1px solid var(--card-border); border-radius: 12px; color: var(--text-sub); font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+.nav-tab.active { background: #1e293b; color: var(--gold-bright); border-color: var(--gold-primary); }
 
-/* Nav Tabs */
-.view-nav {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 14px;
-}
+.card { background: var(--card-bg); padding: 15px; border-radius: var(--radius-lg); border: 1px solid var(--card-border); margin-bottom: 12px; }
+.card-title { font-size: 13px; font-weight: 700; color: var(--gold-bright); text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1f293d; padding-bottom: 8px; }
 
-.nav-tab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 11px;
-  border-radius: 10px;
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  color: var(--text-sub);
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: 0.2s;
-}
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+.form-group.full { grid-column: span 2; }
+label { font-size: 12px; font-weight: 600; color: #cbd5e1; }
+input, select { background: var(--input-bg); border: 1px solid var(--card-border); color: #fff; padding: 12px 14px; border-radius: var(--radius-md); font-size: 15px; outline: none; width: 100%; transition: border-color 0.2s; }
+input:focus, select:focus { border-color: var(--gold-primary); box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2); }
 
-.nav-tab.active {
-  background: #1a170b;
-  border-color: var(--gold-primary);
-  color: var(--gold-bright);
-  box-shadow: 0 0 12px rgba(212,175,55,0.15);
-}
+.autocomplete-wrapper { position: relative; }
+.suggestions-list { position: absolute; top: 100%; left: 0; right: 0; background: #131c2b; border: 1px solid var(--gold-primary); border-radius: var(--radius-md); max-height: 220px; overflow-y: auto; z-index: 100; margin-top: 4px; box-shadow: 0 10px 30px rgba(0,0,0,0.9); display: none; }
+.suggestion-item { padding: 12px 14px; border-bottom: 1px solid #1e293b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.suggestion-item:hover { background: #1e293b; }
 
-/* Cards */
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 14px;
-}
+.btn { width: 100%; padding: 14px; border-radius: 12px; border: none; font-size: 14px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: transform 0.1s; }
+.btn:active { transform: scale(0.99); }
+.btn-gold { background: var(--gold-gradient); color: #000; }
+.btn-outline-gold { background: #182030; border: 1px solid var(--gold-primary); color: var(--gold-bright); }
+.btn-secondary { background: #1f293b; color: #f1f5f9; border: 1px solid var(--card-border); }
 
-.card-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 13px;
-  font-weight: 700;
-  color: #e5e7eb;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
+/* Таблица */
+.log-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.log-table th { text-align: left; padding: 8px; color: var(--gold-bright); border-bottom: 1px solid var(--card-border); font-size: 11px; text-transform: uppercase; }
+.log-table td { padding: 11px 8px; border-bottom: 1px solid #1a2333; vertical-align: middle; }
+.badge-status { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 6px; }
+.badge-ok { background: #064e3b; color: #6ee7b7; border: 1px solid #10b981; }
+.badge-warn { background: #78350f; color: #fef08a; border: 1px solid #f59e0b; }
+.badge-fail { background: #7f1d1d; color: #fca5a5; border: 1px solid #ef4444; }
 
-/* Form */
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
+/* Кабинет комиссара */
+.steward-controls { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.steward-filter-btn { background: #111827; border: 1px solid var(--card-border); color: #cbd5e1; padding: 8px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+.steward-filter-btn.active { background: var(--gold-primary); color: #000; border-color: var(--gold-bright); }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
+.participant-card-item { background: #111827; border: 1px solid var(--card-border); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s; }
+.participant-card-item.selected { border-color: var(--gold-primary); background: #1a2233; }
 
-.form-group.full {
-  grid-column: span 2;
-}
+.steward-inspector-view { background: #0f172a; border: 1px solid var(--gold-primary); border-radius: 14px; padding: 16px; margin-top: 12px; display: none; }
+.driver-num-huge { font-size: 28px; font-weight: 900; color: var(--gold-bright); background: #1e293b; padding: 4px 12px; border-radius: 8px; border: 1px solid #475569; display: inline-block; }
 
-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-sub);
-  text-transform: uppercase;
-}
+.defect-badge-clickable { display: inline-flex; align-items: center; background: #78350f; color: #fef08a; border: 1px solid var(--gold-primary); padding: 8px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; margin-right: 6px; margin-bottom: 6px; cursor: pointer; }
+.rule-citation-box { background: #0b0f17; border: 1px solid var(--gold-primary); border-left: 4px solid var(--gold-bright); padding: 14px; border-radius: 10px; margin-top: 14px; display: none; }
+.rule-title { font-size: 14px; font-weight: 800; color: var(--gold-bright); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+.rule-text { font-size: 13px; line-height: 1.5; color: #e2e8f0; margin-bottom: 10px; }
+.rule-action-needed { background: #271406; border: 1px dashed var(--gold-primary); color: #fef08a; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 600; }
 
-input, select {
-  width: 100%;
-  background: var(--input-bg);
-  border: 1px solid var(--input-border);
-  color: #fff;
-  padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 15px;
-  outline: none;
-  transition: border-color 0.2s;
-}
+/* Чеклист Модалка */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(4px); z-index: 1000; display: none; align-items: flex-end; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.checklist-modal-box { background: #111827; border: 1px solid var(--gold-dark); border-top-left-radius: 20px; border-top-right-radius: 20px; width: 100%; max-width: 860px; max-height: 90vh; display: flex; flex-direction: column; }
 
-input:focus, select:focus {
-  border-color: var(--gold-primary);
-}
+.section-big-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px 14px; background: #0b0f17; border-bottom: 1px solid #1f2937; }
+.section-big-btn { padding: 14px 8px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: var(--text-sub); font-size: 13px; font-weight: 800; cursor: pointer; text-align: center; }
+.section-big-btn.active { background: var(--gold-gradient); color: #000; border-color: var(--gold-bright); box-shadow: 0 2px 10px rgba(245, 158, 11, 0.3); }
 
-/* Buttons */
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 12px 16px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 700;
-  border: none;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.btn-gold {
-  background: linear-gradient(135deg, var(--gold-bright), var(--gold-primary));
-  color: #000;
-}
-
-.btn-gold:active {
-  transform: scale(0.98);
-}
-
-.btn-checklist-toggle {
-  width: 100%;
-  margin-top: 10px;
-  background: #181818;
-  border: 1px solid #333;
-  color: #fff;
-  padding: 13px;
-}
-
-/* Draft banner */
-.draft-banner {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  background: #2b1f06;
-  border: 1px solid var(--gold-dark);
-  color: var(--gold-bright);
-  padding: 8px 12px;
-  border-radius: 8px;
-  font-size: 12px;
-  margin-bottom: 12px;
-}
-
-/* Autocomplete container */
-.autocomplete-wrap {
-  position: relative;
-}
-
-.autocomplete-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #1b1b1b;
-  border: 1px solid var(--gold-primary);
-  border-radius: 8px;
-  max-height: 180px;
-  overflow-y: auto;
-  z-index: 100;
-  display: none;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-}
-
-.autocomplete-item {
-  padding: 10px 12px;
-  font-size: 14px;
-  border-bottom: 1px solid #282828;
-  cursor: pointer;
-}
-
-.autocomplete-item:active, .autocomplete-item:hover {
-  background: #252525;
-  color: var(--gold-bright);
-}
-
-/* Table */
-.table-wrap {
-  overflow-x: auto;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-}
-
-th {
-  text-align: left;
-  padding: 9px 8px;
-  color: var(--text-sub);
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  border-bottom: 1px solid var(--card-border);
-}
-
-td {
-  padding: 10px 8px;
-  border-bottom: 1px solid #1c1c1c;
-  vertical-align: middle;
-}
-
-.status-pill {
-  display: inline-block;
-  padding: 3px 7px;
-  border-radius: 12px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.pill-ok { background: #0e3019; color: #4ade80; border: 1px solid #166534; }
-.pill-warn { background: #351c07; color: #f59e0b; border: 1px solid #854d0e; }
-.pill-fail { background: #360d0d; color: #f87171; border: 1px solid #991b1b; }
-
-/* Checklist Sheet Modal */
-#checklistPanel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(4px);
-  z-index: 999;
-  display: none;
-  flex-direction: column;
-}
-
-#checklistPanel.open {
-  display: flex;
-}
-
-.checklist-inner {
-  margin-top: auto;
-  background: #141414;
-  border-top: 2px solid var(--gold-primary);
-  border-radius: 18px 18px 0 0;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.checklist-header {
-  padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid #242424;
-}
-
-.chk-nav-tabs {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  padding: 10px 16px;
-  background: #0f0f0f;
-  border-bottom: 1px solid #222;
-}
-
-.chk-tab-btn {
-  padding: 11px;
-  border-radius: 8px;
-  background: #1a1a1a;
-  border: 1px solid #2a2a2a;
-  color: #bbb;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.chk-tab-btn.active {
-  background: #2a220b;
-  border-color: var(--gold-primary);
-  color: var(--gold-bright);
-}
-
-.checklist-content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 16px;
-}
-
-.checklist-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #191919;
-  border: 1px solid #282828;
-  border-radius: 10px;
-  padding: 10px 12px;
-  margin-bottom: 8px;
-  gap: 8px;
-}
-
-.checklist-item-info {
-  flex: 1;
-}
-
-.chk-btn {
-  padding: 9px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  border: 1px solid #383838;
-  background: #242424;
-  color: #888;
-  cursor: pointer;
-}
-
-.chk-btn.active-ok {
-  background: #14532d;
-  color: #4ade80;
-  border-color: #22c55e;
-}
-
-.chk-btn.active-warn {
-  background: #78350f;
-  color: #fbbf24;
-  border-color: #f59e0b;
-}
-
-.chk-btn.active-fail {
-  background: #7f1d1d;
-  color: #f87171;
-  border-color: #ef4444;
-}
-
-.checklist-footer {
-  padding: 12px 16px;
-  border-top: 1px solid #242424;
-  background: #111;
-  display: flex;
-  gap: 8px;
-}
-
-/* Steward Dashboard specific */
-.steward-card-item {
-  background: #181818;
-  border: 1px solid #282828;
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 8px;
-  cursor: pointer;
-  transition: 0.2s;
-}
-
-.steward-card-item:active {
-  border-color: var(--gold-primary);
-}
-
-.citation-box {
-  background: #1a170e;
-  border: 1px solid var(--gold-dark);
-  border-radius: 10px;
-  padding: 12px;
-  margin-top: 10px;
-  display: none;
-}
+.checklist-scroll { padding: 14px; overflow-y: auto; flex: 1; }
+.chk-row { background: #1a2233; border: 1px solid var(--card-border); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; }
+.chk-btns { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 6px; }
+.chk-btn { padding: 9px 4px; border-radius: 6px; font-size: 12px; font-weight: 700; border: 1px solid #334155; background: #0f172a; color: #94a3b8; cursor: pointer; text-align: center; }
+.chk-btn.active-ok { background: #064e3b; border-color: #10b981; color: #6ee7b7; }
+.chk-btn.active-warn { background: #78350f; border-color: #f59e0b; color: #fef08a; }
+.chk-btn.active-fail { background: #7f1d1d; border-color: #ef4444; color: #fca5a5; }
 </style>
 </head>
-
 <body>
 
-<!-- Header -->
 <header>
-  <div class="logo-group">
-    <div class="crown-badge">👑</div>
-    <div class="title-box">
-      <h1>Royal <span>Drift</span> Series</h1>
-      <div class="subtitle" id="headerSubtitle">Championship • Scrutineering v1.2</div>
+  <div class="logo-area">
+    <div class="logo-crown">👑</div>
+    <div>
+      <h1>ROYAL <span>DRIFT SERIES</span></h1>
+      <div class="subtitle">Техническая Инспекция (Scrutineering)</div>
     </div>
   </div>
-
-  <div style="display: flex; align-items: center; gap: 8px;">
-    <div class="lang-switch-group">
-      <button class="lang-btn active" id="btn_lang_ru" onclick="setAppLanguage('ru')">RU</button>
-      <button class="lang-btn" id="btn_lang_en" onclick="setAppLanguage('en')">EN</button>
-      <button class="lang-btn" id="btn_lang_cn" onclick="setAppLanguage('cn')">中文</button>
-    </div>
-
-    <div id="syncStatus" class="sync-badge" onclick="processSyncQueue(true)">
-      <span id="syncIcon">●</span> <span id="syncText">Онлайн</span>
-    </div>
-    <div id="queueStatus" class="queue-badge" onclick="processSyncQueue(true)" title="Несинхронизированные записи">
-      ⏳ <span id="queueCount">0</span>
-    </div>
+  <div id="syncStatus" class="sync-badge" onclick="triggerManualSync()">
+    <span id="syncIcon">●</span> <span id="syncText">Проверка...</span>
   </div>
 </header>
 
-<!-- View Navigation Tabs -->
 <div class="view-nav">
-  <div class="nav-tab active" id="tabScrutineer" onclick="switchMainView('scrutineer')">
-    <span>📋</span> <span id="tabScrutineerLabel">Входной контроль ТИ</span>
-  </div>
-  <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">
-    <span>💻</span> <span id="tabStewardLabel">Кабинет Комиссара</span>
-  </div>
+  <div class="nav-tab active" id="tabScrutineer" onclick="switchMainView('scrutineer')">📋 Входной контроль ТИ</div>
+  <div class="nav-tab" id="tabSteward" onclick="switchMainView('steward')">💻 Кабинет Комиссара</div>
 </div>
 
-<!-- ================= VIEW 1: SCRUTINEER (КОНТРОЛЕР) ================= -->
+<!-- ================= 1. ВХОДНОЙ КОНТРОЛЬ ================= -->
 <div id="viewScrutineer">
-  <!-- Stage Card -->
   <div class="card">
     <div class="card-title">
-      <span id="lblEventInfo">Этап Royal Drift Series</span>
-      <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
+      <span>Этап Чемпионата</span>
+      <a href="https://docs.google.com/spreadsheets/d/1B4_vWqJZeP--fttVinLkdq5ADYybrWjOoh6RwbKqVtY/edit?gid=653894810#gid=653894810" target="_blank" style="color:var(--gold-primary); font-size:11px; text-decoration:underline;">Google Таблица ↗</a>
     </div>
-
     <div class="form-group full">
-      <label id="lblStageSelect">Выберите этап чемпионата:</label>
       <select id="stageSelect" onchange="onStageChanged()">
-        <option value="Stage 1" data-date="2026-06-06" selected>Stage 1 — Чжэнчжоу (Zhengzhou) • 06–07.06</option>
-        <option value="Stage 2" data-date="2026-07-11">Stage 2 — Сиань (Xi'an) • 11–12.07</option>
-        <option value="Stage 3" data-date="2026-08-15">Stage 3 — Чэнду (Chengdu) • 15–16.08</option>
-        <option value="Stage 4" data-date="2026-09-19">Stage 4 — Ухань (Wuhan) • 19–20.09</option>
-        <option value="Stage 5" data-date="2026-11-07">Stage 5 — Финал (Grand Final) • 07–08.11</option>
+        <option value="Stage 1" selected>Stage 1 — Шанхай (Tianma Circuit) • 06–07.06</option>
+        <option value="Stage 2">Stage 2 — Тяньцзинь (V1 Auto World) • 04–05.07</option>
+        <option value="Stage 3">Stage 3 — Нинбо (Ningbo Speedway) • 05–06.09</option>
+        <option value="Stage 4">Stage 4 — Чжэнчжоу (Zhengzhou Autodrome) • 08–11.10</option>
+        <option value="Stage 5">Stage 5 — Финал (Grand Final) • 07–08.11</option>
       </select>
     </div>
   </div>
 
-  <!-- Form Card -->
   <div class="card" id="entryFormCard">
     <div class="card-title">
-      <span id="lblFormTitle">📋 Прохождение ТИ</span>
-      <span id="editModeIndicator" style="display: none; background: #854d0e; color: #fff; padding: 2px 6px; border-radius: 4px; font-size: 11px;">✏️ Редактирование</span>
+      <span id="formTitleText">📋 Регистрация автомобиля</span>
+      <span id="editModeIndicator" style="display:none; color:var(--gold-bright); font-size:11px;">✏️ Редактирование</span>
     </div>
 
-    <div id="draftBanner" class="draft-banner">
-      <span>💾 Восстановлен черновик</span>
-      <button onclick="discardDraft()" style="background:none; border:none; color:var(--gold-bright); cursor:pointer; text-decoration:underline;">Сбросить</button>
+    <!-- Автокомплит автомобиля -->
+    <div class="form-group full autocomplete-wrapper">
+      <label>Марка и модель автомобиля (RU, EN, транслит: Supra, Чайзер, S15...):</label>
+      <input type="text" id="carInput" placeholder="Напр: Nissan Silvia S15, Toyota Chaser, Supra..." autocomplete="off">
+      <div id="suggestions" class="suggestions-list"></div>
     </div>
 
     <div class="form-grid">
-      <div class="form-group autocomplete-wrap">
-        <label id="lblCar">Автомобиль:</label>
-        <input type="text" id="carInput" placeholder="Toyota Supra, Silvia..." autocomplete="off">
-        <div id="carAutocomplete" class="autocomplete-dropdown"></div>
-      </div>
-
       <div class="form-group">
-        <label id="lblNumber">Стартовый №:</label>
-        <input type="text" id="numberInput" placeholder="13, 88..." autocomplete="off">
-      </div>
-
-      <div class="form-group">
-        <label id="lblDriver">Пилот (ФИО / Имя):</label>
+        <label>Пилот (Фамилия Имя):</label>
         <input type="text" id="driverInput" placeholder="Иванов И. / Zhang W.">
       </div>
-
       <div class="form-group">
-        <label id="lblCage">№ каркаса (6 цифр):</label>
-        <input type="text" id="cageInput" placeholder="123456" maxlength="6">
+        <label>Стартовый номер (СТ№):</label>
+        <input type="text" id="numberInput" placeholder="66" autocomplete="off">
       </div>
-
       <div class="form-group">
-        <label id="lblColor">Цвет авто:</label>
-        <input type="text" id="colorInput" placeholder="Черный, Желтый...">
+        <label>№ Каркаса <span style="color:var(--gold-bright); font-size:10px;">(ровно 6 цифр)</span>:</label>
+        <input type="text" id="cageInput" placeholder="123456" maxlength="6" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'').slice(0,6)" style="font-family:monospace; font-weight:bold;">
       </div>
-
       <div class="form-group">
-        <label id="lblBox">№ бокса / техпарк:</label>
-        <input type="text" id="boxInput" placeholder="Box 4">
+        <label>Цвет автомобиля:</label>
+        <input type="text" id="colorInput" placeholder="Черный / Золотой">
       </div>
-
       <div class="form-group full">
-        <label id="lblRemarks">Замечания ТИ:</label>
-        <input type="text" id="notesInput" placeholder="Без замечаний">
+        <label>№ Бокса (Pit Box):</label>
+        <input type="text" id="boxInput" placeholder="Бокс 12">
+      </div>
+      <div class="form-group full">
+        <label>Замечания ТИ (Remarks):</label>
+        <input type="text" id="notesInput" placeholder="Без замечаний (заполняется вручную или через чеклист)">
       </div>
     </div>
 
-    <div style="display: flex; gap: 8px; margin-top: 12px;">
-      <button id="quickSubmitBtn" class="btn btn-gold" onclick="addCarToLog('unverified')" style="flex: 1;">
-        ⚡ Выдать ТИ (быстро)
+    <!-- Кнопки управления -->
+    <div style="display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+      <button type="button" class="btn btn-outline-gold" onclick="openChecklistModal()" style="padding:15px; font-size:15px;">
+        📑 Пройти чеклист ТИ (41 пункт)
       </button>
-      <button id="cancelEditBtn" class="btn" style="display: none; background: #333; color:#fff;" onclick="cancelEditing()">
-        Отмена
-      </button>
-    </div>
 
-    <button type="button" class="btn btn-checklist-toggle" onclick="openChecklistPanel()">
-      📑 Открыть чеклист инспектора (41 п.)
-    </button>
+      <div style="display:flex; gap:8px;">
+        <button id="directSubmitBtn" class="btn btn-gold" onclick="submitDirectInspection()" style="flex:1;">
+          ➕ Внести автомобиль в протокол
+        </button>
+        <button id="cancelEditBtn" class="btn btn-secondary" style="display:none; width:auto; padding:0 16px;" onclick="cancelEditing()">
+          Отмена
+        </button>
+      </div>
+    </div>
   </div>
 
-  <!-- Journal Card -->
   <div class="card">
     <div class="card-title">
-      <span>Журнал проверок (<span id="totalCarsCount">0</span>)</span>
-      <button onclick="fetchLogsFromGoogleSheet(false)" style="background:none; border:none; color:var(--gold-primary); cursor:pointer; font-size:12px;">🔄 Обновить</button>
+      <span>📊 Прошедшие инспекцию на этапе</span>
+      <span style="background:var(--gold-primary); color:#000; padding:2px 8px; border-radius:10px; font-weight:bold; font-size:11px;" id="totalCarsCount">0</span>
     </div>
-
-    <div class="table-wrap">
-      <table>
+    <div style="overflow-x: auto;">
+      <table class="log-table">
         <thead>
           <tr>
             <th>№</th>
+            <th>Автомобиль / Пилот</th>
             <th>СТ№</th>
-            <th>Автомобиль</th>
-            <th>Пилот</th>
+            <th>Каркас</th>
             <th>Статус</th>
-            <th>Действия</th>
+            <th style="text-align:right;">Действия</th>
           </tr>
         </thead>
         <tbody id="logTableBody">
-          <tr><td colspan="6" style="text-align:center; color:var(--text-sub); padding:16px;">Список пуст</td></tr>
+          <tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-sub);">Загрузка...</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 </div>
 
-<!-- ================= VIEW 2: STEWARD DASHBOARD ================= -->
-<div id="viewSteward" style="display: none;">
+<!-- ================= 2. КАБИНЕТ КОМИССАРА ================= -->
+<div id="viewSteward" style="display:none;">
   <div class="card">
     <div class="card-title">
-      <span>Панель Главного Комиссара</span>
-      <span id="stewardStageMeta" style="color: var(--gold-bright); font-size: 12px;">Stage 1</span>
+      <span>Кабинет Главного Комиссара / Управление замечаниями</span>
+      <span id="stewardStageMeta" style="color:var(--gold-bright); font-size:11px;">Stage 1</span>
     </div>
 
-    <!-- Filters -->
-    <div style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 12px;">
-      <button class="chk-btn active-ok" id="filter_all" onclick="setStewardFilter('all')">Все</button>
-      <button class="chk-btn" id="filter_warn" onclick="setStewardFilter('warn')">Замечания</button>
-      <button class="chk-btn" id="filter_fail" onclick="setStewardFilter('fail')">Отказы</button>
-      <button class="chk-btn" id="filter_ok" onclick="setStewardFilter('ok')">Допущены</button>
+    <div class="steward-controls">
+      <button class="steward-filter-btn active" id="filter_all" onclick="setStewardFilter('all')">Все авто (<span id="cntStewardAll">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_remarks" onclick="setStewardFilter('remarks')">⚠️ С замечаниями (<span id="cntStewardRemarks">0</span>)</button>
+      <button class="steward-filter-btn" id="filter_ok" onclick="setStewardFilter('ok')">✅ Без замечаний (<span id="cntStewardOk">0</span>)</button>
+      <input type="text" id="stewardSearchInput" placeholder="🔍 Поиск (№, пилот, авто, каркас)..." oninput="renderStewardList()" style="flex:1; min-width:180px; padding:8px 12px; font-size:12px;">
     </div>
 
-    <div id="stewardListContainer"></div>
-  </div>
+    <!-- Фокус на выбранном участнике -->
+    <div id="stewardInspectorView" class="steward-inspector-view">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="color:var(--gold-primary); font-size:11px; font-weight:bold; text-transform:uppercase;">Фокус на участнике • Participant Detail</span>
+        <button onclick="closeStewardDetail()" style="background:#222; border:1px solid #444; color:#fff; border-radius:6px; padding:4px 10px; cursor:pointer; font-size:11px;">✕ Показать всех</button>
+      </div>
 
-  <!-- Steward Pilot Detail & Regulation Citation -->
-  <div class="card" id="stewardPilotCard" style="display: none;">
-    <div class="card-title">
-      <span id="stewardPilotTitle">Карточка пилота</span>
-      <button onclick="closeStewardDetail()" style="background:none; border:none; color:#888; font-size:18px; cursor:pointer;">✕</button>
-    </div>
-    <div id="stewardPilotBody" style="font-size: 14px; line-height: 1.6;"></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #2a2a2a; padding-bottom:12px; margin-bottom:12px; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="driver-num-huge" id="dtlNumber">№--</div>
+          <div>
+            <h2 style="font-size:19px; color:#fff;" id="dtlDriver">Пилот</h2>
+            <div style="color:var(--text-sub); font-size:13px;" id="dtlCar">Марка Модель</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div id="dtlStatusBadge" class="badge-status">Статус</div>
+          <div style="font-size:11px; color:#9ca3af; margin-top:4px;">Бокс: <strong id="dtlBox">—</strong> | Каркас: <strong id="dtlCage" style="font-family:monospace; color:var(--gold-bright);">—</strong></div>
+        </div>
+      </div>
 
-    <div id="ruleCitationBox" class="citation-box">
-      <div style="font-size: 13px; font-weight: bold; color: var(--gold-bright); margin-bottom: 6px;" id="ruleCitationHeading">Статья регламента</div>
-      <div style="font-size: 12px; color: #d1d5db; margin-bottom: 8px;" id="ruleCitationText"></div>
-      <div style="font-size: 12px; color: #f59e0b; margin-bottom: 8px;" id="ruleActionNeeded"></div>
-      <a id="officialDocLink" href="#" target="_blank" style="font-size: 11px; color: var(--gold-primary); text-decoration: underline;">📄 Скачать регламент PDF ↗</a>
+      <div style="margin-bottom:10px;">
+        <label style="display:block; margin-bottom:6px; color:var(--gold-primary); font-weight:bold;">Нажмите на замечание, чтобы показать официальный пункт регламента участнику:</label>
+        <div id="dtlDefectsContainer"></div>
+      </div>
+
+      <div id="ruleCitationBox" class="rule-citation-box">
+        <div class="rule-title">
+          <span id="ruleCitationHeading">Статья Регламента Royal DS</span>
+          <a href="https://royalds.cn/ru/docs" target="_blank" style="color:var(--gold-bright); font-size:11px; text-decoration:underline;">Официальные документы Royal DS ↗</a>
+        </div>
+        <div class="rule-text" id="ruleCitationText">...</div>
+        <div class="rule-action-needed" id="ruleActionNeeded">...</div>
+      </div>
     </div>
+
+    <!-- Список всех участников (Замечания скрыты до нажатия) -->
+    <div id="stewardListContainer" style="margin-top:12px;"></div>
   </div>
 </div>
 
-<!-- ================= CHECKLIST MODAL ================= -->
-<div id="checklistPanel">
-  <div class="checklist-inner">
-    <div class="checklist-header">
-      <span style="font-weight: bold; font-size: 15px; color: var(--gold-bright);">Чеклист технической инспекции</span>
-      <button onclick="closeChecklistPanel()" style="background:none; border:none; color:#fff; font-size: 20px; cursor:pointer;">✕</button>
+<!-- ================= 3. ЧЕКЛИСТ ТИ С БОЛЬШИМИ КНОПКАМИ ================= -->
+<div id="checklistModal" class="modal-overlay">
+  <div class="checklist-modal-box">
+    <div style="padding:14px 16px; background:#0f172a; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center;">
+      <strong style="color:var(--gold-bright); font-size:15px;">Чеклист Технической Инспекции (41 пункт)</strong>
+      <button onclick="closeChecklistModal()" style="background:none; border:none; color:#fff; font-size:22px; cursor:pointer;">✕</button>
     </div>
 
-    <div class="chk-nav-tabs">
-      <button class="chk-tab-btn active" id="chkTabExt" onclick="switchChecklistTab('ext')">
-        🚗 Внешний осмотр (16 п.)
+    <!-- Большие кнопки разделов -->
+    <div class="section-big-tabs">
+      <button id="tabBtnExt" class="section-big-btn active" onclick="switchChecklistSection('ext')">
+        🚗 ВНЕШНИЙ ОСМОТР (16 п.)
       </button>
-      <button class="chk-tab-btn" id="chkTabInt" onclick="switchChecklistTab('int')">
-        🏎️ Внутренний осмотр (25 п.)
+      <button id="tabBtnInt" class="section-big-btn" onclick="switchChecklistSection('int')">
+        🏎️ ВНУТРЕННИЙ ОСМОТР (25 п.)
       </button>
     </div>
 
-    <div style="display: flex; justify-content: flex-end; padding: 6px 16px; background:#111;">
-      <button onclick="markCurrentSectionAllOk()" style="background:none; border:none; color:var(--gold-primary); font-size:12px; cursor:pointer; font-weight:600;">
+    <!-- Панель быстрых действий -->
+    <div style="padding:8px 14px; background:#0b0f17; border-bottom:1px solid #1f2937; display:flex; justify-content:space-between; align-items:center;">
+      <span style="font-size:12px; color:var(--text-sub);" id="checklistCounter">Итог: 0 отмечено</span>
+      <button type="button" style="background:#064e3b; border:1px solid #10b981; color:#6ee7b7; padding:6px 12px; border-radius:6px; font-size:11px; font-weight:bold; cursor:pointer;" onclick="setAllSectionOk()">
         ✅ Отметить все ОК в этом разделе
       </button>
     </div>
 
-    <div class="checklist-content">
-      <div id="checklistExtContainer"></div>
-      <div id="checklistIntContainer" style="display: none;"></div>
+    <div class="checklist-scroll">
+      <div id="containerExt"></div>
+      <div id="containerInt" style="display:none;"></div>
     </div>
 
-    <div class="checklist-footer">
-      <button class="btn btn-gold" style="flex: 1;" onclick="applyChecklistAndSave()">
+    <!-- Кнопка добавления / сохранения -->
+    <div style="padding:14px 16px; background:#0f172a; border-top:1px solid #1f2937; display:flex; gap:10px;">
+      <button class="btn btn-secondary" onclick="closeChecklistModal()" style="flex:1;">✕ Отмена</button>
+      <button id="checklistApplyAndSaveBtn" class="btn btn-gold" onclick="applyChecklistAndSave()" style="flex:2;">
         ✅ Завершить проверку и добавить авто
       </button>
     </div>
@@ -720,623 +338,542 @@ td {
 </div>
 
 <script>
-/* ================= КОНФИГУРАЦИЯ И СВЯЗЬ ================= */
-const EMBEDDED_GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
-const gasScriptUrl = EMBEDDED_GAS_URL;
-
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzOiErNjoLsCi02UuWhaB3-cp5dftMJwc5pMNb9BJg5X5fjxNBmOvMoxsuxopmGyKGCAw/exec";
 const STEWARD_PIN = "0852";
 const CONTROLLER_PIN = "1337";
 
-let currentLang = 'ru';
+/* --- 16 ВНЕШНИХ ПУНКТОВ --- */
+const CHECKLIST_EXT = [
+  { code: '1.1', title: '1.1 Бамперы', desc: 'Бамперы установлены, закрывают кузов, надёжно закреплены (не на хомутах/скотче)', article: 'Пункт 3. Кузов и наружные элементы', rule: 'Передний и задний бамперы должны быть установлены, надежно закреплены и полностью закрывать силовые элементы кузова. Крепление исключительно на пластиковые хомуты или скотч строго запрещено.', action: 'Установить бамперы на штатные или спортивные быстросъемные крепления.' },
+  { code: '1.2', title: '1.2 Капот и багажник', desc: '4 точки крепления + ≥2 внешних фиксатора, штатные замки удалены', article: 'Пункт 4. Замки капота и багажника', rule: 'Капот и крышка багажника должны иметь не менее 4 точек крепления и быть оборудованы минимум 2 внешними спортивными замками (Aerocatch, шпильки). Штатные тросы и замки должны быть демонтированы.', action: 'Установить внешние замки капота/багажника и снять штатный трос.' },
+  { code: '1.3', title: '1.3 Буксировочные стропы', desc: 'Нейлон/трос ∅10 мм, выступ 15–25 см, маркировка стрелкой ≥12 см', article: 'Пункт 5. Буксировочные проушины и стропы', rule: 'Автомобиль должен иметь буксировочную проушину или стропу спереди и сзади (нейлон или трос ∅10 мм) с выступом 15–25 см. Точки крепления четко обозначены световозвращающей стрелкой длиной не менее 12 см.', action: 'Установить буксировочные петли спереди и сзади и нанести стрелки маркировки.' },
+  { code: '1.4', title: '1.4 Башбары (Bash-bars)', desc: 'Стальная труба ∅25–44 мм, стенка 1,6–3,2 мм, болты 4×М10 8.8 или сварка', article: 'Пункт 6. Защитные балки (Башбары)', rule: 'Трубчатые защитные балки изготавливаются из бесшовной стальной трубы ∅25–44 мм со стенкой 1.6–3.2 мм. Крепление к лонжеронам болтами не менее 4×М10 (класс 8.8) с пластинами толщиной от 3 мм либо качественной сваркой.', action: 'Усилить крепление башбаров болтами М10 класса 8.8 с пластинами ≥3 мм.' },
+  { code: '1.5', title: '1.5 Крылья и арки', desc: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)', article: 'Пункт 7. Крылья и колесные арки', rule: 'Крылья и расширители должны полностью закрывать колесо сверху. Выступание протектора шины за внешнюю кромку крыла допускается не более чем на 20% ширины шины при виде сверху.', action: 'Установить расширители арок (фендеры) либо отрегулировать вылет и развал колес.' },
+  { code: '1.6', title: '1.6 Лобовое стекло', desc: 'Многослойное/поликарбонат ≥5 мм, прозрачный обзор без трещин в зоне дворника', article: 'Пункт 8. Остекление лобовое', rule: 'Лобовое стекло — триплекс с маркировкой или поликарбонат ≥5 мм с устойчивым покрытием. Запрещены трещины в зоне работы водительского стеклоочистителя.', action: 'Заменить поврежденное лобовое стекло.' },
+  { code: '1.7', title: '1.7 Боковые стёкла', desc: 'Оригинальные с защитной плёнкой ≥100 мкм изнутри или поликарбонат 3–5 мм', article: 'Пункт 9. Боковое и заднее остекление', rule: 'Оригинальные закаленные боковые стекла должны быть оклеены изнутри защитной пленкой ≥100 мкм, либо заменены на поликарбонат 3–5 мм с надежной механической фиксацией.', action: 'Оклеить стекла пленкой ≥100 мкм или установить поликарбонат.' },
+  { code: '1.8', title: '1.8 Зеркала заднего вида', desc: '2 наружных зеркала, площадь отражающего элемента каждого ≥60 см²', article: 'Пункт 10. Зеркала заднего вида', rule: 'Автомобиль должен быть оборудован двумя внешними зеркалами (левым и правым). Площадь зеркального элемента каждого зеркала должна составлять не менее 60 см².', action: 'Установить зеркала требуемой площади (не менее 60 см²).' },
+  { code: '1.9', title: '1.9 Стоп-сигналы', desc: 'Исправны, светят красным при торможении (основные + светодиодный дублер)', article: 'Пункт 11. Световая сигнализация', rule: 'Обязательны исправные задние стоп-сигналы красного цвета и дополнительный верхний светодиодный дублер, срабатывающие строго синхронно с нажатием педали.', action: 'Восстановить проводку и обеспечить синхронную работу стоп-сигналов и дублера.' },
+  { code: '1.10', title: '1.10 Передние фары', desc: 'В штатных местах, обеспечивают видимость автомобиля с 50 м', article: 'Пункт 12. Головной свет', rule: 'Передняя оптика должна быть смонтирована в штатных местах. Фары или ходовые огни должны обеспечивать отчетливую видимость автомобиля с расстояния не менее 50 метров.', action: 'Закрепить фары и подключить надежное электропитание.' },
+  { code: '1.11', title: '1.11 Внешний выключатель массы', desc: 'Знак «красная Е» или молния в синем треугольнике ∅10–12 см, под стеклом', article: 'Пункт 13. Внешний аварийный выключатель массы', rule: 'Привод внешнего аварийного выключателя массы располагается в нижней части рамки лобового стекла или задней стойки. Обозначается знаком ∅10–12 см.', action: 'Установить привод выключателя массы наружу и нанести знак.' },
+  { code: '1.12', title: '1.12 Внешний привод пожаротушения', desc: 'Рядом с выключателем массы, наклейка «красная Е» ∅10 см', article: 'Пункт 14. Внешний привод СПТ', rule: 'Внешний спусковой механизм СПТ должен располагаться рядом с выключателем массы. Обозначается наклейкой ∅10 см с красной буквой «E».', action: 'Вывести трос СПТ наружу рядом с выключателем массы и нанести знак «Е».' },
+  { code: '1.13', title: '1.13 Выхлопная система', desc: 'Металл, 15–20 см от бака, направлен назад/вбок, выступ ≤10 мм', article: 'Пункт 15. Выхлопная система', rule: 'Выхлопная труба полностью металлическая, проходит на расстоянии не менее 15–20 см от бака/магистралей (или имеет термоэкран). Выступ за кузов — не более 10 мм.', action: 'Укоротить выхлоп по контуру кузова и установить термоэкран.' },
+  { code: '1.14', title: '1.14 Шины', desc: 'Дорожные с рисунком, без повреждений/корда, глубина ≥1.6 мм. Слики запрещены', article: 'Пункт 16. Требования к шинам серии', rule: 'Разрешены только дорожные радиальные шины с рисунком протектора с остатком не менее 1.6 мм. Слики (включая резаные) и химическая обработка запрещены.', action: 'Заменить шины на разрешенную серию регламента RDS.' },
+  { code: '1.15', title: '1.15 Диски и крепеж', desc: 'Металлические (магний запрещён), шпильки не выступают, все гайки на месте', article: 'Пункт 17. Колесные диски и крепеж', rule: 'Диски из алюминиевых или стальных сплавов (магний запрещен). Зацепление гайки шпилькой — не менее диаметра резьбы. Все гайки затянуты.', action: 'Установить полный комплект закрытых гаек и проверить затяжку.' },
+  { code: '1.16', title: '1.16 Обязательные наклейки на кузове', desc: 'Стартовые номера, баннер серии Royal DS, спонсоры, флаг, фамилия', article: 'Пункт 32. Обязательные наклейки на кузове', rule: 'Автомобиль обязан нести полную официальную оклейку чемпионата: стартовые номера на дверях и капоте, баннер Royal Drift Series на лобовом стекле, спонсоры серии, флаг и фамилия на стеклах.', action: 'Получить в штабе соревнований недостающие спонсорские наклейки и наклеить по схеме.' }
+];
+
+/* --- 25 ВНУТРЕННИХ ПУНКТОВ --- */
+const CHECKLIST_INT = [
+  { code: '2.1', title: '2.1 Каркас: основные дуги и номер', desc: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт', article: 'Пункт 8. Каркас безопасности (FIA App J Art 253)', rule: 'Главная и передняя дуги из бесшовной трубы ∅45×2.5 или ∅50×2.0 мм. Обязателен технический паспорт и четкий выбитый 6-значный номер.', action: 'Предъявить паспорт каркаса и зачистить выбитый 6-значный номер.' },
+  { code: '2.2', title: '2.2 Каркас: дверные брусья', desc: 'Боковые защитные кресты или продольные брусья в проемах дверей', article: 'Пункт 8. Каркас безопасности (Боковая защита)', rule: 'В дверных проемах со стороны пилота и пассажира должны быть вварены защитные кресты с усилительными косынками либо продольные брусья по ст. 253 FIA.', action: 'Вварить недостающие усилительные элементы в дверные проемы.' },
+  { code: '2.3', title: '2.3 Каркас: опорные пластины', desc: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥3 мм', article: 'Пункт 8. Каркас безопасности (Опорные пластины)', rule: 'Каждая опора дуги каркаса крепится к кузову через опорную пластину площадью не менее 120 см² и толщиной стали не менее 3 мм.', action: 'Усилить опорные пластины каркаса согласно регламенту.' },
+  { code: '2.4', title: '2.4 Каркас: диагонали на главной дуге', desc: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов', article: 'Пункт 8. Каркас безопасности (Диагонали главной дуги)', rule: 'Диагональные элементы главной дуги должны быть прямолинейными. Соединение диагонали с дугой — не далее 100 мм от угла или пластины опоры.', action: 'Переварить диагональ в пределы 100 мм от узла главной дуги.' },
+  { code: '2.5', title: '2.5 Каркас: защитные накладки', desc: 'Зоны контакта со шлемом/пилотом: негорючие накладки омологации FIA 8857-2001', article: 'Пункт 8. Каркас безопасности (Защитные накладки)', rule: 'Трубы каркаса в зонах возможного контакта со шлемом пилота должны быть закрыты сертифицированными накладками по стандарту FIA 8857-2001.', action: 'Установить энергопоглощающие накладки омологации FIA 8857-2001.' },
+  { code: '2.6', title: '2.6 Спортивное сиденье (ковш)', desc: 'Ковш FIA 8855-1999/8862-2009, 4 точки, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9', article: 'Пункт 18. Сиденье пилота и крепления', rule: 'Спортивное сиденье с омологацией FIA. Крепление на 4 болтах М8 класса не ниже 10.9 через стальные кронштейны ≥3 мм (или алюминиевые ≥5 мм) с шайбами пола ≥40 см².', action: 'Заменить болты сиденья на класс 10.9 и установить усилительные пластины пола.' },
+  { code: '2.7', title: '2.7 Ремни безопасности', desc: '5/6-точечные, действующая омологация FIA 8854/98 или 8853-2016, металл замки', article: 'Пункт 19. Ремни безопасности', rule: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8854/98 или 8853-2016. Металлические защелки без следов износа и повреждений.', action: 'Установить ремни безопасности с неистекшим сроком FIA.' },
+  { code: '2.8', title: '2.8 Точки крепления ремней', desc: 'К кузову (7/16-20 UNF, контрпластины ≥40 см²×3 мм) или harness bar (запрещено к сиденью!)', article: 'Пункт 19. Точки крепления ремней', rule: 'Поясные лямки крепятся только к усиленным точкам кузова с резьбой 7/16-20 UNF и пластинами ≥40 см² толщиной ≥3 мм. Плечевые — на harness bar каркаса. Крепить ремни к сиденью запрещено.', action: 'Перенести точки крепления ремней с салазок сиденья на кузов/каркас.' },
+  { code: '2.9', title: '2.9 Система HANS/FHR', desc: 'Обязательна во всех заездах, клипсы на шлеме и поводки стандарта FIA 8858-2010', article: 'Пункт 20. Система защиты шеи и головы HANS/FHR', rule: 'Применение системы защиты шеи HANS/FHR стандарта FIA 8858 обязательно. Клипсы на шлеме и поводки должны иметь маркировку FIA 8858-2010.', action: 'Предоставить омологированную систему HANS и шлем с клипсами FIA.' },
+  { code: '2.10', title: '2.10 Система пожаротушения (СПТ)', desc: 'Омологация FIA (лист №16/52), распылители: ≥2 в моторный отсек и ≥2 в ноги пилота', article: 'Пункт 21. Стационарная система пожаротушения', rule: 'Система пожаротушения FIA (лист 16 или 52). Не менее 2 сопел направлены в двигатель и не менее 2 сопел — в ноги водителя.', action: 'Развести сопла пожаротушения в ноги пилота и моторный отсек.' },
+  { code: '2.11', title: '2.11 Внутренний привод СПТ', desc: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями', article: 'Пункт 21. Органы управления СПТ', rule: 'Внутренняя ручка/кнопка СПТ должна располагаться в зоне прямой досягаемости руки пилота, пристегнутого ремнями в сиденье.', action: 'Перенести ручку привода СПТ ближе к пилоту.' },
+  { code: '2.12', title: '2.12 Срок поверки и давление СПТ', desc: 'Срок поверки баллона СПТ ≤2 лет, стрелка манометра строго в зеленой зоне', article: 'Пункт 21. Сроки поверки системы пожаротушения', rule: 'Баллон СПТ должен иметь читаемый стикер поверки с датой (интервал ≤2 лет). Стрелка манометра строго в зеленой зоне.', action: 'Пройти поверку баллона СПТ у дилера либо заменить баллон.' },
+  { code: '2.13', title: '2.13 Топливо и наклейка «ALCOHOL»', desc: 'Товарный бензин или этанол/E85. При спирте — наклейка «ALCOHOL» 10–12 см', article: 'Пункт 22. Топливо и идентификация', rule: 'При использовании биоэтанола/E85 на лобовое стекло и у горловины бака обязательно наносится крупная световозвращающая наклейка «ALCOHOL» 10–12 см.', action: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.' },
+  { code: '2.14', title: '2.14 Запрещенные газы (N2O)', desc: 'Запрещены пропан, метан, закись азота (N₂O). Баллоны и магистрали демонтированы', article: 'Пункт 22. Запрещенные вещества', rule: 'Категорически запрещено применение закиси азота (N2O), метанола и баллонов под давлением с окислителями. Баллоны и магистрали должны быть полностью сняты.', action: 'Полностью демонтировать баллон и электромагистрали закиси азота.' },
+  { code: '2.15', title: '2.15 Топливный бак', desc: 'Штатный или омологированный FIA FT3/FT5, в багажнике, клапан опрокидывания', article: 'Пункт 23. Топливный бак', rule: 'Штатный бак либо безопасный бак FIA FT3/FT5. Обязательны противоотливная губка, гравитационный клапан roll-over на вентиляции и крепление стальными лентами.', action: 'Установить клапан опрокидывания на вентиляцию бака.' },
+  { code: '2.16', title: '2.16 Огнестойкая перегородка бака', desc: 'Бак в багажнике герметично отделён от салона перегородкой (сталь ≥0.8 мм / алюм ≥1.2 мм)', article: 'Пункт 23. Огнестойкая перегородка', rule: 'Если бак или насосы расположены в багажнике, салон должен быть герметично изолирован сплошной несгораемой перегородкой со швами на огнестойком герметике.', action: 'Установить металлическую перегородку и загерметизировать отверстия.' },
+  { code: '2.17', title: '2.17 Магистрали в салоне', desc: 'В салоне только цельные шланги без соединений, защита PTFE/AN от перетирания и огня', article: 'Пункт 24. Трубопроводы топлива и масла', rule: 'Топливные и масляные магистрали, проходящие через салон, должны быть цельными без разъемов внутри кокпита и выполнены из армированных рукавов PTFE/AN.', action: 'Заменить составные шланги в салоне на цельные армированные рукава PTFE.' },
+  { code: '2.18', title: '2.18 Главный выключатель массы', desc: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ/зажигание; доступен пилоту + внешний привод', article: 'Пункт 25. Электрический размыкатель массы', rule: 'Выключатель массы должен мгновенно обесточивать АКБ, генератор, зажигание, насосы и глушить двигатель. Управляется из салона и снаружи.', action: 'Подключить генератор и зажигание к цепи размыкания выключателя массы.' },
+  { code: '2.19', title: '2.19 Электропроводка', desc: 'В защитной гофре, закреплена хомутами. Запрещено зажимать между каркасом и кузовом', article: 'Пункт 26. Электропроводка и жгуты', rule: 'Электропроводка должна быть в термостойкой гофре и надежно закреплена. Категорически запрещена прокладка жгутов проводов между трубами каркаса и кузовом.', action: 'Переложить жгут проводов из зазора между каркасом и кузовом в гофру.' },
+  { code: '2.20', title: '2.20 Аккумулятор (АКБ)', desc: 'При переносе: металлическое гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс', article: 'Пункт 27. Аккумуляторная батарея', rule: 'Перенесенный АКБ крепится к кузову двумя стальными лентами 20×0.8 мм на болтах М10. Жидкостный АКБ закрывается герметичным боксом с вентиляцией наружу.', action: 'Закрепить АКБ стальными лентами на болтах М10 и изолировать клеммы.' },
+  { code: '2.21', title: '2.21 Тормозная система', desc: '≥2 независимых контура от педали, исправная; магистрали в салоне металл/PTFE; жесткий ручник', article: 'Пункт 28. Тормозная система и гидроручник', rule: 'Минимум 2 независимых контура. Трубки в салоне — бесшовные металлические или тефлоновые армированные PTFE. Кронштейн гидроручника жестко закреплен.', action: 'Устранить люфты гидроручника и прокачать тормозную систему.' },
+  { code: '2.22', title: '2.22 Петля карданоуловителя', desc: '≤150 мм от переднего шарнира крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм', article: 'Пункт 29. Карданоуловитель (Driveshaft Safety Loop)', rule: 'Заднеприводные автомобили должны быть оснащены защитной петлей (сталь 50×5 мм или труба ∅20×1.5 мм) на расстоянии не далее 150 мм от переднего шарнира.', action: 'Установить стальную петлю карданоуловителя толщиной 5 мм.' },
+  { code: '2.23', title: '2.23 Рулевое колесо и быстросъем', desc: 'Руль: замкнутый обод (не деревянный), быстросъём без люфта с жёлтым кольцом фиксатора', article: 'Пункт 30. Рулевое управление и быстросъем', rule: 'Руль с замкнутым ободом. Быстросъемный механизм руля должен быть без люфтов и иметь фиксирующую муфту желтого цвета.', action: 'Устранить люфт быстросъема и нанести желтую маркировку на кольцо.' },
+  { code: '2.24', title: '2.24 Регулировка рулевой колонки', desc: 'Механизм регулировки рулевой колонки заблокирован и затянут инструментом (болтом)', article: 'Пункт 30. Фиксация рулевой колонки', rule: 'Штатный рычаг быстрой регулировки рулевой колонки должен быть заменен на болт и затянут инструментом, исключая случайное смещение колонки.', action: 'Заменить ручной фиксатор рулевой колонки на затяжной болт.' },
+  { code: '2.25', title: '2.25 Вентиляция картера (Catch-can)', desc: 'Ёмкость маслоуловителя ≥2 л с уровнемером в моторном отсеке; экраны на магистралях в ногах', article: 'Пункт 31. Вентиляция картера и защита магистралей', rule: 'Система вентиляции картера выводится в маслоуловитель объемом ≥2 л с уровнемерной трубкой. Трубопроводы в ногах водителя закрыты защитным металлическим экраном.', action: 'Установить маслоуловитель объемом от 2 литров со смотровой трубкой уровня.' }
+];
+
+const ALL_CHECKLIST = [...CHECKLIST_EXT, ...CHECKLIST_INT];
+
+/* --- БАЗА АВТОМОБИЛЕЙ И ТРАНСЛИТЕРАЦИЯ --- */
+const CAR_CATALOG = [
+  "Nissan Silvia S15", "Nissan Silvia S14", "Nissan Silvia S13", "Nissan 180SX",
+  "Nissan Skyline R34", "Nissan Skyline R33", "Nissan Skyline R32",
+  "Toyota Supra A90", "Toyota Supra A80", "Toyota GR86 Drift", "Toyota GT86",
+  "Toyota Chaser JZX100", "Toyota Mark II JZX100", "Toyota Mark II JZX90", "Toyota Cresta JZX100",
+  "Toyota Altezza / IS200", "Toyota Soarer JZZ30",
+  "BMW E92 Eurofighter", "BMW E46 Drift", "BMW E36 Drift", "BMW M2 Drift", "BMW M4 Drift",
+  "Mazda RX-7 FD", "Mazda RX-8", "Ford Mustang RTR", "Chevrolet Corvette C6",
+  "Subaru BRZ", "Short Cut", "GT4 AMG", "Porsche 911 GT3"
+];
+
+const TRANSLIT_MAP = {
+  'а':'a','б':'b','в':'v','г':'g','д':'d','е':'e','ж':'zh','з':'z','и':'i','к':'k','л':'l',
+  'м':'m','н':'n','о':'o','п':'p','р':'r','с':'s','т':'t','у':'u','ф':'f','х':'h','ц':'ts',
+  'ч':'ch','ш':'sh','ы':'y','ю':'yu','я':'ya','порш':'porsche','бмв':'bmw','тойота':'toyota',
+  'мерседес':'mercedes','ниссан':'nissan','супра':'supra','сильвия':'silvia','чайзер':'chaser',
+  'марк':'mark','шорткат':'short cut'
+};
+
 let dailyLog = [];
 let checklistState = {};
-let editingIndex = null;
-let isProcessingQueue = false;
-let stewardActiveFilter = 'all';
-let currentChecklistTab = 'ext';
+let editingId = null;
+let currentStewardFilter = 'all';
+let stewardSelectedEntry = null;
+let activeChecklistSection = 'ext';
+let isSyncing = false;
 
-const REGULATION_DOC_LINKS = {
-  ru: "https://royalds.cn/ru/docs/technical-regulations/file/ru?dl=1",
-  en: "https://royalds.cn/ru/docs/technical-regulations/file/en?dl=1",
-  cn: "https://royalds.cn/ru/docs/technical-regulations/file/cn?dl=1"
-};
+/* --- ИНИЦИАЛИЗАЦИЯ И РАЗДЕЛЫ ЧЕКЛИСТА --- */
+function initChecklist() {
+  const extContainer = document.getElementById('containerExt');
+  const intContainer = document.getElementById('containerInt');
+  if (!extContainer || !intContainer) return;
 
-const UI_TEXT = {
-  ru: {
-    subtitle: "Championship • Scrutineering v1.2",
-    tabScrutineer: "Входной контроль ТИ",
-    tabSteward: "Кабинет Комиссара",
-    eventInfo: "Этап Royal Drift Series",
-    stageSelect: "Выберите этап чемпионата:",
-    formTitle: "📋 Прохождение ТИ",
-    lblCar: "Автомобиль:",
-    lblNumber: "Стартовый №:",
-    lblDriver: "Пилот (ФИО / Имя):",
-    lblCage: "№ каркаса (6 цифр):",
-    lblColor: "Цвет авто:",
-    lblBox: "№ бокса / техпарк:",
-    lblRemarks: "Замечания ТИ:",
-    quickSubmit: "⚡ Выдать ТИ (быстро)",
-    openChecklist: "📑 Открыть чеклист инспектора (41 п.)",
-    actionNeededHdr: "Что требуется устранить:",
-    docLink: "📄 Скачать официальный регламент (PDF) ↗"
-  },
-  en: {
-    subtitle: "Championship • Scrutineering v1.2",
-    tabScrutineer: "TI Entry Check",
-    tabSteward: "Steward Dashboard",
-    eventInfo: "Royal Drift Series Stage",
-    stageSelect: "Select Series Stage:",
-    formTitle: "📋 Scrutineering Entry",
-    lblCar: "Vehicle:",
-    lblNumber: "Race Number:",
-    lblDriver: "Driver Name:",
-    lblCage: "Roll Cage ID (6 digits):",
-    lblColor: "Vehicle Color:",
-    lblBox: "Pit Box / Area:",
-    lblRemarks: "TI Remarks:",
-    quickSubmit: "⚡ Quick TI Pass",
-    openChecklist: "📑 Open Scrutineering Checklist (41 items)",
-    actionNeededHdr: "Required corrective action:",
-    docLink: "📄 Download Official Regulations (PDF) ↗"
-  },
-  cn: {
-    subtitle: "锦标赛车检系统 v1.2",
-    tabScrutineer: "初检入口登记",
-    tabSteward: "车检长工作台",
-    eventInfo: "Royal Drift Series 分站选择",
-    stageSelect: "选择比赛分站:",
-    formTitle: "📋 赛车初检记录",
-    lblCar: "赛车车型:",
-    lblNumber: "比赛车号:",
-    lblDriver: "车手姓名:",
-    lblCage: "防滚架钢印号 (6位):",
-    lblColor: "车身颜色:",
-    lblBox: "P房编号 / 维修区:",
-    lblRemarks: "车检意见 / 隐患:",
-    quickSubmit: "⚡ 快速发放车检",
-    openChecklist: "📑 打开完整车检清单 (41项)",
-    actionNeededHdr: "整改及修复要求:",
-    docLink: "📄 下载官方技术规则手册 (PDF) ↗"
+  extContainer.innerHTML = '';
+  intContainer.innerHTML = '';
+
+  const renderRow = (item, target) => {
+    const row = document.createElement('div');
+    row.className = 'chk-row';
+    const state = checklistState[item.code] || '';
+    row.innerHTML = `
+      <div style="font-size:13px; font-weight:bold; color:#fff;">${item.title}</div>
+      <div style="font-size:11px; color:#94a3b8; margin-top:2px;">${item.desc}</div>
+      <div class="chk-btns">
+        <button type="button" class="chk-btn ${state === 'ok' ? 'active-ok' : ''}" id="btn_ok_${item.code}" onclick="setChecklistItemState('${item.code}','ok')">✅ ОК</button>
+        <button type="button" class="chk-btn ${state === 'warn' ? 'active-warn' : ''}" id="btn_warn_${item.code}" onclick="setChecklistItemState('${item.code}','warn')">⚠️ Зам.</button>
+        <button type="button" class="chk-btn ${state === 'fail' ? 'active-fail' : ''}" id="btn_fail_${item.code}" onclick="setChecklistItemState('${item.code}','fail')">❌ Отказ</button>
+      </div>
+    `;
+    target.appendChild(row);
+  };
+
+  CHECKLIST_EXT.forEach(it => renderRow(it, extContainer));
+  CHECKLIST_INT.forEach(it => renderRow(it, intContainer));
+  updateChecklistSummary();
+}
+
+function setChecklistItemState(code, state) {
+  checklistState[code] = state;
+  ['ok', 'warn', 'fail'].forEach(s => {
+    const btn = document.getElementById(`btn_${s}_${code}`);
+    if (btn) btn.className = 'chk-btn' + (state === s ? ` active-${s}` : '');
+  });
+  updateChecklistSummary();
+}
+
+function switchChecklistSection(section) {
+  activeChecklistSection = section;
+  document.getElementById('tabBtnExt').classList.toggle('active', section === 'ext');
+  document.getElementById('tabBtnInt').classList.toggle('active', section === 'int');
+  document.getElementById('containerExt').style.display = (section === 'ext') ? 'block' : 'none';
+  document.getElementById('containerInt').style.display = (section === 'int') ? 'block' : 'none';
+}
+
+function setAllSectionOk() {
+  const currentList = (activeChecklistSection === 'ext') ? CHECKLIST_EXT : CHECKLIST_INT;
+  currentList.forEach(it => setChecklistItemState(it.code, 'ok'));
+}
+
+function resetChecklist() {
+  checklistState = {};
+  initChecklist();
+}
+
+function updateChecklistSummary() {
+  let okCount = 0, warnCount = 0, failCount = 0;
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code];
+    if (s === 'ok') okCount++;
+    else if (s === 'warn') warnCount++;
+    else if (s === 'fail') failCount++;
+  });
+  const totalChecked = okCount + warnCount + failCount;
+  document.getElementById('checklistCounter').textContent = `Отмечено: ${totalChecked}/41 (${okCount} ОК, ${warnCount} Зам., ${failCount} Отказ)`;
+}
+
+function openChecklistModal() {
+  document.getElementById('checklistModal').classList.add('open');
+}
+
+function closeChecklistModal() {
+  document.getElementById('checklistModal').classList.remove('open');
+}
+
+/* --- ОПТИМИСТИЧНОЕ ДОБАВЛЕНИЕ И ПРИМЕНЕНИЕ ЧЕКЛИСТА --- */
+function applyChecklistAndSave() {
+  const car = document.getElementById('carInput').value.trim();
+  if (!car) {
+    alert('Пожалуйста, сначала укажите марку и модель автомобиля!');
+    closeChecklistModal();
+    document.getElementById('carInput').focus();
+    return;
   }
-};
 
-/* ================= БАЗА ДАННЫХ РЕГЛАМЕНТА (41 ПУНКТ) ================= */
-const CHECKLIST_EXT = [
-  {
-    code: '1.1',
-    title: { ru: 'Бамперы', en: 'Bumpers', cn: '保险杠' },
-    article: { ru: 'Статья 9. Кузов и наружные элементы', en: 'Article 9. Bodywork & Exterior Elements', cn: '第9条 车身与外观部件' },
-    desc: { ru: 'Бамперы установлены, закрывают кузов, надёжно закреплены (не на хомутах)', en: 'Bumpers installed, covering bodywork, securely mounted (no zip-ties)', cn: '保险杠安装到位，覆盖车身，固定牢固（严禁塑料扎带）' },
-    rule: {
-      ru: 'Передний и задний бамперы должны быть установлены, надежно закреплены и полностью закрывать силовые элементы кузова. Запрещено крепление исключительно на пластиковые хомуты.',
-      en: 'Front and rear bumpers must be installed, firmly attached, covering chassis structural elements. Securing solely by zip-ties is prohibited.',
-      cn: '前、后保险杠必须安装完整，固定牢固，完全覆盖车身受力结构件。严禁仅使用塑料扎带固定。'
-    },
-    action: { ru: 'Установить бамперы на штатные или быстросъемные крепления.', en: 'Mount bumpers using OEM or motorsport quick-release fasteners.', cn: '使用原厂或赛用快拆支架牢固安装保险杠。' }
-  },
-  {
-    code: '1.2',
-    title: { ru: 'Капот и багажник', en: 'Hood & Trunk', cn: '发动机盖与后备箱盖' },
-    article: { ru: 'Статья 9. Замки капота и багажника', en: 'Article 9. Hood & Trunk Lid Latches', cn: '第9条 机盖与后备箱锁销' },
-    desc: { ru: '4 точки крепления + ≥2 внешних фиксатора, штатные замки удалены', en: '4 mounting points + ≥2 external pins, OEM latches removed', cn: '4点固定 + 至少2个外部安全锁销，原厂机械锁已拆除' },
-    rule: {
-      ru: 'Капот и крышка багажника должны иметь не менее 4 точек крепления и быть оборудованы минимум 2 внешними спортивными замками. Штатные замки капота должны быть демонтированы.',
-      en: 'Hood and trunk lid must have at least 4 mounting points and be fitted with min 2 external motorsport pins. OEM release latches must be removed.',
-      cn: '机盖及后备箱盖必须具备至少4个固定点，并配备至少2套外部赛车安全锁销。原厂机盖拉线锁机构必须拆除。'
-    },
-    action: { ru: 'Установить внешние замки капота/багажника и снять штатный трос.', en: 'Install external safety hood pins and remove OEM latch cable.', cn: '安装机盖/后备箱外部安全锁销并拆除原车拉线。' }
-  },
-  {
-    code: '1.3',
-    title: { ru: 'Буксировочные стропы', en: 'Tow Straps', cn: '拖车带' },
-    article: { ru: 'Статья 10. Буксировочная стропа', en: 'Article 10. Tow Straps', cn: '第10条 拖车带' },
-    desc: { ru: 'Нейлон/трос ∅10 мм, выступ 15–25 см, стрелка ≥12 см', en: 'Nylon/cable ∅10mm, protruding 15-25cm, marking arrow ≥12cm', cn: '尼龙/钢索 ∅10mm，伸出15-25cm，反光指示箭头≥12cm' },
-    rule: {
-      ru: 'На передней и задней части автомобиля устанавливаются мягкие буксировочные стропы из нейлона или металлического троса ∅10 мм. Выступ за бампер 15–25 см. Стрелка яркого цвета длиной ≥12 см.',
-      en: 'Soft towing straps made of nylon webbing or ∅10mm steel cable must be installed front and rear. Protruding 15-25cm past bumper. Marked with bright arrow min 12cm.',
-      cn: '赛车前后必须各安装一条尼龙带或∅10mm金属钢索拖车带。突出保险杠15-25cm。贴有长度≥12cm的醒目反光指示箭头。'
-    },
-    action: { ru: 'Установить буксировочные стропы спереди и сзади и нанести стрелки маркировки ≥12 см.', en: 'Mount tow straps front/rear and apply yellow/red arrow decals min 12cm.', cn: '安装前后拖车带并张贴长度≥12cm的醒目反光箭头。' }
-  },
-  {
-    code: '1.4',
-    title: { ru: 'Башбары (Bash-bars)', en: 'Bash-bars', cn: '防撞梁（Bash-bars）' },
-    article: { ru: 'Статья 9. Защитные балки (Башбары)', en: 'Article 9. Protective Tubular Bars (Bash-bars)', cn: '第9条 防撞保护梁（Bash-bars）' },
-    desc: { ru: 'Стальная труба ∅25–44 мм, стенка 1,6–3,2 мм, болты 4×М10 8.8 или сварка', en: 'Steel tubing ∅25-44mm, wall 1.6-3.2mm, mounted with 4xM10 8.8 bolts or welded', cn: '钢管∅25-44mm，壁厚1.6-3.2mm，4×M10 8.8螺栓固定或焊接' },
-    rule: {
-      ru: 'Трубчатые защитные балки (башбары) изготавливаются из бесшовной стальной трубы ∅25-44 мм с толщиной стенки 1.6-3.2 мм. Крепление к лонжеронам болтами не менее 4хМ10 (класс 8.8) с пластинами толщиной от 3 мм либо качественной сваркой.',
-      en: 'Tubular bash-bars must be seamless steel tube ∅25-44mm, wall 1.6-3.2mm. Attached to frame rails using min 4xM10 grade 8.8 bolts with min 3mm backing plates or certified weld.',
-      cn: '前后管状防撞梁必须由∅25-44mm、壁厚1.6-3.2mm的无缝钢管制成。通过至少4颗M10（8.8级）螺栓及≥3mm加强垫板或高质量焊接与纵梁连接。'
-    },
-    action: { ru: 'Усилить крепление башбаров болтами М10 класса 8.8 с пластинами ≥3 мм.', en: 'Strengthen bash bar mounts with M10 grade 8.8 hardware and plates.', cn: '改用M10 8.8级高强度螺栓及加强垫板加固防撞梁底座。' }
-  },
-  {
-    code: '1.5',
-    title: { ru: 'Крылья и арки', en: 'Fenders & Wheel Arches', cn: '翼子板与轮拱' },
-    article: { ru: 'Статья 9. Крылья и колесные арки', en: 'Article 9. Fenders and Wheel Arches', cn: '第9条 翼子板与轮拱' },
-    desc: { ru: 'Крылья закрывают колёса сверху (выступ шины наружу ≤20% ширины)', en: 'Fenders cover wheels (tire projection <=20% of tire width)', cn: '翼子板遮盖轮胎（轮胎突出不得超过宽度的20%）' },
-    rule: {
-      ru: 'Крылья и расширители должны полностью закрывать колесо сверху. Выступание протектора шины за внешнюю кромку крыла допускается не более чем на 20% ширины шины при виде сверху.',
-      en: 'Fenders/overfenders must cover the top of wheels. Tire tread protrusion beyond the fender contour must not exceed 20% of tire section width viewed from above.',
-      cn: '翼子板或宽体套件必须从上方完全遮盖轮胎胎面。垂直俯视时，胎面突出翼子板外沿严禁超过胎宽的20%。'
-    },
-    action: { ru: 'Установить расширители арок (фендеры) или отрегулировать вылет колес.', en: 'Install wider fender flares or adjust wheel offset/camber.', cn: '加装宽体轮眉或调整轮毂ET偏距/倾角。' }
-  },
-  {
-    code: '1.6',
-    title: { ru: 'Лобовое стекло', en: 'Windshield', cn: '前挡风玻璃' },
-    article: { ru: 'Статья 11. Лобовое стекло', en: 'Article 11. Windshield', cn: '第11条 前挡风玻璃' },
-    desc: { ru: 'Триплекс/поликарбонат ≥5 мм, без трещин в зоне водителя', en: 'Laminated glass/polycarbonate >=5mm, clear vision without cracks in driver area', cn: '夹胶安全玻璃/聚碳酸酯板≥5mm，雨刮清扫区域无裂纹' },
-    rule: {
-      ru: 'Лобовое стекло — триплекс с маркировкой или монолитный поликарбонат с устойчивым покрытием (≥5 мм). Запрещены трещины в зоне работы водительского стеклоочистителя.',
-      en: 'Laminated glass with safety marks or hard-coated polycarbonate (thickness >=5mm). No cracks allowed within driver wiper sweep.',
-      cn: '前挡风玻璃必须使用符合标准的夹胶安全玻璃或耐磨聚碳酸酯板（厚度≥5mm）。雨刮清扫区域严禁有裂纹。'
-    },
-    action: { ru: 'Заменить поврежденное лобовое стекло.', en: 'Replace damaged windshield.', cn: '更换受损前挡风玻璃。' }
-  },
-  {
-    code: '1.7',
-    title: { ru: 'Боковые стёкла', en: 'Side Windows', cn: '侧车窗' },
-    article: { ru: 'Статья 11. Боковое и заднее остекление', en: 'Article 11. Side and Rear Windows', cn: '第11条 侧窗及后窗' },
-    desc: { ru: 'Оригинальные с плёнкой ≥100 мкм изнутри или пластик 3–5 мм', en: 'OEM with inside safety film >=100um or polycarbonate 3-5mm', cn: '原厂带内部防爆膜≥100微米或3-5mm聚碳酸酯板' },
-    rule: {
-      ru: 'Боковые стекла: оригинальные закаленные должны быть оклеены изнутри защитной пленкой ≥100 мкм, либо заменены на поликарбонат 3-5 мм с надежной фиксацией.',
-      en: 'Side windows: OEM toughened glass must have internal transparent anti-shatter film (min 100um), or be replaced with 3-5mm polycarbonate securely fastened.',
-      cn: '侧车窗：原厂钢化玻璃内侧必须贴有厚度≥100微米的透明防爆膜；或换装3-5mm厚聚碳酸酯板可靠固定。'
-    },
-    action: { ru: 'Оклеить боковые стекла защитной пленкой или установить поликарбонат.', en: 'Apply safety film inside OEM glass or fit polycarbonate.', cn: '在车窗内侧贴防爆膜或换装聚碳酸酯板。' }
-  },
-  {
-    code: '1.8',
-    title: { ru: 'Зеркала заднего вида', en: 'Rearview Mirrors', cn: '后视镜' },
-    article: { ru: 'Статья 12. Зеркала заднего вида', en: 'Article 12. Rearview Mirrors', cn: '第12条 后视镜' },
-    desc: { ru: '2 наружных зеркала, площадь каждого ≥60 см²', en: '2 external mirrors, reflective area of each >=60 cm2', cn: '左右2个外部后视镜，每个镜面有效面积≥60 cm2' },
-    rule: {
-      ru: 'Автомобиль должен быть оборудован двумя внешними зеркалами заднего вида. Площадь зеркального элемента каждого зеркала должна составлять не менее 60 см².',
-      en: 'Car must be equipped with 2 external rearview mirrors. Reflective surface area of each mirror must be at least 60 cm2.',
-      cn: '赛车必须配备左、右2个外后视镜。每个后视镜的有效反光镜面面积不得小于60平方厘米。'
-    },
-    action: { ru: 'Установить зеркала требуемой площади (не менее 60 см²).', en: 'Install regulation mirrors meeting min 60 cm2 area.', cn: '安装有效镜面面积≥60cm2的后视镜。' }
-  },
-  {
-    code: '1.9',
-    title: { ru: 'Стоп-сигналы', en: 'Brake Lights', cn: '刹车灯' },
-    article: { ru: 'Статья 13. Световая сигнализация и стоп-сигналы', en: 'Article 13. Lighting and Brake Lights', cn: '第13条 刹车灯与信号指示灯' },
-    desc: { ru: 'Исправны, светят красным при торможении (основные + дублер)', en: 'Functional red brake lights + LED strip', cn: '红光正常工作 + 高位LED灯带' },
-    rule: {
-      ru: 'Обязательны исправные задние стоп-сигналы красного цвета и дополнительный верхний светодиодный дублер, срабатывающие строго синхронно с нажатием педали.',
-      en: 'Functional rear red brake lights and secondary high-mount LED brake strip required, illuminating synchronously upon brake activation.',
-      cn: '必须配备正常工作的后部红色刹车灯及高位刹车灯带，踩下制动踏板时同步点亮。'
-    },
-    action: { ru: 'Восстановить проводку и обеспечить синхронную работу стоп-сигналов и дублера.', en: 'Repair brake light wiring and ensure synchronous operation.', cn: '修复刹车灯线路及灯组，确保同步点亮。' }
-  },
-  {
-    code: '1.10',
-    title: { ru: 'Передние фары', en: 'Headlights', cn: '前大灯' },
-    article: { ru: 'Статья 13. Головной свет (Фары)', en: 'Article 13. Headlights', cn: '第13条 前大灯' },
-    desc: { ru: 'В штатных местах, видны с расстояния 50 м', en: 'Headlights in OEM locations, visible from at least 50m', cn: '前大灯位于原车标准位置，至少50米外清晰可见' },
-    rule: {
-      ru: 'Передняя оптика должна быть смонтирована в штатных местах. Фары или ходовые огни должны обеспечивать отчетливую видимость автомобиля с расстояния не менее 50 метров.',
-      en: 'Front lighting mounted in OEM locations, ensuring vehicle visibility from min 50 meters in all weather conditions.',
-      cn: '前大灯必须安装在原车灯位，保证在任何条件下至少50米外清晰可见。'
-    },
-    action: { ru: 'Закрепить фары и обеспечить надежное электропитание.', en: 'Mount headlights securely and connect functional wiring.', cn: '固定前大灯并恢复正常供电线路。' }
-  },
-  {
-    code: '1.11',
-    title: { ru: 'Внешний выключатель массы', en: 'External Master Switch', cn: '外部总电源开关' },
-    article: { ru: 'Статья 19. Внешний аварийный выключатель массы', en: 'Article 19. External Master Cut-off Switch', cn: '第19条 外部电源总断路开关' },
-    desc: { ru: 'Знак «красная Е» или молния в синем треугольнике ∅10–12 см', en: 'Marked symbol ∅10-12cm, beneath windshield or rear pillar', cn: '红色"E"/闪电标识 ∅10-12cm，位于挡风玻璃或后柱下沿' },
-    rule: {
-      ru: 'Привод внешнего аварийного выключателя массы располагается в нижней части рамки лобового стекла или задней стойки. Обозначается знаком ∅10–12 см.',
-      en: 'External electrical cut-off pull/switch located at lower windshield corner or rear pillar. Marked by official sticker with red spark in blue triangle or letter E.',
-      cn: '外部电源总切断拉环必须设置在前挡风下沿或后柱，张贴带有蓝色三角红闪电或红色"E"的标准标识。'
-    },
-    action: { ru: 'Установить привод выключателя массы наружу и нанести знак.', en: 'Fit external master switch cable and regulation decal.', cn: '布置外部断电开关拉索并张贴标准标识贴纸。' }
-  },
-  {
-    code: '1.12',
-    title: { ru: 'Внешний привод пожаротушения', en: 'External Extinguisher Pull', cn: '外部灭火控制手柄' },
-    article: { ru: 'Статья 23. Внешний привод системы пожаротушения', en: 'Article 23. External Fire Extinguisher Release', cn: '第23条 外部灭火控制手柄' },
-    desc: { ru: 'Рядом с выключателем массы, наклейка «красная Е» ∅10 см', en: 'Adjacent to cut-off switch, marked with Red E decal', cn: '紧邻总开关，带有白底红圈红"E"标识 ∅10cm' },
-    rule: {
-      ru: 'Внешний спусковой механизм СПТ должен располагаться рядом с выключателем массы. Обозначается наклейкой ∅10 см с красной буквой «E».',
-      en: 'External fire trigger handle located directly adjacent to electrical cut-off. Marked by 10cm round decal with red letter E in white circle.',
-      cn: '外部灭火触发拉柄必须紧靠外部电源开关，并张贴直径10cm的白底红圈红"E"灭火标识。'
-    },
-    action: { ru: 'Вывести трос СПТ наружу рядом с выключателем массы и нанести знак «Е».', en: 'Route extinguisher release cable outside and affix decal E.', cn: '将灭火器钢索引出车外并张贴红色"E"贴纸。' }
-  },
-  {
-    code: '1.13',
-    title: { ru: 'Выхлопная система', en: 'Exhaust System', cn: '排气系统' },
-    article: { ru: 'Статья 14. Выхлопная система', en: 'Article 14. Exhaust System', cn: '第14条 排气系统规范' },
-    desc: { ru: 'Металл, 15–20 см от бака/магистралей, выступ ≤10 мм за кузов', en: 'Metal pipe, 15-20cm from fuel tank, exits rear/side, protrusion <=10mm', cn: '全金属管路，离油箱15-20cm以上，朝后或侧方，突出车身≤10mm' },
-    rule: {
-      ru: 'Выхлопная труба полностью металлическая, проходит на расстоянии не менее 15–20 см от бака/магистралей (или имеет термоэкран). Выступ за кузов — не более 10 мм.',
-      en: 'Exhaust must be entirely metal, passing min 15-20cm from fuel cell and lines (or heat shielded). Protruding no more than 10mm past body perimeter.',
-      cn: '排气管必须为全金属结构，距油箱及管路至少15-20cm（或加隔热板）。伸出车身外沿不得超过10mm。'
-    },
-    action: { ru: 'Укоротить выхлоп по контуру кузова и установить термоэкран.', en: 'Trim exhaust flush with bodywork and install heatshielding.', cn: '将排气尾管修剪至车身轮廓内，加装隔热罩。' }
-  },
-  {
-    code: '1.14',
-    title: { ru: 'Шины', en: 'Tires', cn: '轮胎规范' },
-    article: { ru: 'Статья 15. Требования к шинам', en: 'Article 15. Tire Regulations', cn: '第15条 轮胎技术规范' },
-    desc: { ru: 'Дорожный рисунок, глубина ≥1.6 мм, слики и химобработка запрещены', en: 'Road tread pattern, depth >=1.6mm, slicks and chemical treatment forbidden', cn: '民用花纹，花纹深度≥1.6mm，严禁光头胎及化学软化' },
-    rule: {
-      ru: 'Разрешены только дорожные радиальные шины с рисунком протектора с остатком не менее 1.6 мм. Слики (включая резаные) и химическая обработка строго запрещены.',
-      en: 'Only road-legal radial tires with molded tread pattern permitted (min 1.6mm depth). Racing slicks and chemical softening strictly forbidden.',
-      cn: '仅限带有胎面花纹的民用半热熔轮胎（深度≥1.6mm）。严禁使用光头胎（含手工开槽）及任何化学软化处理。'
-    },
-    action: { ru: 'Заменить шины на разрешенную серию регламента RDS.', en: 'Mount eligible series-approved tires.', cn: '更换符合规则许可的常规民用花纹半热熔轮胎。' }
-  },
-  {
-    code: '1.15',
-    title: { ru: 'Диски и крепеж', en: 'Wheels & Studs', cn: '轮毂与轮栓' },
-    article: { ru: 'Статья 15. Колесные диски и крепеж', en: 'Article 15. Wheels and Fasteners', cn: '第15条 轮圈及车轮固定件' },
-    desc: { ru: 'Металл (магний запрещён), шпильки не выступают, все гайки затянуты', en: 'Metal (magnesium prohibited), studs not protruding, all nuts tight', cn: '金属材质（严禁镁合金），螺栓螺母齐全，螺柱不得异常突出' },
-    rule: {
-      ru: 'Диски из алюминиевых или стальных сплавов (магний запрещен). Зацепление гайки шпилькой должно быть не менее диаметра резьбы. Все гайки должны быть затянуты.',
-      en: 'Wheels made of aluminum or steel alloys. Magnesium wheels strictly prohibited. Studs must engage nut by at least the thread diameter.',
-      cn: '轮毂仅限铝合金或钢制。严禁使用镁合金轮毂。轮栓旋入螺母深度至少达到螺纹公称直径。'
-    },
-    action: { ru: 'Установить полный комплект закрытых гаек и проверить затяжку.', en: 'Install complete set of correct lug nuts and torque to spec.', cn: '补齐全部规定轮毂螺母并按标准扭矩上紧。' }
-  },
-  {
-    code: '1.16',
-    title: { ru: 'Обязательные наклейки на кузове', en: 'Mandatory Decals', cn: '强制车身贴纸' },
-    article: { ru: 'Статья 32. Обязательные наклейки на кузове', en: 'Article 32. Mandatory Championship Decals', cn: '第32条 强制车身车贴规范' },
-    desc: { ru: 'Номера на дверях/капоте, баннер RDS на лобовом, спонсоры, флаг, фамилия', en: 'Door/hood numbers, RDS windshield banner, sponsors, flag, driver name', cn: '两侧车门及机盖号码牌、前挡RDS遮阳条、赞助商车贴、国旗及车手姓名' },
-    rule: {
-      ru: 'Автомобиль обязан нести полную официальную оклейку чемпионата: стартовые номера на дверях и капоте, баннер Royal Drift Series на лобовом стекле, спонсоры серии, флаг и фамилия на стеклах.',
-      en: 'Vehicle must carry complete official livery: competition numbers on doors and hood, Royal Drift Series windshield banner, title sponsor decals, and driver name with national flag.',
-      cn: '赛车车身必须完整张贴官方车贴：两侧车门及机盖号码牌、前挡风玻璃顶部Royal Drift Series遮阳条、赞助商车贴，以及后侧窗车手姓名及国旗标识。'
-    },
-    action: { ru: 'Получить в штабе соревнований недостающие спонсорские наклейки и наклеить по схеме.', en: 'Obtain missing official decals from race HQ and apply strictly per diagram.', cn: '前往赛事指挥部领取缺失的官方贴纸，并严格按官方图纸位置张贴。' }
-  }
-];
+  let remarks = [];
+  let status = 'ok';
 
-const CHECKLIST_INT = [
-  {
-    code: '2.1',
-    title: { ru: 'Каркас: основные дуги и маркировка', en: 'Roll Cage: Main Hoops & Tag', cn: '防滚架：主圈及认证钢印' },
-    article: { ru: 'Статья 8. Каркас безопасности', en: 'Article 8. Safety Roll Cage', cn: '第8条 安全防滚架规范' },
-    desc: { ru: 'Главная и передняя дуги ∅45×2.5 или ∅50×2.0 мм, 6-значный номер, паспорт', en: 'Main & front hoops ∅45/50mm, 6-digit number, passport', cn: '主圈及前圈∅45/50mm，6位编号，铭牌及认证手册' },
-    rule: {
-      ru: 'Главная и передняя дуги из бесшовной трубы ∅45×2.5 или ∅50×2.0 мм. Обязателен технический паспорт и четкий выбитый 6-значный номер.',
-      en: 'Main and front hoops cold drawn seamless steel tube ∅45x2.5 or ∅50x2.0mm. Must have official ASN passport and 6-digit stamped serial.',
-      cn: '主防滚圈必须采用∅45x2.5或∅50x2.0mm冷拔无缝碳钢管。必须具备官方注册手册及清晰的6位防滚架编号钢印。'
-    },
-    action: { ru: 'Предъявить паспорт каркаса и зачистить выбитый 6-значный номер.', en: 'Present roll cage technical passport and ensure stamped number is visible.', cn: '出示防滚架认证手册，清理并确保钢印6位编号清晰可辨。' }
-  },
-  {
-    code: '2.2',
-    title: { ru: 'Каркас: дверные брусья', en: 'Cage: Door Bars', cn: '防滚架：车门防撞横梁' },
-    article: { ru: 'Статья 8. Каркас (Боковая защита)', en: 'Article 8. Roll Cage Side Protection', cn: '第8条 防滚架侧向防撞结构' },
-    desc: { ru: 'Боковые защитные кресты или продольные брусья в проемах дверей', en: 'Door crosses or longitudinal bars in door apertures', cn: '车门防撞X支撑或双道纵向平直防撞梁' },
-    rule: {
-      ru: 'В дверных проемах со стороны пилота и пассажира должны быть вварены защитные кресты с усилительными косынками либо продольные брусья по ст. 253 FIA.',
-      en: 'Side protection crosses with gussets or parallel bars compliant with FIA App J Art 253 must be fitted in door openings.',
-      cn: '车门开口处必须焊装符合FIA附录J第253条的X型加强防撞梁或双道平行防撞管。'
-    },
-    action: { ru: 'Вварить недостающие усилительные элементы в дверные проемы.', en: 'Weld required door reinforcement bars in door openings.', cn: '按规范在车门处补焊符合FIA标准的防撞加强管。' }
-  },
-  {
-    code: '2.3',
-    title: { ru: 'Каркас: опорные пластины', en: 'Cage: Base Plates', cn: '防滚架：底板支撑加固板' },
-    article: { ru: 'Статья 8. Каркас (Опорные пластины)', en: 'Article 8. Roll Cage Footplates', cn: '第8条 防滚架底板固定要求' },
-    desc: { ru: 'Опорные пластины к кузову: площадь ≥120 см², толщина стали ≥3 мм', en: 'Chassis baseplates: area >=120 cm2, steel thickness >=3mm', cn: '车身加固底板：承压面积≥120 cm2，钢板厚度≥3mm' },
-    rule: {
-      ru: 'Каждая опора дуги каркаса крепится к кузову через опорную пластину площадью не менее 120 см² и толщиной стали не менее 3 мм.',
-      en: 'Each roll cage foot must anchor to chassis via reinforcement baseplate with min area of 120 cm2 and steel thickness min 3mm.',
-      cn: '防滚架每个接地点必须焊接在面积不小于120平方厘米、厚度不小于3毫米的钢质加强底板上。'
-    },
-    action: { ru: 'Усилить опорные пластины каркаса согласно регламенту.', en: 'Reinforce cage mounting baseplates to meet min 120 cm2 x 3mm.', cn: '将防滚架底板加强垫板升级加厚至≥3mm且面积≥120cm2。' }
-  },
-  {
-    code: '2.4',
-    title: { ru: 'Каркас: диагонали на главной дуге', en: 'Cage: Main Hoop Diagonals', cn: '防滚架：主圈对角斜撑' },
-    article: { ru: 'Статья 8. Каркас (Диагонали главной дуги)', en: 'Article 8. Roll Cage Diagonals', cn: '第8条 防滚架对角斜撑' },
-    desc: { ru: 'Прямые диагонали, соединение ≤100 мм от опорных точек или углов', en: 'Straight diagonals, junction <=100mm from corner mounting points', cn: '主防滚圈对角斜撑：直线平直，交汇点距离支撑拐角≤100mm' },
-    rule: {
-      ru: 'Диагональные элементы главной дуги должны быть прямолинейными. Соединение диагонали с дугой — не далее 100 мм от угла или пластины опоры.',
-      en: 'Main hoop diagonal members must be straight. Junction with hoop must be positioned within 100mm from main hoop corner or baseplate.',
-      cn: '主防滚圈对角斜撑管必须保持平直。对角支撑与主管交汇点距离拐角受力点不得超过100mm。'
-    },
-    action: { ru: 'Переварить диагональ в пределы 100 мм от узла главной дуги.', en: 'Re-weld diagonals to meet 100mm junction tolerance.', cn: '重新修正主圈对角斜撑交汇位置至100mm允许公差以内。' }
-  },
-  {
-    code: '2.5',
-    title: { ru: 'Каркас: защитные накладки', en: 'Cage: Protective Padding', cn: '防滚架：阻燃缓冲保护垫' },
-    article: { ru: 'Статья 8. Каркас (Защитные накладки)', en: 'Article 8. Roll Cage Padding (FIA 8857-2001)', cn: '第8条 防滚架防撞吸能垫' },
-    desc: { ru: 'Зоны контакта со шлемом/пилотом: негорючие накладки омологации FIA 8857-2001', en: 'Helmet/body contact zones: FIA 8857-2001 certified fireproof padding', cn: '车手头部及肢体碰撞接触区包裹FIA 8857-2001阻燃泡棉' },
-    rule: {
-      ru: 'Трубы каркаса в зонах возможного контакта со шлемом пилота должны быть закрыты сертифицированными накладками по стандарту FIA 8857-2001.',
-      en: 'All roll cage tubes within possible contact zone with driver helmet or limbs must be covered with FIA 8857-2001 certified high-density padding.',
-      cn: '在车手头部头盔或躯干可能碰撞接触的所有防滚架管件表面，必须包裹符合FIA 8857-2001标准的高密度阻燃吸能防撞衬垫。'
-    },
-    action: { ru: 'Установить энергопоглощающие накладки омологации FIA 8857-2001.', en: 'Fit certified FIA 8857-2001 fireproof roll bar padding.', cn: '在车手头部接触区域安装FIA 8857-2001认证防撞阻燃保护衬垫。' }
-  },
-  {
-    code: '2.6',
-    title: { ru: 'Спортивное сиденье (ковш)', en: 'Racing Seat', cn: '赛车座椅' },
-    article: { ru: 'Статья 20. Сиденье пилота и крепления', en: 'Article 20. Racing Seats & Mounts', cn: '第20条 赛车座椅与安装支架' },
-    desc: { ru: 'Ковш FIA 8855/8862, 4 точки, кронштейны сталь ≥3 мм / алюм ≥5 мм, болты ≥М8 10.9', en: 'Bucket seat FIA 8855/8862, 4 points, brackets steel >=3mm / alu >=5mm, bolts M8 10.9', cn: 'FIA 8855/8862认证，4点固定，支架钢≥3mm/铝≥5mm，高强度螺栓M8 10.9' },
-    rule: {
-      ru: 'Спортивное сиденье с омологацией FIA. Крепление на 4 болтах М8 класса не ниже 10.9 через стальные кронштейны ≥3 мм (или алюминиевые ≥5 мм) с шайбами пола ≥40 см².',
-      en: 'Bucket seat with valid FIA homologation. Mounted via steel brackets min 3mm (or alu min 5mm), 4xM8 bolts min grade 10.9 with floor plates min 40 cm2.',
-      cn: '桶椅必须具有FIA认证。采用≥3mm钢制（或≥5mm铝制）支架，4颗公称直径≥M8、强度等级≥10.9的高强度螺栓固定，底板加强垫片面积≥40cm2。'
-    },
-    action: { ru: 'Заменить болты сиденья на класс 10.9 и установить усилительные пластины пола.', en: 'Replace seat bolts with grade 10.9 hardware and reinforce floor mounts.', cn: '将座椅固定螺栓升级为10.9级高强度螺栓并加装底板钢垫片。' }
-  },
-  {
-    code: '2.7',
-    title: { ru: 'Ремни безопасности', en: 'Safety Harness', cn: '赛车安全带' },
-    article: { ru: 'Статья 21. Ремни безопасности', en: 'Article 21. Safety Harnesses', cn: '第21条 赛车安全带规范' },
-    desc: { ru: '5/6-точечные, действующая омологация FIA 8854/98 или 8853-2016, металл замки', en: '5/6-point, valid FIA 8854/98 or 8853-2016 homologation, metal tongue tangs', cn: '5/6点式，有效FIA 8854/98或8853-2016认证，全金属搭扣锁舌' },
-    rule: {
-      ru: 'Обязательны 5- или 6-точечные ремни с действующей омологацией FIA 8854/98 или 8853-2016. Металлические защелки без следов износа и повреждений.',
-      en: 'Mandatory 5- or 6-point safety harness with valid FIA 8854/98 or 8853-2016 homologation. Metal latch mechanism, no frayed edges, cuts, burns or chemical degradation.',
-      cn: '必须使用5点或6点式赛车安全带，具有有效FIA 8854/98或8853-2016认证标签。金属快脱锁扣完好，织带无破损老化。'
-    },
-    action: { ru: 'Установить ремни безопасности с неистекшим сроком FIA.', en: 'Replace harness with valid in-date FIA homologated set.', cn: '换装在FIA认证有效期内的5/6点式正品赛车安全带。' }
-  },
-  {
-    code: '2.8',
-    title: { ru: 'Точки крепления ремней', en: 'Harness Anchors', cn: '安全带固定锚点' },
-    article: { ru: 'Статья 21. Точки крепления ремней', en: 'Article 21. Harness Anchors', cn: '第21条 安全带固定锚点' },
-    desc: { ru: 'К кузову (7/16-20 UNF, контрпластины ≥40 см²×3 мм) или harness bar (запрещено к сиденью!)', en: 'To chassis (7/16-20 UNF, plates >=40cm2x3mm) or harness bar (forbidden to seat sliders)', cn: '固定于车身加强板（7/16-20 UNF，垫板≥40cm2×3mm）或防滚架拉带梁（严禁固定于座椅/滑轨）' },
-    rule: {
-      ru: 'Поясные лямки крепятся только к усиленным точкам кузова с резьбой 7/16-20 UNF и пластинами ≥40 см² толщиной ≥3 мм. Плечевые — на harness bar каркаса. Крепить ремни к сиденью запрещено.',
-      en: 'Lap straps anchor to reinforced floor/tunnel points with 7/16-20 UNF thread and min 40 cm2 x 3mm plates. Shoulder straps wrap around cage harness bar. Forbidden to attach to seat sliders.',
-      cn: '腰带必须使用7/16-20 UNF螺栓固定在加装有≥40cm2×3mm钢垫板的车身骨架上。肩带缠绕在防滚架横梁上。严禁固定于座椅本体或滑轨。'
-    },
-    action: { ru: 'Перенести точки крепления ремней с салазок сиденья на кузов/каркас.', en: 'Relocate harness anchors from seat sliders to chassis/cage.', cn: '将安全带固定点从座椅滑轨转移至车身底板强化锚点或防滚架拉带梁。' }
-  },
-  {
-    code: '2.9',
-    title: { ru: 'Система HANS/FHR', en: 'HANS/FHR Device', cn: '头颈保护系统HANS/FHR' },
-    article: { ru: 'Статья 22. Система защиты головы и шеи HANS/FHR', en: 'Article 22. FHR / HANS System', cn: '第22条 头颈保护装置' },
-    desc: { ru: 'Обязательна во всех заездах, клипсы на шлеме и поводки стандарта FIA 8858-2010', en: 'Mandatory in all sessions, helmet anchors and tether straps FIA 8858-2010', cn: '强制使用，与头盔卡扣匹配，符合FIA 8858-2010认证' },
-    rule: {
-      ru: 'Применение системы защиты шеи HANS/FHR стандарта FIA 8858 обязательно. Клипсы на шлеме и поводки должны иметь маркировку FIA 8858-2010.',
-      en: 'Frontal Head Restraint (FHR/HANS) complying with FIA 8858 is mandatory across all on-track sessions. Helmet anchors and tether straps must bear authentic FIA 8858-2010 labels.',
-      cn: '所有上场车手必须佩戴符合FIA 8858标准的头颈保护装置（HANS/FHR）。头盔固定锚点及连接拉带必须具有清晰完好的FIA 8858-2010认证标签。'
-    },
-    action: { ru: 'Предоставить омологированную систему HANS и шлем с клипсами FIA.', en: 'Present valid FIA-approved HANS device and helmet anchors.', cn: '提供符合FIA认证的HANS装置及带有标准连接卡扣的头盔。' }
-  },
-  {
-    code: '2.10',
-    title: { ru: 'Система пожаротушения (СПТ)', en: 'Fire Extinguisher System', cn: '车载灭火系统' },
-    article: { ru: 'Статья 23. Стационарная система пожаротушения', en: 'Article 23. Fire Extinguishing System', cn: '第23条 车载灭火系统' },
-    desc: { ru: 'Омологация FIA (лист №16/52), распылители: ≥2 в моторный отсек и ≥2 в ноги пилота', en: 'FIA homologated (Technical List 16/52), nozzles: >=2 into engine bay and >=2 into cockpit', cn: 'FIA认证（技术清单16/52），喷嘴覆盖驾驶舱脚部及发动机舱' },
-    rule: {
-      ru: 'Система пожаротушения FIA (лист 16 или 52). Не менее 2 сопел направлены в двигатель и не менее 2 сопел — в ноги водителя.',
-      en: 'Vehicle must feature plumbed-in fire extinguishing system homologated by FIA (List 16 or 52). At least 2 nozzles into engine bay and 2 into cockpit footwell.',
-      cn: '赛车必须安装符合FIA技术清单第16或52号认证的管路灭火系统。至少2个喷头喷向发动机舱，至少2个喷头覆盖驾驶员脚踏板及腿部区域。'
-    },
-    action: { ru: 'Развести сопла пожаротушения в ноги пилота и моторный отсек.', en: 'Route extinguisher nozzles correctly to footwell and engine bay.', cn: '按规范将灭火喷嘴正确布置至驾驶员脚部和机舱。' }
-  },
-  {
-    code: '2.11',
-    title: { ru: 'Внутренний привод СПТ', en: 'Internal Extinguisher Handle', cn: '驾驶员灭火触发拉手' },
-    article: { ru: 'Статья 23. Органы управления СПТ', en: 'Article 23. Fire Extinguisher Internal Pull', cn: '第23条 驾驶员灭火拉索位置' },
-    desc: { ru: 'Легко доступен пилоту в боевом положении с пристёгнутыми ремнями', en: 'Easily accessible by driver strapped in harness', cn: '车手在紧固安全带坐姿状态下单手伸手可及' },
-    rule: {
-      ru: 'Внутренняя ручка/кнопка СПТ должна располагаться в зоне прямой досягаемости руки пилота, пристегнутого ремнями в сиденье.',
-      en: 'Internal fire extinguisher trigger mechanism must be reachable by the driver seated normally with full harness tightened.',
-      cn: '驾驶舱内灭火系统手动拉手或按钮必须位于车手紧固安全带正常坐姿下单手即刻能够触及的区域。'
-    },
-    action: { ru: 'Перенести ручку привода СПТ ближе к пилоту.', en: 'Relocate internal pull handle within driver arm reach.', cn: '将舱内灭火触发拉柄移至车手伸手可及的控制台或转向柱旁。' }
-  },
-  {
-    code: '2.12',
-    title: { ru: 'Срок поверки и давление СПТ', en: 'Extinguisher Inspection Date', cn: '灭火器检定周期' },
-    article: { ru: 'Статья 23. Сроки поверки системы пожаротушения', en: 'Article 23. Extinguisher Service Interval', cn: '第23条 灭火器检定周期' },
-    desc: { ru: 'Срок поверки баллона СПТ ≤2 лет, стрелка манометра строго в зеленой зоне', en: 'Service date stamped <=2 years, pressure gauge strictly in green zone', cn: '上次检定距今≤2年，压力表指针严格保持在绿色安全区域' },
-    rule: {
-      ru: 'Баллон СПТ должен иметь читаемый стикер поверки с датой (интервал ≤2 лет). Стрелка манометра строго в зеленой зоне.',
-      en: 'Extinguisher cylinder must carry legible inspection decal indicating service date (interval <=2 years). Pressure gauge strictly in green zone.',
-      cn: '灭火器钢瓶必须有可读的厂商检定标签，上次检验日期距今不得超过2年，压力表指针必须在绿色安全区域。'
-    },
-    action: { ru: 'Пройти поверку баллона СПТ у дилера либо заменить баллон.', en: 'Service and recertify extinguisher cylinder with certified agent.', cn: '对灭火系统进行再检定或更换全新年检钢瓶。' }
-  },
-  {
-    code: '2.13',
-    title: { ru: 'Топливо и наклейка «ALCOHOL»', en: 'Fuel & Alcohol Decal', cn: '赛用燃料与乙醇贴纸' },
-    article: { ru: 'Статья 24. Топливо и маркировка «ALCOHOL»', en: 'Article 24. Permitted Fuel & Identification', cn: '第24条 燃料及警示标识' },
-    desc: { ru: 'Товарный бензин или этанол/E85. При спирте — наклейка «ALCOHOL» 10–12 см', en: 'Commercial gasoline or ethanol/E85; if alcohol is used, mandatory ALCOHOL sticker 10-12cm', cn: '常规汽油或E85/乙醇；使用乙醇燃料必须张贴10-12cm ALCOHOL反光贴纸' },
-    rule: {
-      ru: 'При использовании биоэтанола/E85 на лобовое стекло и у горловины бака обязательно наносится крупная световозвращающая наклейка «ALCOHOL» 10–12 см.',
-      en: 'If alcohol-based fuel (E85/ethanol) is used, reflective "ALCOHOL" stickers (10-12cm) must be displayed on windshield and near fuel filler.',
-      cn: '使用含乙醇燃料的赛车，必须在前挡风玻璃及加油口旁张贴醒目的"ALCOHOL"大字反光警示贴纸（高度≥10cm）。'
-    },
-    action: { ru: 'Нанести наклейки «ALCOHOL» при использовании спиртового топлива.', en: 'Affix mandatory ALCOHOL decals on windshield and near fuel filler.', cn: '在车窗及加油口加贴标准"ALCOHOL"警示贴纸。' }
-  },
-  {
-    code: '2.14',
-    title: { ru: 'Запрещенные газы (N2O)', en: 'Prohibited Gases (N2O)', cn: '严禁使用笑气及气体介质' },
-    article: { ru: 'Статья 24. Запрещенные газы и вещества (N2O)', en: 'Article 24. Prohibited Substances', cn: '第24条 严禁辅助加压介质' },
-    desc: { ru: 'Запрещены пропан, метан, закись азота (N₂O). Баллоны и магистрали демонтированы', en: 'Prohibited: propane, methane, nitrous oxide (N2O) bottles and plumbing', cn: '严禁使用的燃料及介质：液化丙烷、天然气、笑气（N2O）系统及管路' },
-    rule: {
-      ru: 'Категорически запрещено применение закиси азота (N2O), метанола и баллонов под давлением с окислителями. Баллоны и магистрали должны быть полностью сняты.',
-      en: 'Strictly forbidden to use nitrous oxide (N2O), pure methanol, or pressurized oxidizer systems. Any N2O tanks and plumbing must be completely removed.',
-      cn: '严禁使用一氧化二氮笑气（N2O）系统、纯甲醇及任何氧化助燃瓶罐。车上原有的笑气瓶及管路必须彻底拆除。'
-    },
-    action: { ru: 'Полностью демонтировать баллон и электромагистрали закиси азота.', en: 'Completely remove nitrous bottle, solenoids and injector lines.', cn: '彻底拆除笑气瓶、高压喷射电磁阀及连接管线。' }
-  },
-  {
-    code: '2.15',
-    title: { ru: 'Топливный бак', en: 'Safety Fuel Cell', cn: '安全燃油箱' },
-    article: { ru: 'Статья 25. Топливный бак и клапан roll-over', en: 'Article 25. Fuel Tank & Cells', cn: '第25条 安全燃油箱规范' },
-    desc: { ru: 'Штатный или омологированный FIA FT3/FT5, в багажнике, клапан опрокидывания', en: 'OEM or FIA FT3/FT5 certified cell, in trunk or OEM location, roll-over check valve', cn: '原厂或FIA FT3/FT5安全防爆油箱，位于后备箱或原车位置，配备防翻滚止回阀' },
-    rule: {
-      ru: 'Штатный бак либо безопасный бак FIA FT3/FT5. Обязательны противоотливная губка, гравитационный клапан roll-over на вентиляции и крепление стальными лентами.',
-      en: 'OEM fuel tank or FIA FT3-1999 / FT5 safety cell permitted. Must feature internal safety foam, roll-over check valve, and rigid mounting straps.',
-      cn: '允许保留原厂油箱或安装通过FIA FT3-1999/FT5认证的安全防爆燃油箱。必须填充防浪海绵，配备防翻滚止回阀并用钢带牢固固定。'
-    },
-    action: { ru: 'Установить клапан опрокидывания на вентиляцию бака.', en: 'Install roll-over vent valve on fuel cell breather.', cn: '在安全油箱透气孔管路加装重力防翻滚溢流阀。' }
-  },
-  {
-    code: '2.16',
-    title: { ru: 'Огнестойкая перегородка бака', en: 'Fireproof Bulkhead', cn: '油箱防火密封隔板' },
-    article: { ru: 'Статья 25. Огнестойкая перегородка бака', en: 'Article 25. Fireproof Bulkhead', cn: '第25条 驾驶舱防火密封隔板' },
-    desc: { ru: 'Бак в багажнике герметично отделён от салона (сталь ≥0.8 мм / алюм ≥1.2 мм)', en: 'Fuel cell in trunk separated by sealed bulkhead (steel >=0.8mm / alu >=1.2mm)', cn: '后备箱油箱采用密封钢板（≥0.8mm）或铝板（≥1.2mm）完全隔断驾驶舱' },
-    rule: {
-      ru: 'Если бак или насосы расположены в багажнике, салон должен быть герметично изолирован сплошной несгораемой перегородкой со швами на огнестойком герметике.',
-      en: 'If fuel cell, pumps or fillers are located in trunk, they must be completely isolated from cockpit by liquid-tight fireproof bulkhead in steel (>=0.8mm) or alu (>=1.2mm).',
-      cn: '若燃油箱或油泵安装在后备箱，必须使用密封防明火的连续隔板将后备箱与驾驶舱完全隔断（钢板≥0.8mm，铝板≥1.2mm），接缝采用耐火胶密封。'
-    },
-    action: { ru: 'Установить металлическую перегородку и загерметизировать технологические отверстия.', en: 'Fit metal firewall and seal all pass-throughs with fire sealant.', cn: '安装全封闭金属防火隔板并使用耐火阻燃胶密封所有孔隙。' }
-  },
-  {
-    code: '2.17',
-    title: { ru: 'Магистрали топлива и масла в салоне', en: 'Fuel & Oil Lines in Cockpit', cn: '贯穿座舱管线' },
-    article: { ru: 'Статья 26. Магистрали топлива и масла в салоне', en: 'Article 26. Fuel & Oil Lines', cn: '第26条 燃油与机油输送管路' },
-    desc: { ru: 'В салоне только цельные шланги без соединений, защита PTFE/AN от перетирания и огня', en: 'Inside cockpit only seamless continuous lines, braided PTFE/AN with fire sleeves', cn: '贯穿座舱内部必须为无接头一体式高压航空编织管（PTFE内衬），防磨阻燃保护' },
-    rule: {
-      ru: 'Топливные и масляные магистрали, проходящие через салон, должны быть цельными без разъемов внутри кокпита и выполнены из армированных рукавов PTFE/AN.',
-      en: 'Lines passing through cockpit must be continuous one-piece without internal junctions/fittings. Must be certified braided PTFE/AN hoses with fire sleeves.',
-      cn: '贯穿驾驶舱内部的燃油与机油管路必须为一整根连续无接头的高压航空编织管（PTFE内衬），严禁在座舱内部设置活接头。'
-    },
-    action: { ru: 'Заменить составные шланги в салоне на цельные армированные рукава PTFE.', en: 'Replace multi-piece hose in cockpit with single seamless braided PTFE line.', cn: '换装一体式无接头特氟龙编织航空管路并加装防火隔热套管。' }
-  },
-  {
-    code: '2.18',
-    title: { ru: 'Главный выключатель массы', en: 'Master Electrical Switch', cn: '主电源切断总开关' },
-    article: { ru: 'Статья 19. Главный размыкатель массы', en: 'Article 19. Master Electrical Cut-off', cn: '第19条 电源总隔离开关' },
-    desc: { ru: 'Мгновенно глушит двигатель и обесточивает генератор/АКБ; доступен пилоту + внешний привод', en: 'Cuts battery/alternator/ignition and stops engine; driver reachable + external cable', cn: '同时切断电瓶、发电机、点火并熄火发动机；车手伸手可触 + 外部联动' },
-    rule: {
-      ru: 'Выключатель массы должен мгновенно обесточивать АКБ, генератор, зажигание, насосы и глушить двигатель. Управляется из салона и снаружи.',
-      en: 'Master disconnect switch must instantly cut all electrical circuits (battery, alternator, ignition, fuel pumps) and immediately stop running engine. Operable from inside and outside.',
-      cn: '总电源断电开关必须能瞬间切断全车所有电路（电瓶、发电机、ECU点火及燃油泵），确保发动机立即熄火。车内及车外联动拉索均有效。'
-    },
-    action: { ru: 'Подключить генератор и зажигание к цепи размыкания выключателя массы.', en: 'Wire alternator field/ignition kill circuit through master cut-off.', cn: '正确接线，使总开关动作时同步切断发电机励磁与点火继电器。' }
-  },
-  {
-    code: '2.19',
-    title: { ru: 'Электропроводка', en: 'Electrical Wiring', cn: '赛车电气线束' },
-    article: { ru: 'Статья 19. Электропроводка и защита жгутов', en: 'Article 19. Electrical Wiring', cn: '第19条 赛车电气线束布局' },
-    desc: { ru: 'В защитной гофре, закреплена. Запрещено зажимать между каркасом и кузовом', en: 'In protective loom, clamped. Pinching between roll cage and chassis is forbidden', cn: '加装阻燃波纹套管并固定。严禁夹在车身与防滚架钢管之间' },
-    rule: {
-      ru: 'Электропроводка должна быть в термостойкой гофре и надежно закреплена. Категорически запрещена прокладка жгутов проводов между трубами каркаса и кузовом.',
-      en: 'Wiring must be enclosed in flame-retardant split looms, clamped securely. Routing wires pinched between cage tubes and chassis is strictly forbidden.',
-      cn: '所有电线束必须包裹在阻燃耐磨波纹管中并牢固固定。严禁将线束夹在防滚架钢管与车身钣金缝隙之间。'
-    },
-    action: { ru: 'Переложить жгут проводов из зазора между каркасом и кузовом в гофру.', en: 'Re-route wiring harness away from pinch points into protective conduit.', cn: '将夹在防滚架管件后的线束移出并装入阻燃保护波纹管内固定。' }
-  },
-  {
-    code: '2.20',
-    title: { ru: 'Аккумулятор (АКБ)', en: 'Battery Mount & Box', cn: '蓄电池固定与密闭箱' },
-    article: { ru: 'Статья 19. Аккумуляторная батарея (АКБ)', en: 'Article 19. Battery Mount & Enclosure', cn: '第19条 蓄电池固定要求' },
-    desc: { ru: 'При переносе: металлическое гнездо, 2 стальные ленты 20×0.8 мм, болты ≥М10, герметичный бокс', en: 'If relocated: metal cradle + 2 steel straps 20x0.8mm, bolts >=M10, sealed vented box', cn: '移位时：金属固定托架 + 2道20×0.8mm钢带，M10螺栓，绝缘密闭透气盒' },
-    rule: {
-      ru: 'Перенесенный АКБ крепится к кузову двумя стальными лентами 20×0.8 мм на болтах М10. Жидкостный АКБ закрывается герметичным боксом с вентиляцией наружу.',
-      en: 'If relocated to cabin/trunk: mounted via rigid steel baseplate with two steel straps min 20x0.8mm secured by M10 bolts. Wet batteries must reside inside sealed vented box.',
-      cn: '电池后移时：必须安装在专用金属底座上，使用至少2道20×0.8mm钢带及M10高强度螺栓穿透底板加固。富液电瓶必须加装带外排废气管的密闭绝缘防酸盒。'
-    },
-    action: { ru: 'Закрепить АКБ стальными лентами на болтах М10 и изолировать клеммы.', en: 'Secure battery using steel straps with M10 bolts and insulate terminals.', cn: '使用双道20mm钢带加固电瓶并盖上绝缘保护盖板。' }
-  },
-  {
-    code: '2.21',
-    title: { ru: 'Тормозная система', en: 'Braking System', cn: '液压制动系统' },
-    article: { ru: 'Статья 16. Тормозная система и гидроручник', en: 'Article 16. Braking System', cn: '第16条 液压制动系统规范' },
-    desc: { ru: '≥2 независимых контура от педали, исправная; магистрали в салоне металл/PTFE; жесткий ручник', en: '>=2 independent circuits, functional; lines metal/PTFE; rigid hydraulic handbrake', cn: '双独立回路，制动良好有效；座舱内管路全金属或航空编织管；液压手刹稳固' },
-    rule: {
-      ru: 'Минимум 2 независимых контура. Трубки в салоне — бесшовные металлические или тефлоновые армированные PTFE. Кронштейн гидроручника жестко закреплен.',
-      en: 'Brake system must consist of at least 2 independent circuits. Lines inside cabin seamless metal or aero braided PTFE. Hydraulic handbrake cylinder securely mounted.',
-      cn: '制动系统必须具有至少2个独立液压回路。座舱内刹车管必须采用无缝金属管或特氟龙高压编织航空管。液压手刹泵体必须稳固固定。'
-    },
-    action: { ru: 'Устранить люфты гидроручника и прокачать тормозную систему.', en: 'Bleed brakes, eliminate fluid leaks and secure handbrake mounts.', cn: '排空制动管路空气，排除渗漏并牢固加固手刹底座。' }
-  },
-  {
-    code: '2.22',
-    title: { ru: 'Петля карданоуловителя', en: 'Driveshaft Safety Loop', cn: '传动轴安全保护卡箍' },
-    article: { ru: 'Статья 18. Карданоуловитель (Driveshaft Loop)', en: 'Article 18. Driveshaft Loop', cn: '第18条 传动轴防掉落保护环' },
-    desc: { ru: '≤150 мм от переднего шарнира крестовины, стальная лента 50×5 мм или труба ∅20×1.5 мм', en: '<=150mm from front joint, steel strap 50x5mm or tube ∅20x1.5mm', cn: '距离前万向节十字轴≤150mm，50×5mm钢带或∅20×1.5mm钢管闭环' },
-    rule: {
-      ru: 'Заднеприводные автомобили должны быть оснащены защитной петлей (сталь 50×5 мм или труба ∅20×1.5 мм) на расстоянии не далее 150 мм от переднего шарнира.',
-      en: 'RWD vehicles must feature a driveshaft safety loop preventing shaft dropping. Located within 150mm of front joint. Made of steel strip 50x5mm or tube ∅20x1.5mm.',
-      cn: '后驱赛车传动轴前端必须配备防掉落钢制安全保护环（距离前万向节≤150mm）。采用截面≥50×5mm的钢板或∅20×1.5mm钢管制造。'
-    },
-    action: { ru: 'Установить стальную петлю карданоуловителя толщиной 5 мм.', en: 'Install steel driveshaft safety loop within 150mm of front joint.', cn: '在前万向节后方150mm内加装符合规格的钢制传动轴安全保护环。' }
-  },
-  {
-    code: '2.23',
-    title: { ru: 'Рулевое колесо и быстросъем', en: 'Steering Wheel & Quick Release', cn: '方向盘与快拆机构' },
-    article: { ru: 'Статья 17. Рулевое колесо и быстросъемный механизм', en: 'Article 17. Steering Wheel & Quick Release', cn: '第17条 方向盘与快拆机构' },
-    desc: { ru: 'Руль: замкнутый обод (не деревянный), быстросъём без люфта с жёлтым кольцом фиксатора', en: 'Continuous rim (no wood), quick release without play and yellow release collar', cn: '闭环圆周（严禁木质），赛用快拆底座无间隙旷量并带黄色警示释放环' },
-    rule: {
-      ru: 'Руль с замкнутым ободом. Быстросъемный механизм руля должен быть без люфтов и иметь фиксирующую муфту желтого цвета.',
-      en: 'Steering wheel must have continuous outer rim (wood forbidden). Quick release hub must have zero play with yellow anodized release collar.',
-      cn: '方向盘必须为封闭外圈（严禁木质）。快拆底座必须锁止紧固无旷量间隙，解锁外套环必须为黄色或具黄色标识。'
-    },
-    action: { ru: 'Устранить люфт быстросъема и нанести желтую маркировку на кольцо.', en: 'Eliminate hub play and mark release collar with yellow coating.', cn: '消除快拆旷量并在快拆外环上涂覆黄色警示标。' }
-  },
-  {
-    code: '2.24',
-    title: { ru: 'Регулировка рулевой колонки', en: 'Steering Column Locking', cn: '转向柱调节锁死' },
-    article: { ru: 'Статья 17. Фиксация регулировки рулевой колонки', en: 'Article 17. Steering Column Lock', cn: '第17条 转向柱防晃动机械锁定' },
-    desc: { ru: 'Механизм регулировки рулевой колонки заблокирован и затянут инструментом (болтом)', en: 'Steering column adjustment mechanism mechanically locked with bolts/tool', cn: '原车手动快扳角度调节手柄已使用紧固螺栓机械彻底锁死' },
-    rule: {
-      ru: 'Штатный рычаг быстрой регулировки рулевой колонки должен быть заменен на болт и затянут инструментом, исключая случайное смещение колонки.',
-      en: 'OEM quick-lever steering column adjustment must be mechanically locked with bolts requiring tools, eliminating inadvertent movement while driving.',
-      cn: '原厂转向柱手动快拆扳手式调节机构必须使用螺栓彻底锁死，杜绝赛车在剧烈漂移中发生转向柱意外位移。'
-    },
-    action: { ru: 'Заменить ручной фиксатор рулевой колонки на затяжной болт под ключ.', en: 'Replace quick lever with bolted locking hardware on steering column.', cn: '拆除手动快拆手柄，换装高强度紧固螺栓将转向柱角度机械锁死。' }
-  },
-  {
-    code: '2.25',
-    title: { ru: 'Вентиляция картера (Catch-can)', en: 'Crankcase Catch-Can', cn: '曲轴箱油气回收透气壶' },
-    article: { ru: 'Статья 6. Вентиляция картера и маслоуловитель', en: 'Article 6. Catch-Can / Breathers', cn: '第6条 曲轴箱油气分离回收壶' },
-    desc: { ru: 'Ёмкость маслоуловителя ≥2 л с уровнемером в моторном отсеке; экраны на магистралях в ногах', en: 'Catch-tank capacity >=2L with sight glass, in engine bay; line shields', cn: '机舱内透气回收壶容量≥2升，具备液位观察窗；座舱管路加装防护罩' },
-    rule: {
-      ru: 'Система вентиляции картера выводится в маслоуловитель объемом ≥2 л с уровнемерной трубкой. Трубопроводы в ногах водителя закрыты защитным металлическим экраном.',
-      en: 'Engine breather vented into catch tank with min 2 liter capacity, featuring sight level gauge. Lines inside cockpit enclosed under metal shield.',
-      cn: '曲轴箱通风必须配备容量不小于2升的机油透气回收壶，具备透明液位视管。座舱脚部管线必须覆盖金属保护罩。'
-    },
-    action: { ru: 'Установить маслоуловитель объемом от 2 литров со смотровой трубкой уровня.', en: 'Install regulation min 2L catch-can with fluid level sight gauge.', cn: '换装容量≥2升并具备透明液位视管的标准机油回收壶。' }
-  }
-];
-
-/* ================= ПЕРЕКЛЮЧЕНИЕ ЯЗЫКА ================= */
-function setAppLanguage(lang) {
-  currentLang = lang;
-  ['ru', 'en', 'cn'].forEach(l => {
-    document.getElementById(`btn_lang_${l}`).classList.toggle('active', l === lang);
+  ALL_CHECKLIST.forEach(it => {
+    const s = checklistState[it.code];
+    if (s === 'warn') {
+      remarks.push(`[${it.code}] ${it.title}`);
+      if (status !== 'fail') status = 'warn';
+    } else if (s === 'fail') {
+      remarks.push(`ОТКАЗ: [${it.code}] ${it.title}`);
+      status = 'fail';
+    }
   });
 
-  const loc = UI_TEXT[lang];
-  document.getElementById('headerSubtitle').textContent = loc.subtitle;
-  document.getElementById('tabScrutineerLabel').textContent = loc.tabScrutineer;
-  document.getElementById('tabStewardLabel').textContent = loc.tabSteward;
-  document.getElementById('lblEventInfo').textContent = loc.eventInfo;
-  document.getElementById('lblStageSelect').textContent = loc.stageSelect;
-  document.getElementById('lblFormTitle').textContent = loc.formTitle;
-  document.getElementById('lblCar').textContent = loc.lblCar;
-  document.getElementById('lblNumber').textContent = loc.lblNumber;
-  document.getElementById('lblDriver').textContent = loc.lblDriver;
-  document.getElementById('lblCage').textContent = loc.lblCage;
-  document.getElementById('lblColor').textContent = loc.lblColor;
-  document.getElementById('lblBox').textContent = loc.lblBox;
-  document.getElementById('lblRemarks').textContent = loc.lblRemarks;
-  document.getElementById('quickSubmitBtn').textContent = loc.quickSubmit;
+  const notesText = remarks.length ? remarks.join(', ') : 'Без замечаний';
+  document.getElementById('notesInput').value = notesText;
+  closeChecklistModal();
 
-  renderChecklistDom();
-  renderLogTable();
+  saveCarRecord(status);
+}
+
+function submitDirectInspection() {
+  saveCarRecord();
+}
+
+function saveCarRecord(forcedStatus = null) {
+  const car = document.getElementById('carInput').value.trim();
+  const driver = document.getElementById('driverInput').value.trim();
+  const number = document.getElementById('numberInput').value.trim();
+  const cage = document.getElementById('cageInput').value.trim();
+  const color = document.getElementById('colorInput').value.trim();
+  const box = document.getElementById('boxInput').value.trim();
+  const notes = document.getElementById('notesInput').value.trim() || 'Без замечаний';
+  const stage = document.getElementById('stageSelect').value;
+
+  if (!car) {
+    alert('Укажите марку автомобиля!');
+    document.getElementById('carInput').focus();
+    return;
+  }
+
+  if (cage && cage.length !== 6) {
+    alert('Номер каркаса безопасности должен состоять ровно из 6 цифр!');
+    document.getElementById('cageInput').focus();
+    return;
+  }
+
+  let status = forcedStatus;
+  if (!status) {
+    if (notes.toLowerCase().includes('отказ')) status = 'fail';
+    else if (notes && notes.toLowerCase() !== 'без замечаний') status = 'warn';
+    else status = 'ok';
+  }
+
+  const nowTime = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+
+  // РЕДАКТИРОВАНИЕ СУЩЕСТВУЮЩЕЙ ЗАПИСИ
+  if (editingId) {
+    const item = dailyLog.find(x => String(x.id) === String(editingId));
+    if (item) {
+      item.car = car;
+      item.driver = driver;
+      item.number = number;
+      item.cage = cage;
+      item.color = color;
+      item.box = box;
+      item.notes = notes;
+      item.status = status;
+      item.timestamp = nowTime;
+
+      saveLocalLog();
+      renderTable();
+      renderStewardList();
+      enqueueSync('update_entry', { date: stage, data: item });
+      cancelEditing();
+      return;
+    }
+  }
+
+  // НОВАЯ ЗАПИСЬ (МГНОВЕННЫЙ ОТКЛИК OPTIMISTIC UI)
+  const newItem = {
+    id: 'RDS_' + Date.now() + '_' + Math.floor(Math.random() * 1000),
+    date: stage,
+    car: car,
+    driver: driver,
+    number: number,
+    cage: cage,
+    color: color,
+    box: box,
+    notes: notes,
+    status: status,
+    timestamp: nowTime
+  };
+
+  // 1. Мгновенно выводим в интерфейс
+  dailyLog.unshift(newItem);
+  saveLocalLog();
+  renderTable();
+  renderStewardList();
+
+  // 2. Очищаем форму и чеклист
+  clearInputs();
+  resetChecklist();
+
+  // 3. Отправляем в фоновую очередь без ожидания сети
+  enqueueSync('add_entry', newItem);
+}
+
+/* --- РЕДАКТИРОВАНИЕ С ПАРОЛЕМ --- */
+function startEditingWithPin(id) {
+  const pin = prompt('Введите пароль для редактирования:');
+  if (pin !== CONTROLLER_PIN && pin !== STEWARD_PIN && pin !== "0000") {
+    alert('Неверный пароль. Редактирование отклонено.');
+    return;
+  }
+
+  const item = dailyLog.find(x => String(x.id) === String(id));
+  if (!item) return;
+
+  editingId = item.id;
+  document.getElementById('carInput').value = item.car || '';
+  document.getElementById('driverInput').value = item.driver || '';
+  document.getElementById('numberInput').value = item.number || '';
+  document.getElementById('cageInput').value = item.cage || '';
+  document.getElementById('colorInput').value = item.color || '';
+  document.getElementById('boxInput').value = item.box || '';
+  document.getElementById('notesInput').value = item.notes || '';
+
+  document.getElementById('formTitleText').textContent = '✏️ Редактирование: №' + (item.number || 'б/н');
+  document.getElementById('editModeIndicator').style.display = 'inline';
+  document.getElementById('cancelEditBtn').style.display = 'block';
+  document.getElementById('directSubmitBtn').textContent = '💾 Сохранить изменения';
+  document.getElementById('checklistApplyAndSaveBtn').textContent = '💾 Применить и сохранить изменения';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function cancelEditing() {
+  editingId = null;
+  clearInputs();
+  document.getElementById('formTitleText').textContent = '📋 Регистрация автомобиля';
+  document.getElementById('editModeIndicator').style.display = 'none';
+  document.getElementById('cancelEditBtn').style.display = 'none';
+  document.getElementById('directSubmitBtn').textContent = '➕ Внести автомобиль в протокол';
+  document.getElementById('checklistApplyAndSaveBtn').textContent = '✅ Завершить проверку и добавить авто';
+}
+
+function clearInputs() {
+  ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+}
+
+/* --- УДАЛЕНИЕ С ПАРОЛЕМ ГЛАВНОГО КОМИССАРА --- */
+function deleteCarRecordWithPin(id) {
+  const pin = prompt('Внимание! Удаление записи из протокола.\nВведите пароль Главного комиссара:');
+  if (pin !== STEWARD_PIN) {
+    alert('Неверный пароль. Удаление разрешено только Главному комиссару.');
+    return;
+  }
+
+  const item = dailyLog.find(x => String(x.id) === String(id));
+  if (!item) return;
+
+  if (confirm(`Удалить ${item.car} (№${item.number || 'б/н'}) из протокола?`)) {
+    dailyLog = dailyLog.filter(x => String(x.id) !== String(id));
+    saveLocalLog();
+    renderTable();
+    renderStewardList();
+    if (stewardSelectedEntry && String(stewardSelectedEntry.id) === String(id)) {
+      closeStewardDetail();
+    }
+    enqueueSync('delete_entry', { date: item.date || document.getElementById('stageSelect').value, id: item.id, number: item.number });
+  }
+}
+
+/* --- ТАБЛИЦА ВХОДНОГО КОНТРОЛЯ --- */
+function renderTable() {
+  const tbody = document.getElementById('logTableBody');
+  document.getElementById('totalCarsCount').textContent = dailyLog.length;
+
+  if (!dailyLog.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:15px; color:var(--text-sub);">Список пуст. Проведите проверку первого автомобиля.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = dailyLog.map((item, idx) => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <tr>
+        <td><strong>${idx + 1}</strong></td>
+        <td>
+          <strong style="color:#fff;">${escapeHtml(item.car)}</strong>
+          <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(item.driver || '—')} ${item.color ? '• ' + escapeHtml(item.color) : ''}</div>
+          ${item.notes && item.notes !== 'Без замечаний' ? `<div style="font-size:10px; color:var(--gold-bright); margin-top:2px;">📝 ${escapeHtml(item.notes)}</div>` : ''}
+        </td>
+        <td><span style="background:#1e293b; padding:3px 7px; border-radius:5px; font-weight:bold; color:var(--gold-bright);">№${escapeHtml(item.number || 'б/н')}</span></td>
+        <td><span style="font-family:monospace; font-weight:bold; color:var(--gold-bright);">${escapeHtml(item.cage || '—')}</span></td>
+        <td><span class="badge-status ${statusClass}">${statusText}</span></td>
+        <td style="text-align:right; white-space:nowrap;">
+          <button style="background:none; border:none; cursor:pointer; font-size:15px; margin-right:8px;" onclick="viewInStewardDashboard('${item.id}')" title="Открыть в кабинете комиссара">🔍</button>
+          <button style="background:none; border:none; cursor:pointer; font-size:15px; margin-right:8px;" onclick="startEditingWithPin('${item.id}')" title="Редактировать">✏️</button>
+          <button style="background:none; border:none; cursor:pointer; font-size:15px;" onclick="deleteCarRecordWithPin('${item.id}')" title="Удалить">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function viewInStewardDashboard(itemId) {
+  switchMainView('steward');
+  selectStewardParticipant(itemId);
+}
+
+/* --- КАБИНЕТ КОМИССАРА --- */
+function setStewardFilter(filter) {
+  currentStewardFilter = filter;
+  ['all', 'remarks', 'ok'].forEach(f => {
+    document.getElementById(`filter_${f}`).classList.toggle('active', f === filter);
+  });
   renderStewardList();
 }
 
-function getCurrentStageKey() {
-  return document.getElementById('stageSelect').value || 'Stage 1';
+function renderStewardList() {
+  const container = document.getElementById('stewardListContainer');
+  if (!container) return;
+
+  const searchVal = (document.getElementById('stewardSearchInput').value || '').trim().toLowerCase();
+  let cntAll = dailyLog.length, cntRemarks = 0, cntOk = 0;
+
+  dailyLog.forEach(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (hasRemarks) cntRemarks++;
+    else cntOk++;
+  });
+
+  document.getElementById('cntStewardAll').textContent = cntAll;
+  document.getElementById('cntStewardRemarks').textContent = cntRemarks;
+  document.getElementById('cntStewardOk').textContent = cntOk;
+
+  const filtered = dailyLog.filter(item => {
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    if (currentStewardFilter === 'remarks' && !hasRemarks) return false;
+    if (currentStewardFilter === 'ok' && hasRemarks) return false;
+
+    if (searchVal) {
+      const match = (item.number && item.number.toString().toLowerCase().includes(searchVal)) ||
+                    (item.car && item.car.toLowerCase().includes(searchVal)) ||
+                    (item.driver && item.driver.toLowerCase().includes(searchVal)) ||
+                    (item.cage && item.cage.toLowerCase().includes(searchVal));
+      if (!match) return false;
+    }
+    return true;
+  });
+
+  if (filtered.length === 0) {
+    container.innerHTML = `<div style="text-align:center; padding:25px; color:var(--text-sub);">Нет записей по заданному фильтру</div>`;
+    return;
+  }
+
+  // Замечания скрыты до клика на пилота
+  container.innerHTML = filtered.map(item => {
+    const isSelected = stewardSelectedEntry && String(stewardSelectedEntry.id) === String(item.id);
+    const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+    const statusClass = item.status === 'fail' ? 'badge-fail' : (hasRemarks ? 'badge-warn' : 'badge-ok');
+    const statusText = item.status === 'fail' ? 'ОТКАЗ' : (hasRemarks ? 'ЗАМЕЧАНИЯ' : 'ДОПУЩЕН');
+
+    return `
+      <div class="participant-card-item ${isSelected ? 'selected' : ''}" onclick="selectStewardParticipant('${item.id}')">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:16px; font-weight:900; color:var(--gold-bright); background:#1e293b; padding:4px 10px; border-radius:6px;">№${escapeHtml(item.number || 'б/н')}</span>
+          <div>
+            <strong style="font-size:14px; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</strong>
+            <div style="font-size:11px; color:var(--text-sub);">${escapeHtml(item.car)} | Каркас: <span style="font-family:monospace; color:var(--gold-bright);">${escapeHtml(item.cage || '—')}</span></div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <span class="badge-status ${statusClass}">${statusText}</span>
+          <div style="font-size:10px; color:var(--gold-primary); margin-top:3px;">Открыть дело ↗</div>
+        </div>
+      </div>
+    `;
+  }).join('');
 }
 
-function onStageChanged() {
-  const stage = getCurrentStageKey();
-  document.getElementById('stewardStageMeta').textContent = stage;
-  loadLocalLog();
-  fetchLogsFromGoogleSheet(true);
+function selectStewardParticipant(itemId) {
+  const item = dailyLog.find(x => String(x.id) === String(itemId));
+  if (!item) return;
+  stewardSelectedEntry = item;
+  renderStewardDetail(item);
+  renderStewardList();
+  document.getElementById('stewardInspectorView').scrollIntoView({ behavior: 'smooth' });
+}
+
+function closeStewardDetail() {
+  stewardSelectedEntry = null;
+  document.getElementById('stewardInspectorView').style.display = 'none';
+  renderStewardList();
+}
+
+function renderStewardDetail(item) {
+  const view = document.getElementById('stewardInspectorView');
+  view.style.display = 'block';
+
+  document.getElementById('dtlNumber').textContent = item.number ? `№${item.number}` : 'б/н';
+  document.getElementById('dtlDriver').textContent = item.driver || 'Не указан';
+  document.getElementById('dtlCar').textContent = `${item.car} ${item.color ? '• ' + item.color : ''}`;
+  document.getElementById('dtlBox').textContent = item.box || '—';
+  document.getElementById('dtlCage').textContent = item.cage || 'Не внесен';
+
+  const badge = document.getElementById('dtlStatusBadge');
+  const hasRemarks = (item.status === 'warn' || item.status === 'fail' || (item.notes && item.notes.toLowerCase() !== 'без замечаний'));
+
+  if (item.status === 'fail') {
+    badge.className = 'badge-status badge-fail';
+    badge.textContent = '❌ ОТКАЗ В ДОПУСКЕ';
+  } else if (hasRemarks) {
+    badge.className = 'badge-status badge-warn';
+    badge.textContent = '⚠️ ВЫЯВЛЕНЫ ЗАМЕЧАНИЯ';
+  } else {
+    badge.className = 'badge-status badge-ok';
+    badge.textContent = '✅ ТИ ПРОЙДЕН';
+  }
+
+  const defectsContainer = document.getElementById('dtlDefectsContainer');
+  defectsContainer.innerHTML = '';
+  document.getElementById('ruleCitationBox').style.display = 'none';
+
+  if (!item.notes || item.notes.toLowerCase() === 'без замечаний') {
+    defectsContainer.innerHTML = `<div style="color:var(--accent-green); font-size:13px; padding:6px 0;">Замечаний нет. Автомобиль полностью соответствует регламенту.</div>`;
+    return;
+  }
+
+  const rawNotes = item.notes.split(/[,;]/).map(s => s.trim()).filter(Boolean);
+  rawNotes.forEach(defect => {
+    let matchedRule = ALL_CHECKLIST[0];
+    const lower = defect.toLowerCase();
+
+    for (let r of ALL_CHECKLIST) {
+      if (lower.includes(r.code) || lower.includes(r.title.toLowerCase())) {
+        matchedRule = r;
+        break;
+      }
+    }
+
+    const badgeEl = document.createElement('div');
+    badgeEl.className = 'defect-badge-clickable';
+    badgeEl.innerHTML = `⚠️ ${escapeHtml(defect)} <span style="font-size:10px; margin-left:6px; opacity:0.8;">[Регламент ↗]</span>`;
+    badgeEl.onclick = () => showRuleCitation(matchedRule);
+    defectsContainer.appendChild(badgeEl);
+  });
+
+  if (defectsContainer.children.length > 0) {
+    defectsContainer.children[0].click();
+  }
+}
+
+function showRuleCitation(rule) {
+  const box = document.getElementById('ruleCitationBox');
+  box.style.display = 'block';
+  document.getElementById('ruleCitationHeading').textContent = `${rule.article} (${rule.title})`;
+  document.getElementById('ruleCitationText').textContent = rule.rule;
+  document.getElementById('ruleActionNeeded').innerHTML = `<strong>⚠️ Предписание комиссара:</strong> ${rule.action}`;
 }
 
 function switchMainView(view) {
@@ -1347,75 +884,94 @@ function switchMainView(view) {
   if (view === 'steward') renderStewardList();
 }
 
-/* ================= ФОНОВАЯ СИНХРОНИЗАЦИЯ (BACKGROUND SYNC) ================= */
-function getSyncQueue() {
-  try { return JSON.parse(localStorage.getItem('ti_sync_queue') || '[]'); } catch (e) { return []; }
-}
+/* --- АВТОКОМПЛИТ АВТОМОБИЛЯ С ТРАНСЛИТОМ --- */
+function setupAutocomplete() {
+  const input = document.getElementById('carInput');
+  const list = document.getElementById('suggestions');
 
-function saveSyncQueue(queue) {
-  localStorage.setItem('ti_sync_queue', JSON.stringify(queue));
-  updateQueueBadge();
-}
-
-function updateQueueBadge() {
-  const q = getSyncQueue();
-  document.getElementById('queueCount').textContent = q.length;
-}
-
-function enqueueTask(action, payload, pin = '0000') {
-  const queue = getSyncQueue();
-  queue.push({
-    action: action,
-    payload: payload,
-    pin: pin,
-    id: payload.id || (payload.data && payload.data.id) || Date.now()
-  });
-  saveSyncQueue(queue);
-  // Запуск фоновой отправки без ожидания
-  setTimeout(() => processSyncQueue(), 50);
-}
-
-async function processSyncQueue(manualTrigger = false) {
-  if (isProcessingQueue) return;
-  const queue = getSyncQueue();
-
-  if (queue.length === 0) {
-    updateQueueBadge();
-    if (manualTrigger) alert('✅ Все данные полностью синхронизированы с Google Таблицей.');
-    return;
+  function normalize(str) {
+    let s = (str || '').toLowerCase().trim();
+    for (let k in TRANSLIT_MAP) s = s.replace(new RegExp(k, 'g'), TRANSLIT_MAP[k]);
+    return s.replace(/[^a-z0-9]/g, '');
   }
+
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    if (val.length < 1) { list.style.display = 'none'; return; }
+
+    const norm = normalize(val);
+    const filtered = CAR_CATALOG.filter(c => c.toLowerCase().includes(val.toLowerCase()) || normalize(c).includes(norm));
+
+    if (!filtered.length) {
+      list.innerHTML = `<div class="suggestion-item" onclick="selectCar('${escapeHtml(val)}')">➕ Использовать "${escapeHtml(val)}"</div>`;
+      list.style.display = 'block';
+      return;
+    }
+
+    list.innerHTML = filtered.map(c => `
+      <div class="suggestion-item" onclick="selectCar('${escapeHtml(c)}')">
+        <strong>${c}</strong>
+      </div>
+    `).join('');
+    list.style.display = 'block';
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!input.contains(e.target) && !list.contains(e.target)) list.style.display = 'none';
+  });
+}
+
+function selectCar(brand) {
+  document.getElementById('carInput').value = brand;
+  document.getElementById('suggestions').style.display = 'none';
+}
+
+/* --- ФОНОВАЯ ОЧЕРЕДЬ СИНХРОНИЗАЦИИ --- */
+function updateSyncBadge(status, text) {
+  const badge = document.getElementById('syncStatus');
+  const txt = document.getElementById('syncText');
+  badge.className = 'sync-badge ' + status;
+  txt.textContent = text;
+}
+
+function getSyncQueue() {
+  try { return JSON.parse(localStorage.getItem('ti_sync_queue') || '[]'); } catch(e) { return []; }
+}
+
+function saveSyncQueue(q) {
+  localStorage.setItem('ti_sync_queue', JSON.stringify(q));
+}
+
+function enqueueSync(action, payload) {
+  const q = getSyncQueue();
+  q.push({ id: payload.id || Date.now(), action: action, payload: payload });
+  saveSyncQueue(q);
+  setTimeout(triggerManualSync, 50);
+}
+
+async function triggerManualSync() {
+  if (isSyncing) return;
+  const q = getSyncQueue();
 
   if (!navigator.onLine) {
-    updateSyncStatus('offline', `Офлайн (${queue.length})`);
-    if (manualTrigger) alert('⚠️ Нет интернета. Данные сохранены на телефоне и отправятся при связи.');
+    updateSyncBadge('offline', `Автономно (${q.length})`);
     return;
   }
 
-  isProcessingQueue = true;
-  updateSyncStatus('syncing', `Отправка (${queue.length})...`);
+  isSyncing = true;
+  updateSyncBadge('syncing', `Отправка (${q.length})...`);
 
-  while (true) {
-    const currentQ = getSyncQueue();
-    if (currentQ.length === 0) break;
-
-    const task = currentQ[0];
-    let body = { pin: task.pin, action: task.action };
-    if (task.action === 'add_entry') body.data = task.payload.data;
-    if (task.action === 'update_entry') {
-      body.data = task.payload.data;
-      body.date = task.payload.date;
-    }
-    if (task.action === 'delete_entry') {
-      body.id = task.payload.id;
-      body.number = task.payload.number;
-      body.date = task.payload.date;
-    }
+  while (q.length > 0) {
+    const task = q[0];
+    const body = { action: task.action, pin: STEWARD_PIN };
+    if (task.action === 'add_entry') body.data = task.payload;
+    else if (task.action === 'update_entry') { body.date = task.payload.date; body.data = task.payload.data; body.id = task.payload.data.id; }
+    else if (task.action === 'delete_entry') { body.date = task.payload.date; body.id = task.payload.id; body.number = task.payload.number; }
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-
-      const res = await fetch(gasScriptUrl, {
+      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const res = await fetch(GAS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
         body: JSON.stringify(body),
@@ -1423,567 +979,112 @@ async function processSyncQueue(manualTrigger = false) {
       });
       clearTimeout(timeoutId);
 
-      const result = await res.json();
-      if (result && result.status === 'success') {
-        currentQ.shift();
-        saveSyncQueue(currentQ);
+      const json = await res.json();
+      if (json && json.status === 'success') {
+        q.shift();
+        saveSyncQueue(q);
       } else {
-        // Ошибка на стороне сервера (например пароль)
-        if (result && result.message) {
-          alert('Ошибка сервера: ' + result.message);
-        }
-        currentQ.shift();
-        saveSyncQueue(currentQ);
+        break;
       }
-    } catch (err) {
-      console.warn('Queue background fetch error:', err);
-      break; // Прерываем цикл до восстановления соединения
+    } catch (e) {
+      break;
     }
   }
 
-  isProcessingQueue = false;
-  updateQueueBadge();
-
+  isSyncing = false;
   const remaining = getSyncQueue();
   if (remaining.length === 0) {
-    updateSyncStatus('online', 'Онлайн');
-    fetchLogsFromGoogleSheet(true);
+    updateSyncBadge('online', 'Онлайн');
+    fetchLogs(true);
   } else {
-    updateSyncStatus('offline', `Очередь (${remaining.length})`);
+    updateSyncBadge('offline', `Очередь: ${remaining.length}`);
   }
 }
 
-function updateSyncStatus(status, text) {
-  const badge = document.getElementById('syncStatus');
-  const icon = document.getElementById('syncIcon');
-  const txt = document.getElementById('syncText');
-  if (status === 'online') {
-    badge.style.background = '#14301d';
-    badge.style.borderColor = '#22c55e';
-    badge.style.color = '#4ade80';
-    icon.style.color = '#4ade80';
-    txt.textContent = text || 'Онлайн';
-  } else if (status === 'syncing') {
-    badge.style.background = '#3d2508';
-    badge.style.borderColor = '#d4af37';
-    badge.style.color = '#ffd700';
-    icon.style.color = '#ffd700';
-    txt.textContent = text || 'Связь...';
-  } else {
-    badge.style.background = '#1c1c1c';
-    badge.style.borderColor = '#333';
-    badge.style.color = '#9ca3af';
-    icon.style.color = '#9ca3af';
-    txt.textContent = text || 'Автономно';
+async function fetchLogs(silent = false) {
+  if (!navigator.onLine) {
+    updateSyncBadge('offline', 'Автономно');
+    return;
+  }
+  const stage = document.getElementById('stageSelect').value;
+  if (!silent) updateSyncBadge('syncing', 'Загрузка...');
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    const res = await fetch(`${GAS_URL}?date=${encodeURIComponent(stage)}`, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
+    const json = await res.json();
+    if (json && json.status === 'success' && json.entries) {
+      mergeIncomingEntries(json.entries);
+      updateSyncBadge('online', 'Онлайн');
+    } else {
+      updateSyncBadge('offline', 'Автономно');
+    }
+  } catch (e) {
+    updateSyncBadge('offline', 'Автономно');
   }
 }
 
-/* ================= ЧТЕНИЕ ТАБЛИЦЫ (БЕЗ ЗАТИРАНИЯ ЛОКАЛЬНЫХ ДАННЫХ) ================= */
-function fetchLogsFromGoogleSheet(silent = false) {
-  if (!navigator.onLine) return;
-  const stage = getCurrentStageKey();
-  if (!silent) updateSyncStatus('syncing', 'Загрузка...');
-
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 7000);
-
-  fetch(`${gasScriptUrl}?date=${encodeURIComponent(stage)}`, { signal: controller.signal })
-    .then(r => r.json())
-    .then(data => {
-      clearTimeout(timeoutId);
-      if (data && data.status === 'success' && data.entries) {
-        // Умное объединение: сохраняем несохраненные локальные записи, подтвержденные обновляем
-        mergeServerLogs(data.entries);
-        if (!silent) updateSyncStatus('online', 'Онлайн');
-      }
-    })
-    .catch(() => {
-      clearTimeout(timeoutId);
-      if (!silent) updateSyncStatus('offline', 'Автономно');
-    });
-}
-
-function mergeServerLogs(serverEntries) {
+function mergeIncomingEntries(remoteEntries) {
   const pendingQueue = getSyncQueue();
-  const pendingIds = new Set(pendingQueue.map(t => t.id));
+  const pendingIds = new Set(pendingQueue.map(t => String(t.payload.id || (t.payload.data && t.payload.data.id))));
 
-  // Оставляем локальные элементы, которые еще не улетели в таблицу
-  const unconfirmedLocal = dailyLog.filter(item => pendingIds.has(item.id));
-  
-  // Добавляем серверные записи
-  const serverIds = new Set(serverEntries.map(e => e.id));
-  const finalLog = [...unconfirmedLocal.filter(l => !serverIds.has(l.id)), ...serverEntries];
+  // Сохраняем локальные данные, еще не ушедшие на сервер
+  const unsyncedLocal = dailyLog.filter(item => pendingIds.has(String(item.id)));
+  const remoteIds = new Set(remoteEntries.map(re => String(re.id)));
+
+  const finalLog = [...unsyncedLocal.filter(l => !remoteIds.has(String(l.id))), ...remoteEntries];
 
   dailyLog = finalLog;
   saveLocalLog();
-  renderLogTable();
+  renderTable();
   renderStewardList();
 }
 
 function saveLocalLog() {
-  const stage = getCurrentStageKey();
+  const stage = document.getElementById('stageSelect').value;
   localStorage.setItem(`ti_log_${stage}`, JSON.stringify(dailyLog));
 }
 
 function loadLocalLog() {
-  const stage = getCurrentStageKey();
-  const stored = localStorage.getItem(`ti_log_${stage}`);
-  dailyLog = stored ? JSON.parse(stored) : [];
-  renderLogTable();
+  const stage = document.getElementById('stageSelect').value;
+  const data = localStorage.getItem(`ti_log_${stage}`);
+  dailyLog = data ? JSON.parse(data) : [];
+  renderTable();
   renderStewardList();
 }
 
-/* ================= ФОРМА И OPTIMISTIC UI ================= */
-function addCarToLog(defaultStatus = 'unverified') {
-  const car = document.getElementById('carInput').value.trim();
-  const driver = document.getElementById('driverInput').value.trim();
-  const number = document.getElementById('numberInput').value.trim();
-  const cage = document.getElementById('cageInput').value.trim().replace(/\D/g, '').slice(0, 6);
-  const color = document.getElementById('colorInput').value.trim();
-  const box = document.getElementById('boxInput').value.trim();
-  const notes = document.getElementById('notesInput').value.trim() || 'Без замечаний';
-  const stageKey = getCurrentStageKey();
-
-  if (!car && !number) {
-    alert('⚠️ Укажите марку автомобиля или стартовый номер.');
-    return;
-  }
-
-  let finalStatus = defaultStatus;
-  if (finalStatus === 'unverified') {
-    finalStatus = (notes.toLowerCase() === 'без замечаний') ? 'ok' : (notes.toLowerCase().includes('отказ') ? 'fail' : 'warn');
-  }
-
-  const nowTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  if (editingIndex !== null) {
-    // РЕДАКТИРОВАНИЕ
-    const pin = prompt('🔐 Введите пароль контролера (1337) или комиссара (0852) для изменения:');
-    if (pin !== CONTROLLER_PIN && pin !== STEWARD_PIN) {
-      alert('❌ Неверный пароль.');
-      return;
-    }
-
-    const updatedItem = {
-      ...dailyLog[editingIndex],
-      car, driver, number, cage, color, box, notes,
-      status: finalStatus,
-      timestamp: nowTime
-    };
-
-    dailyLog[editingIndex] = updatedItem;
-    saveLocalLog();
-    renderLogTable();
-    renderStewardList();
-    cancelEditing();
-
-    enqueueTask('update_entry', { data: updatedItem, date: stageKey }, pin);
-    clearDraft();
-    return;
-  }
-
-  // НОВАЯ ЗАПИСЬ (OPTIMISTIC)
-  const newEntry = {
-    id: "RDS_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
-    car, driver, number, cage, color, box, notes,
-    status: finalStatus,
-    timestamp: nowTime,
-    date: stageKey
-  };
-
-  // 1. Мгновенно добавляем на экран
-  dailyLog.unshift(newEntry);
-  saveLocalLog();
-  renderLogTable();
-  renderStewardList();
-
-  // 2. Мгновенно очищаем форму для следующей машины
-  clearInputs();
-  clearDraft();
-  closeChecklistPanel();
-
-  // 3. Отправляем в фоновую очередь
-  enqueueTask('add_entry', { data: newEntry, date: stageKey }, '0000');
+function onStageChanged() {
+  const selectEl = document.getElementById('stageSelect');
+  const stageMeta = selectEl.options[selectEl.selectedIndex].textContent;
+  document.getElementById('stewardStageMeta').textContent = stageMeta;
+  loadLocalLog();
+  fetchLogs(true);
 }
 
-function clearInputs() {
-  document.getElementById('carInput').value = '';
-  document.getElementById('driverInput').value = '';
-  document.getElementById('numberInput').value = '';
-  document.getElementById('cageInput').value = '';
-  document.getElementById('colorInput').value = '';
-  document.getElementById('boxInput').value = '';
-  document.getElementById('notesInput').value = '';
+function escapeHtml(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
-function startEditCar(index) {
-  const item = dailyLog[index];
-  if (!item) return;
-  editingIndex = index;
-
-  document.getElementById('carInput').value = item.car || '';
-  document.getElementById('driverInput').value = item.driver || '';
-  document.getElementById('numberInput').value = item.number || '';
-  document.getElementById('cageInput').value = item.cage || '';
-  document.getElementById('colorInput').value = item.color || '';
-  document.getElementById('boxInput').value = item.box || '';
-  document.getElementById('notesInput').value = item.notes || '';
-
-  document.getElementById('editModeIndicator').style.display = 'inline-block';
-  document.getElementById('cancelEditBtn').style.display = 'inline-block';
-  document.getElementById('quickSubmitBtn').textContent = '💾 Сохранить изменения';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function cancelEditing() {
-  editingIndex = null;
-  document.getElementById('editModeIndicator').style.display = 'none';
-  document.getElementById('cancelEditBtn').style.display = 'none';
-  document.getElementById('quickSubmitBtn').textContent = UI_TEXT[currentLang].quickSubmit;
-  clearInputs();
-}
-
-function deleteCarPrompt(index) {
-  const pin = prompt('🔐 Введите пароль Главного Комиссара (0852) для удаления:');
-  if (pin !== STEWARD_PIN) {
-    alert('❌ Отказано. Удаление разрешено только главному комиссару.');
-    return;
-  }
-
-  const item = dailyLog[index];
-  const stage = getCurrentStageKey();
-
-  // Мгновенно убираем из интерфейса (Optimistic)
-  dailyLog.splice(index, 1);
-  saveLocalLog();
-  renderLogTable();
-  renderStewardList();
-
-  enqueueTask('delete_entry', { id: item.id, number: item.number, date: stage }, pin);
-}
-
-function renderLogTable() {
-  const tbody = document.getElementById('logTableBody');
-  document.getElementById('totalCarsCount').textContent = dailyLog.length;
-
-  if (!dailyLog.length) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-sub); padding:16px;">Список пуст</td></tr>`;
-    return;
-  }
-
-  tbody.innerHTML = dailyLog.map((item, idx) => {
-    const pillClass = item.status === 'ok' ? 'pill-ok' : (item.status === 'fail' ? 'pill-fail' : 'pill-warn');
-    const pillLabel = item.status === 'ok' ? 'ОК' : (item.status === 'fail' ? 'ОТКАЗ' : 'ЗАМЕЧАНИЕ');
-
-    return `
-      <tr>
-        <td style="color:#777;">${idx + 1}</td>
-        <td style="font-weight:bold; color:var(--gold-bright);">#${escapeHtml(item.number || '—')}</td>
-        <td>${escapeHtml(item.car)}</td>
-        <td>${escapeHtml(item.driver || '—')}</td>
-        <td><span class="status-pill ${pillClass}">${pillLabel}</span></td>
-        <td>
-          <button onclick="startEditCar(${idx})" style="background:none; border:none; cursor:pointer; font-size:14px; margin-right:6px;">✏️</button>
-          <button onclick="deleteCarPrompt(${idx})" style="background:none; border:none; cursor:pointer; font-size:14px;">🗑️</button>
-        </td>
-      </tr>
-    `;
-  }).join('');
-}
-
-/* ================= ЧЕКЛИСТ ================= */
-function openChecklistPanel() {
-  document.getElementById('checklistPanel').classList.add('open');
-}
-
-function closeChecklistPanel() {
-  document.getElementById('checklistPanel').classList.remove('open');
-}
-
-function switchChecklistTab(tab) {
-  currentChecklistTab = tab;
-  document.getElementById('chkTabExt').classList.toggle('active', tab === 'ext');
-  document.getElementById('chkTabInt').classList.toggle('active', tab === 'int');
-  document.getElementById('checklistExtContainer').style.display = (tab === 'ext') ? 'block' : 'none';
-  document.getElementById('checklistIntContainer').style.display = (tab === 'int') ? 'block' : 'none';
-}
-
-function renderChecklistDom() {
-  const extC = document.getElementById('checklistExtContainer');
-  const intC = document.getElementById('checklistIntContainer');
-  if (!extC || !intC) return;
-
-  const renderList = (items, container) => {
-    container.innerHTML = items.map(it => {
-      const state = checklistState[it.code] || '';
-      return `
-        <div class="checklist-item">
-          <div class="checklist-item-info">
-            <div style="font-size:13px; font-weight:bold; color:#fff;">${it.code} ${escapeHtml(it.title[currentLang] || it.title.ru)}</div>
-            <div style="font-size:11px; color:#9ca3af; margin-top:2px;">${escapeHtml(it.desc[currentLang] || it.desc.ru)}</div>
-          </div>
-          <div style="display:flex; gap:4px;">
-            <button type="button" class="chk-btn ${state === 'ok' ? 'active-ok' : ''}" onclick="setCheckItem('${it.code}','ok')">ОК</button>
-            <button type="button" class="chk-btn ${state === 'warn' ? 'active-warn' : ''}" onclick="setCheckItem('${it.code}','warn')">Зам.</button>
-            <button type="button" class="chk-btn ${state === 'fail' ? 'active-fail' : ''}" onclick="setCheckItem('${it.code}','fail')">Отказ</button>
-          </div>
-        </div>
-      `;
-    }).join('');
-  };
-
-  renderList(CHECKLIST_EXT, extC);
-  renderList(CHECKLIST_INT, intC);
-}
-
-function setCheckItem(code, state) {
-  checklistState[code] = state;
-  renderChecklistDom();
-}
-
-function markCurrentSectionAllOk() {
-  const items = (currentChecklistTab === 'ext') ? CHECKLIST_EXT : CHECKLIST_INT;
-  items.forEach(it => { checklistState[it.code] = 'ok'; });
-  renderChecklistDom();
-}
-
-function applyChecklistAndSave() {
-  const allItems = [...CHECKLIST_EXT, ...CHECKLIST_INT];
-  const remarks = [];
-  let finalStatus = 'ok';
-
-  allItems.forEach(it => {
-    const s = checklistState[it.code];
-    if (s === 'warn') {
-      remarks.push(`п.${it.code} ${it.title[currentLang] || it.title.ru}`);
-      if (finalStatus !== 'fail') finalStatus = 'warn';
-    }
-    if (s === 'fail') {
-      remarks.push(`ОТКАЗ: п.${it.code} ${it.title[currentLang] || it.title.ru}`);
-      finalStatus = 'fail';
-    }
-  });
-
-  document.getElementById('notesInput').value = remarks.length ? remarks.join(', ') : 'Без замечаний';
-  addCarToLog(finalStatus);
-}
-
-/* ================= КАБИНЕТ КОМИССАРА ================= */
-function setStewardFilter(filter) {
-  stewardActiveFilter = filter;
-  ['all', 'warn', 'fail', 'ok'].forEach(f => {
-    const el = document.getElementById(`filter_${f}`);
-    if (el) el.className = `chk-btn ${f === filter ? 'active-ok' : ''}`;
-  });
-  renderStewardList();
-}
-
-function renderStewardList() {
-  const container = document.getElementById('stewardListContainer');
-  if (!container) return;
-
-  let filtered = dailyLog;
-  if (stewardActiveFilter === 'warn') filtered = dailyLog.filter(i => i.status === 'warn');
-  if (stewardActiveFilter === 'fail') filtered = dailyLog.filter(i => i.status === 'fail');
-  if (stewardActiveFilter === 'ok') filtered = dailyLog.filter(i => i.status === 'ok');
-
-  if (!filtered.length) {
-    container.innerHTML = `<div style="text-align:center; color:var(--text-sub); padding:20px;">Нет автомобилей в этой категории</div>`;
-    return;
-  }
-
-  container.innerHTML = filtered.map((item, idx) => {
-    const pillClass = item.status === 'ok' ? 'pill-ok' : (item.status === 'fail' ? 'pill-fail' : 'pill-warn');
-    const pillLabel = item.status === 'ok' ? 'ОК' : (item.status === 'fail' ? 'ОТКАЗ' : 'ЗАМЕЧАНИЕ');
-
-    return `
-      <div class="steward-card-item" onclick="openStewardDetail('${escapeHtml(item.id)}')">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-          <div>
-            <span style="font-weight:bold; color:var(--gold-bright); font-size:15px; margin-right:6px;">#${escapeHtml(item.number || 'б/н')}</span>
-            <span style="font-weight:700; color:#fff;">${escapeHtml(item.driver || 'Без имени')}</span>
-          </div>
-          <span class="status-pill ${pillClass}">${pillLabel}</span>
-        </div>
-        <div style="font-size:12px; color:#aaa; margin-top:4px;">
-          ${escapeHtml(item.car)} • Каркас: ${escapeHtml(item.cage || '—')} • Бокс: ${escapeHtml(item.box || '—')}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function openStewardDetail(id) {
-  const item = dailyLog.find(i => i.id === id);
-  if (!item) return;
-
-  document.getElementById('stewardPilotCard').style.display = 'block';
-  document.getElementById('stewardPilotTitle').textContent = `#${item.number || ''} ${item.driver || ''} (${item.car})`;
-
-  let notesHtml = `<div style="margin-top:8px;"><strong>Замечания:</strong> ${escapeHtml(item.notes || 'Без замечаний')}</div>`;
-
-  // Поиск нарушений и привязка к статьям
-  const allItems = [...CHECKLIST_EXT, ...CHECKLIST_INT];
-  const matchedRules = [];
-
-  allItems.forEach(r => {
-    if (item.notes && item.notes.includes(r.code)) {
-      matchedRules.push(r);
-    }
-  });
-
-  if (matchedRules.length > 0) {
-    notesHtml += `<div style="margin-top:10px; font-weight:bold; font-size:12px; color:var(--gold-primary);">НАРУШЕННЫЕ СТАТЬИ РЕГЛАМЕНТА:</div>`;
-    matchedRules.forEach(r => {
-      notesHtml += `
-        <button onclick="showRuleCitation('${r.code}')" style="display:block; width:100%; text-align:left; background:#222; border:1px solid #333; color:#fff; padding:8px; border-radius:6px; margin-top:6px; cursor:pointer;">
-          ⚠️ ${r.code} — ${r.article[currentLang] || r.article.ru}
-        </button>
-      `;
-    });
-  }
-
-  document.getElementById('stewardPilotBody').innerHTML = `
-    <div><strong>Время ТИ:</strong> ${escapeHtml(item.timestamp || '—')}</div>
-    <div><strong>Каркас безопасности:</strong> ${escapeHtml(item.cage || '—')}</div>
-    <div><strong>Цвет:</strong> ${escapeHtml(item.color || '—')}</div>
-    ${notesHtml}
-  `;
-
-  document.getElementById('ruleCitationBox').style.display = 'none';
-  document.getElementById('stewardPilotCard').scrollIntoView({ behavior: 'smooth' });
-}
-
-function showRuleCitation(code) {
-  const allItems = [...CHECKLIST_EXT, ...CHECKLIST_INT];
-  const r = allItems.find(it => it.code === code);
-  if (!r) return;
-
-  const box = document.getElementById('ruleCitationBox');
-  box.style.display = 'block';
-
-  document.getElementById('ruleCitationHeading').textContent = `${r.article[currentLang] || r.article.ru} (Чеклист: п.${r.code})`;
-  document.getElementById('ruleCitationText').textContent = r.rule[currentLang] || r.rule.ru;
-  document.getElementById('ruleActionNeeded').innerHTML = `<strong>${UI_TEXT[currentLang].actionNeededHdr}</strong> ${r.action[currentLang] || r.action.ru}`;
-
-  const docLink = document.getElementById('officialDocLink');
-  docLink.href = REGULATION_DOC_LINKS[currentLang] || REGULATION_DOC_LINKS.ru;
-  docLink.textContent = UI_TEXT[currentLang].docLink;
-}
-
-function closeStewardDetail() {
-  document.getElementById('stewardPilotCard').style.display = 'none';
-}
-
-/* ================= ЧЕРНОВИКИ И АВТОЗАПОЛНЕНИЕ ================= */
-const CAR_DATABASE = [
-  "Toyota Supra A80", "Toyota Supra A90", "Toyota Chaser JZX100", "Toyota Mark II JZX100",
-  "Nissan Silvia S13", "Nissan Silvia S14", "Nissan Silvia S15", "Nissan 180SX", "Nissan GT-R R34",
-  "Nissan 350Z (Z33)", "Nissan 370Z (Z34)", "BMW 3 Series E36", "BMW 3 Series E46", "BMW 3 Series E92",
-  "Mazda RX-7 FD", "Mazda RX-8", "Subaru BRZ / Toyota GR86"
-];
-
-function setupAutocomplete() {
-  const input = document.getElementById('carInput');
-  const dropdown = document.getElementById('carAutocomplete');
-
-  input.addEventListener('input', () => {
-    const val = input.value.trim().toLowerCase();
-    if (!val) { dropdown.style.display = 'none'; return; }
-
-    const matches = CAR_DATABASE.filter(c => c.toLowerCase().includes(val));
-    if (!matches.length) { dropdown.style.display = 'none'; return; }
-
-    dropdown.innerHTML = matches.slice(0, 6).map(m => `
-      <div class="autocomplete-item" onclick="selectCar('${escapeHtml(m)}')">${escapeHtml(m)}</div>
-    `).join('');
-    dropdown.style.display = 'block';
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!input.contains(e.target) && !dropdown.contains(e.target)) dropdown.style.display = 'none';
-  });
-}
-
-function selectCar(val) {
-  document.getElementById('carInput').value = val;
-  document.getElementById('carAutocomplete').style.display = 'none';
-  saveDraft();
-}
-
-function setupDraftAutoSave() {
-  ['carInput', 'driverInput', 'numberInput', 'cageInput', 'colorInput', 'boxInput', 'notesInput'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', saveDraft);
-  });
-}
-
-function saveDraft() {
-  const draft = {
-    car: document.getElementById('carInput').value,
-    driver: document.getElementById('driverInput').value,
-    number: document.getElementById('numberInput').value,
-    cage: document.getElementById('cageInput').value,
-    color: document.getElementById('colorInput').value,
-    box: document.getElementById('boxInput').value,
-    notes: document.getElementById('notesInput').value
-  };
-  if (draft.car || draft.number || draft.driver) {
-    localStorage.setItem('ti_form_draft', JSON.stringify(draft));
-  } else {
-    clearDraft();
-  }
-}
-
-function restoreDraftIfAny() {
-  const raw = localStorage.getItem('ti_form_draft');
-  if (!raw) return;
-  try {
-    const d = JSON.parse(raw);
-    document.getElementById('carInput').value = d.car || '';
-    document.getElementById('driverInput').value = d.driver || '';
-    document.getElementById('numberInput').value = d.number || '';
-    document.getElementById('cageInput').value = d.cage || '';
-    document.getElementById('colorInput').value = d.color || '';
-    document.getElementById('boxInput').value = d.box || '';
-    document.getElementById('notesInput').value = d.notes || '';
-    document.getElementById('draftBanner').style.display = 'flex';
-  } catch(e) {}
-}
-
-function clearDraft() {
-  localStorage.removeItem('ti_form_draft');
-  document.getElementById('draftBanner').style.display = 'none';
-}
-
-function discardDraft() {
-  clearDraft();
-  clearInputs();
-}
-
-function escapeHtml(val) {
-  return String(val ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-/* ================= ИНИЦИАЛИЗАЦИЯ ================= */
 document.addEventListener('DOMContentLoaded', () => {
-  renderChecklistDom();
   setupAutocomplete();
-  setupDraftAutoSave();
-  restoreDraftIfAny();
+  initChecklist();
   onStageChanged();
-  updateQueueBadge();
 
-  // Автоматический опрос очереди и проверка сети раз в 20 секунд
+  // Автопроверка очереди раз в 25 секунд
   setInterval(() => {
-    if (navigator.onLine) processSyncQueue();
-  }, 20000);
+    if (navigator.onLine) triggerManualSync();
+  }, 25000);
 
   window.addEventListener('online', () => {
-    updateSyncStatus('online', 'Онлайн');
-    processSyncQueue();
+    updateSyncBadge('online', 'Онлайн');
+    triggerManualSync();
   });
-  window.addEventListener('offline', () => updateSyncStatus('offline', 'Автономно'));
+  window.addEventListener('offline', () => {
+    updateSyncBadge('offline', 'Автономно');
+  });
 });
 </script>
 </body>
